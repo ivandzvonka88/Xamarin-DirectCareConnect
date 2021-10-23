@@ -1,0 +1,17 @@
+﻿@model DCC.Models.ClientPageData
+
+<span id="clFn">@Model.clientProfile.fn</span>
+<span id="clLn">@Model.clientProfile.ln</span>
+<input id="CLSVID" type="hidden" value="@Model.clientProfile.clsvId" />
+<div style="float:right;padding-right:10px;border:0">
+    <span id="clientActiveState">
+        @(Model.clientProfile.deleted == true ? "Inactive" : "Active")
+    </span>
+    @if (Model.userLevel != "Provider" && Model.userLevel != "Supervisor" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+    {
+        <i id="btnClientActivate" class="fa @(Model.clientProfile.deleted == true ? "fa-toggle-off" : "fa-toggle-on")" onclick="openClientActivateDeactivateModal();"></i>
+    }
+</div>
+
+
+

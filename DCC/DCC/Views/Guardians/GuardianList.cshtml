@@ -1,0 +1,14 @@
+﻿@model DCC.Models.GuardianList
+@foreach (var item in Model.guardians)
+{
+<div class="@("nameListItem " + (item.deleted ? "inactive":""))" 
+     id="cl@(item.id)" onclick="return getGuardian(@item.id);">
+    @item.name 
+    <i class="@(item.registered ? "fa fa-check" : "")" style="color:navy"></i>
+@if (item.clientCount != 0){ 
+
+    <span class="clientCount">(@item.clientCount)</span>
+    }
+
+</div>
+}

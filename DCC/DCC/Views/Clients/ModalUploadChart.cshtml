@@ -1,0 +1,60 @@
+﻿@model DCC.Models.UploadChartModal
+    <div class="modal fade" id="actionModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5><i class="fa fa-edit"></i> Upload Chart</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group chartUploader" style="width:100%">
+                        <input id="chartFileName" class="form-control form-control-sm fileName" disabled />
+                        <label class="btn btn-sm btn-secondary">
+                            Select <input id="chartFileNameX" type="file" style="display:none" onchange="getChartFileName();" />
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="docType">Document Type</label>
+                        <select id="docTypeId" class="form-control form-control-sm">
+                            <option value="0"></option>
+                            @foreach (var docType in Model.chartDocTypes)
+                            {
+                                <option value="@docType.value">@docType.name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="chartServiceSelect">Select Service if applicable</label>
+                        <select id="chartServiceSelect" class="form-control form-control-sm">
+                            <option value="0"></option>
+                            @foreach(var service in Model.serviceOptions)
+                            {
+                                <option value="@service.value">@service.name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="docStartDate">Start Date</label>
+                            <div class="input-group date">
+                                <input id="docStartDate" type="date" class="form-control form-control-sm" />
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="docEndDate">End Date</label>
+                            <div class="input-group date">
+                                <input id="docEndDate" type="date" class="form-control form-control-sm" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="uploadChart();">Upload Document</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('#actionModal').modal('show');
+    </script>

@@ -1,0 +1,103 @@
+﻿@model DCC.Models.Questions.QuestionList
+@Html.AntiForgeryToken()
+@Html.Partial("MenuHeader", @Model)
+@Html.Partial("SettingsHeader", @Model)
+<style>
+    .regTable {
+        display: block;
+        margin-bottom: 12px;
+        margin-top: 12px;
+    }
+
+        .regTable th {
+            padding: 2px;
+            color: white;
+            background-color: #5e7fb1;
+        }
+
+        .regTable td {
+            padding: 3px;
+            background-color: white;
+        }
+</style>
+
+<<table class="regTable questions table-bordered" style="display:block" data-order='[0,"desc"]' id="questionsTable">
+    <thead>
+        <tr>
+            <th>Actions</th>
+            <th style="min-width:150px">Question</th>
+            <th style="min-width:50px">Type</th>
+            <th style="min-width:50px">Minimum</th>
+            <th style="min-width:50px">Maximum</th>
+            <th>Is Active</th>
+        </tr>
+    </thead>
+</table>
+
+<div class="form-control">
+    <button class="btn btn-primary" onclick="openQuestionEdit(0)">Create Question</button>
+</div>
+
+<div class="modal editQuestionModal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-edit"></i> <span id="editQHdr">Edit Question</span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input type="hidden" id="questionId" />
+                    <label for="title">Question</label>
+                    <textarea class="form-control rounded-0" id="title" rows="3"></textarea>
+                    <label for="valueTypeId">Answer Type</label>
+                    <select id="valueTypeId" class="form-control form-control-sm" style="width:100px">
+
+                        @foreach (var item in Model.valueIdOptions)
+                        {
+                            <option value="@item.value">@item.name</option>
+                        }
+                    </select>
+                    <div id="minmax">
+                        <label for="minValue">Minimum Value</label>
+                        <input class="form-control form-control-sm" id="minValue" style="width:100px" />
+                        <label for="maxValue">Maximum Value</label>
+                        <input class="form-control form-control-sm" id="maxValue" style="width:100px" />
+                    </div>
+                    <label for="isActive"><input id="isActive" type="checkbox" /> Is Active</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="QBtn" type="button" class="btn btn-primary" onclick="saveQuestion();">Add Question</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var srvcUrl = '';
+    var srvcUrl1 = '';
+    var i = 0;
+    var pathname = window.location.pathname;
+    var t = document.location.hostname;
+    var VirtualDir = pathname.split('/');
+    VirtualDir.forEach(function (item) {
+        if (t != 'localhost') {
+            if (i == 1) {
+                srvcUrl1 = item;
+                if (srvcUrl1 != '')
+                    srvcUrl1 = '/' + item
+            }
+        }
+        i = i + 1;
+        if (item != '') {
+            srvcUrl += '/' + item;
+        }
+        else {
+            srvcUrl += '';
+        }
+    });
+</script>
+@section Scripts {
+    <script type="text/javascript" src="~/Scripts/DCC/questions.js?v=0.04"></script>
+}

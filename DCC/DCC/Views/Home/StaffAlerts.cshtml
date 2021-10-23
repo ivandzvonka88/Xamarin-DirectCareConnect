@@ -1,0 +1,40 @@
+﻿@model List<DCC.Models.StaffAlert>
+
+<div class="clBlockData alertList staffAlertList">
+    <table>
+        @{
+            string staffName = "";
+        }
+
+        @for (var i = 0; i < Model.Count; i++)
+        {
+            if (staffName != Model[i].name)
+            {
+                staffName = Model[i].name;
+                @Html.Raw("<tbody class=\"staffAlertBlock\">");
+            }
+        <tr class="staffAlertItem @(Model[i].priority == 1 ? "redAlert" :Model[i].priority == 2 ? "amberAlert" : "greenAlert")">
+            <td><i class="fa fa-exclamation-circle" /></td>
+            @if (Model[i].id.Substring(0, 1) != "0")
+            {
+                <td class="alertLink" onclick="getTaskStaffPage('@Model[i].id')">
+                    <span class="alertName">@Model[i].name</span> <span class="msg">@Model[i].alert</span>
+                </td>
+                <td><i class="fa fa-comment-o faBtn msgBtn" onclick="openTaskMessageModal(@Model[i].id, '@Model[i].sNm')"></i></td>
+            }
+            else
+            {
+                <td>
+                    <span class="alertName">@Model[i].name</span> <span class="msg">@Model[i].alert</span>
+                </td>
+                <td></td>
+            }
+
+        </tr>
+            if (i == Model.Count - 1 || staffName != Model[i + 1].name)
+            {
+                @Html.Raw("</tbody>");
+            }
+        }
+    </table>
+</div>

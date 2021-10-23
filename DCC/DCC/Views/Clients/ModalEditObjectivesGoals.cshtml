@@ -1,0 +1,295 @@
+﻿@model DCC.Models.ObjectivesModal
+
+<style>
+    .forAssistant {
+        background-color: #ffffe0;
+    }
+</style>
+
+<div class="modal fade" id="actionModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-full" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>@Model.serviceObjective.svcName Objective</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body modal-body-full">
+                <input type="hidden" id="clientserviceId" value="@Model.serviceObjective.clsvidId" />
+                <input type="hidden" id="serviceId" value="@Model.serviceObjective.serviceId" />
+                <input type="hidden" id="isTherapy" value="@(Model.serviceObjective.isTherapy ? "true": "false")"/>
+
+                <div class="row" id="objectiveWrapper">
+                    @foreach (var o in Model.serviceObjective.longTermObjectives)
+                    {
+                        <div class="col-sm-12 objectiveItem" id="objectiveId@(o.objectiveId)">
+                            <input type="hidden" class="objectiveId" value="@o.objectiveId" />
+                            <div style="margin-bottom:20px; border:3px solid #c0c0c0; padding:5px">
+                                <div style="margin-bottom:20px">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div><b>Long Term Goal Area:</b></div>
+                                            <select class="oGA">
+                                                @foreach (var gA in Model.goalAreas)
+                                                {
+                                                    <option value="@gA.value" @(gA.value == o.goalAreaId.ToString() ? "selected" : "")>@gA.name</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div><b>Long Term Status:</b></div>
+                                            <select class="oLTstatus"  onchange="longTermStatusChanged($(this))">
+                                                @foreach (var st in Model.statuses)
+                                                {
+                                                    <option value="@st.value" @(st.value == o.objectiveStatus ? "selected" : "")>@st.name</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="oLTcompletionDate"><b>Completion Date:</b></label>
+                                                <div class="input-group date">
+                                                    <input value="@o.completedDt" type="date" class="oLTcompletionDate form-control form-control-sm" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div><b>Long Term Vision:</b></div>
+                                            <textarea class="oLTV" style="width:100%">@o.longTermVision</textarea>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div><b>Long Term Goal:</b></div>
+                                            <textarea class="oLTG" style="width:100%">@o.longTermGoal</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="shortTermGoals">
+                                    @foreach (var s in o.shortTermGoals)
+                                    {
+                                        <div class="shortTermGoalItem" style="margin-left:20px;margin-bottom:20px;border:3px solid #c0c0c0; padding:5px;background-color:aliceblue">
+                                            <input type="hidden" class="goalId" value="@s.goalId">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <b>Action Step/Short Term Goal <span class="aStep"></span></b>
+                                                    <textarea class="oAS" style="width:100%">@s.shortTermGoal</textarea>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <b>Activities/ Strategies</b>
+                                                    <textarea class="oTM" style="width:100%">@s.teachingMethod</textarea>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <b>Frequency</b>:<br />
+                                                    <select class="oASFreq" )>
+                                                        @foreach (var freq in Model.frequencies)
+                                                        {
+                                                            <option value="@freq.value" @(freq.value == s.frequencyId ? "selected" : "")>@freq.name</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <b>Status:</b><br />
+                                                    <select class="oASStatus" onchange="shortTermStatusChanged($(this))">
+                                                        @foreach (var st in Model.statuses)
+                                                        {
+                                                            <option value="@st.value" @(st.value == s.goalStatus ? "selected" : "")>@st.name</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label for="oAScompletionDate"><b>Completion Date:</b></label>
+                                                        <div class="input-group date">
+                                                            <input value="@s.completedDt" type="date" class="oASTcompletionDate form-control form-control-sm" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-sm btn-primary actionStepBtn" onclick="openActionStepModal(@o.objectiveId);">Add Action Step</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <button type="button" class="btn btn-sm btn-primary" onclick="openLongTermVisionModal();">New Long Term Vision</button>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="updateClientObjectives(false);">Save Changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="addLongTermVisionModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: orange;">
+                <h5><i class="fa fa-edit"></i> Add Functional Outcome</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div><b>Long Term Goal Area:</b></div>
+                <select class="oGA">
+                    @foreach (var gA in Model.goalAreas)
+                    {
+                        <option value="@gA.value">@gA.name</option>
+                    }
+                </select>
+                <div><b>Long Term Vision:</b></div>
+                <textarea class="oLTV" style="width:100%"></textarea>
+                <div><b>Long Term Goal:</b></div>
+                <textarea class="oLTG" style="width:100%"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-primary" onclick="addLongTermVision();">Add Long Term Vision</button>
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="addActionStepModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: orange;">
+                <h5><i class="fa fa-edit"></i> Add Action Step</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" class="objectiveType" />
+                <input type="hidden" class="objectiveId" />
+                <b>Action Step/Short Term Goal <span class="aStep"></span></b>
+                <textarea class="oAS" style="width:100%"></textarea>
+                <b>Activities/ Strategies</b>
+                <textarea class="oTM" style="width:100%"></textarea>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <b>Frequency</b>:<br />
+                        <select class="oASFreq">
+                            @foreach (var freq in Model.frequencies)
+                            {
+                                <option value="@freq.value" )>@freq.name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-primary" onclick="addActionStep();">Add step</button>
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End Modals-->
+<!--templates-->
+<div class="col-sm-12 objectiveItem template" ">
+    <div style="margin-bottom:20px; border:3px solid #c0c0c0; padding:5px">
+        <div style="margin-bottom:20px">
+            <input type="hidden" class="objectiveId" />
+            <div class="row">
+                <div class="col-sm-4">
+                    <div><b>Long Term Goal Area:</b></div>
+                    <select class="oGA" )>
+                        @foreach (var gA in Model.goalAreas)
+                        {
+                            <option value="@gA.value">@gA.name</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-4">
+                    <div><b>Long Term Status:</b></div>
+                    <select class="oLTstatus"  onchange="longTermStatusChanged($(this)">
+                        @foreach (var st in Model.statuses)
+                        {
+                            <option value="@st.value">@st.name</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="oLTcompletionDate"><b>Completion Date:</b></label>
+                        <div class="input-group date">
+                            <input type="date" class="oLTcompletionDate form-control form-control-sm" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div><b>Long Term Vision:</b></div>
+                    <textarea class="oLTV" style="width:100%" />
+                </div>
+                <div class="col-sm-6">
+                    <div><b>Long Term Goal:</b></div>
+                    <textarea class="oLTG" style="width:100%" />
+                </div>
+            </div>
+        </div>
+        <div class="shortTermGoals">
+        </div>
+        <div>
+            <button type="button" class="btn btn-sm btn-primary actionStepBtn">Add Action Step</button>
+        </div>
+    </div>
+</div>
+
+<div class="shortTermGoalItem template" style="margin-left:20px;margin-bottom:20px;border:3px solid #c0c0c0; padding:5px;background-color:aliceblue">
+    <input type="hidden" class="goalId">
+    <div class="row">
+        <div class="col-sm-6">
+            <b>Action Step/Short Term Goal <span class="aStep"></span></b>
+            <textarea class="oAS" style="width:100%"></textarea>
+        </div>
+        <div class="col-sm-6">
+            <b>Activities/ Strategies</b>
+            <textarea class="oTM" style="width:100%"></textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <b>Frequency</b>:<br />
+            <select class="oASFreq">
+                @foreach (var freq in Model.frequencies)
+                {
+                    <option value="@freq.value" )>@freq.name</option>
+                }
+            </select>
+        </div>
+        <div class="col-sm-4">
+            <b>Status:</b><br />
+            <select class="oASStatus" onchange="shortTermStatusChanged($(this)">
+                @foreach (var st in Model.statuses)
+                {
+                    <option value="@st.value" )>@st.name</option>
+                }
+            </select>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label for="oAScompletionDate"><b>Completion Date:</b></label>
+                <div class="input-group date">
+                    <input type="date" class="oASTcompletionDate form-control form-control-sm" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End templates-->
+<script>
+    $('#actionModal').modal('show');
+</script>

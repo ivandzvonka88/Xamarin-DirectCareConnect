@@ -1,0 +1,40 @@
+﻿@model DCC.Models.ClientPageData
+
+
+@*
+    <select id="periodClientBillingDataSelect" onchange="selectionClientBillingDataChanged()">
+        <option value="0"></option>
+        @foreach (var p in Model.periods)
+        {
+            <option value="@p.startDate-@p.endDate">@p.startDate-@p.endDate</option>
+        }
+    </select>
+*@
+<div id="clientBillingDataTimeSheet">
+</div>
+
+<script>
+    function selectionClientBillingDataChanged() {
+        if ($('periodClientBillingDataSelect').val() != 0) {
+            var Data = {
+                'clientId': $('#TCLSVID').val(),
+                'startEndDates': $('#periodClientBillingDataSelect').val()
+            };
+            waitOn();
+            $.ajax({
+                type: 'POST',
+                url: srvcUrl + '/Home/GetClientBillingData',
+                data: JSON.stringify(Data),
+                contentType: 'application/json; charset=utf-8',
+                headers: headers,
+                dataType: 'html',
+                success: function (data) {
+                    waitOff();
+                    $('#clientBillingDataTimeSheet').html(data);
+                },
+                error: ajaxError,
+                timeout: 10000
+            });
+        }
+    }
+</script>

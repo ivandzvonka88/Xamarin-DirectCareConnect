@@ -1,0 +1,120 @@
+﻿@model DCC.Models.Reports.ServiceOptions
+@Html.AntiForgeryToken()
+@Html.Partial("MenuHeader", @Model)
+@Html.Partial("SettingsHeader", @Model)
+<style>
+    .regTable {
+        display: block;
+        margin-bottom: 12px;
+        margin-top: 12px;
+    }
+
+        .regTable th {
+            padding: 2px;
+            color: white;
+            background-color: #5e7fb1;
+        }
+
+        .regTable td {
+            vertical-align: top;
+            padding: 3px;
+            background-color: white;
+        }
+</style>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="form-group">
+            <select id="serviceId" class="form-control form-control-sm" onchange="getReportView()" style="width:200px">
+                <option value="0" selected="selected"></option>
+                @foreach (var item in Model.services)
+                {
+                    <option value="@item.value">@item.name</option>
+                }
+            </select>
+        </div>
+    </div>
+</div>
+<div id="reportViewWrapper">
+</div>
+
+@foreach (var Q in Model.allQuestions)
+{
+    <div class="allQuestions">
+        <input type="hidden" class="questId" value="@Q.questionId" />
+        <input type="hidden" class="quest" value="@Q.question" />
+    </div>
+}
+
+<!--Modals-->
+<input type="hidden" id="goalAreaId" />
+<div class="modal addGoalAreaModal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-edit"></i> <span id="editQHdr">Goal Area</span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+
+                    <label for="goalAreaName">Goal Area Name</label>
+                    <input class="form-control form-control-sm" id="goalAreaName" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="saveGoalArea();">Save Goal Area</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal removeGoalAreaModal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-trash"></i> <span id="editQHdr">Goal Area</span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div id="goalAreaToDelete"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="removeGoalArea();">Remove Goal Area</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var srvcUrl = '';
+    var srvcUrl1 = '';
+    var i = 0;
+    var pathname = window.location.pathname;
+    var t = document.location.hostname;
+    var VirtualDir = pathname.split('/');
+    VirtualDir.forEach(function (item) {
+        if (t != 'localhost') {
+            if (i == 1) {
+                srvcUrl1 = item;
+                if (srvcUrl1 != '')
+                    srvcUrl1 = '/' + item
+            }
+        }
+        i = i + 1;
+        if (item != '') {
+            srvcUrl += '/' + item;
+        }
+        else {
+            srvcUrl += '';
+        }
+    });
+</script>
+@section Scripts {
+    <script type="text/javascript" src="~/Scripts/DCC/Reports.js?v=0.05"></script>
+}
+

@@ -1,0 +1,1679 @@
+﻿@model DCC.Models.InsurancePolicyDTO
+@{
+    Layout = null;
+}
+<script src="~/Scripts/BsMultiSelect.js"></script>
+
+<style>
+    .dCodeDDCL ul.dropdown-menu {
+        display: block;
+        list-style-type: none;
+        position: absolute;
+        overflow-y: scroll;
+        height: 168px;
+        transform: translate3d(563px, 175px, 0px);
+        top: 0px;
+        will-change: transform;
+        left: -40%;
+        width: 300px !important;
+        overflow-x: hidden;
+    }
+
+    #tblClientAuths td {
+        padding-left: 5px;
+    }
+
+    .dCodeDDCL li.badge {
+        white-space: normal !important;
+    }
+</style>
+
+<div class="modal fade" id="actionModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div id="headingAdd">
+                    @if (Model.isAddNew)
+                    {
+                        <h5><i class="fa fa-add"></i> Add Policy</h5>
+                    }
+                    else
+                    {
+                        <h5><i class="fa fa-edit"></i> Edit Policy</h5>
+                    }
+                </div>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+
+            <div class="modal-body" style="height:500px">
+                <input type="hidden" id="insurancePolicyID" value="@Model.insurancePolicyID">
+
+                @*Tabs*@
+                <ul class="nav nav-tabs" id="divTabsLink" style="margin-bottom: 15px;" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active aTabs" id="aPersonalInfo" data-step="1" data-toggle="tab" data-tabFor="tabPersonalInfo" role="tab" aria-controls="home" aria-selected="true">Personal Info</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link aTabs" id="aInsured" data-toggle="tab" data-step="2" data-tabFor="tabInsured" role="tab" aria-controls="profile" aria-selected="false">Insured Info</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link aTabs" id="aCPT" data-toggle="tab" data-step="3" data-tabFor="tabCPT" role="tab" aria-controls="contact" aria-selected="false">Services CPT</a>
+                    </li>
+                    <li class="nav-item" id="aPreAuthLi">
+                        <a class="nav-link aTabs" id="aPreAuth" data-toggle="tab" data-step="4" data-tabFor="tabPreAuth" role="tab" aria-controls="contact" aria-selected="false">Pre-Auth</a>
+                    </li>
+                    <li class="nav-item" id="awaiverLi">
+                        <a class="nav-link aTabs" id="aWaiver" data-toggle="tab" data-step="5" data-tabFor="tabWaiver" role="tab" aria-controls="contact" aria-selected="false">Waiver</a>
+                    </li>
+                </ul>
+
+
+                @*Tabs Content*@
+                <div class="tab-content" id="divTabsContent">
+
+                    @*Step 1*@
+                    <div class="tab-pane fade show active" id="tabPersonalInfo" role="tabpanel" aria-labelledby="home-tab">
+                        <div id="divIndividualInfo">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="container">
+                                        </div>
+                                        <label for="firstName">First Name *</label>
+                                        <div>
+                                            @*<input type="text" value="@Model.GuardianFirstName" id="firstName" class="form-control form-control-sm">*@
+                                            <input type="text" value="@Model.firstName" id="firstName" class="form-control form-control-sm">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="lastName">Last Name *</label>
+                                        <div>
+                                            @*<input type="text" id="lastName" value="@Model.GuardianLastName" class="form-control form-control-sm">*@
+                                            <input type="text" id="lastName" value="@Model.lastName" class="form-control form-control-sm">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="addressLine1">Address Line 1 *</label>
+                                        <div>
+                                            <input type="text" id="addressLine1" value="@Model.addressLine1" class="form-control form-control-sm">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="addressLine2">Address Line 2</label>
+                                        <div>
+                                            <input type="text" id="addressLine2" value="@Model.addressLine2" class="form-control form-control-sm">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="addressLine2">City *</label>
+                                        <div>
+                                            <input type="text" id="city" value="@Model.city" class="form-control form-control-sm">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="stateSelect">State *</label>
+                                        @Html.Partial("_StateSelector", Model?.state ?? "")
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="postalCode">Postal Code *</label>
+                                        <div>
+                                            <input type="text" id="postalCode" value="@Model.postalCode" class="form-control form-control-sm">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style="display:none">
+                                    <div class="form-group">
+                                        <label for="phone">Phone</label>
+                                        <div>
+                                            <input type="text" id="phone" value="@Model.phone" class="form-control form-control-sm" required="required">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="genderSelect">Gender *</label>
+                                        @Html.DropDownListFor(Model => Model.genderId, ViewBag.GenderList as SelectList, new { @id = "genderSelect", @class = "form-control form-control-sm" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="idob">Insured Date Of Birth *</label>
+                                        <div class="input-group date">
+                                            <input type="date" id="idob" class="form-control form-control-sm" value="@Model.dob" autocomplete="off" />
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*Step 2*@
+                    <div class="tab-pane fade" id="tabInsured" role="tabpanel" aria-labelledby="profile-tab">
+                        <div id="divPolicyInfo">
+                            <div class="row">
+                                <div class="col-md-6" id="divInsuredId">
+                                    <div class="form-group">
+                                        <label for="insuredIdNo">Insured Id No *</label>
+                                        <div>
+                                            <input type="text" id="insuredIdNo" class="form-control form-control-sm" value="@Model.insuredIdNo">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" id="divAssistId">
+                                    <div class="form-group">
+                                        <label for="assistId">Assist ID </label>
+                                        <div>
+                                            <input type="text" id="txtAssistId" value="@Model.AssistID" class="form-control form-control-sm" readonly="readonly">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="companySelect">Company *</label>
+                                        <select id="companySelect" class="form-control form-control-sm" ">
+                                           
+                                            @foreach (var item in Model.companyInsuranceList)
+                                            {
+                                                <option value="@item.value" data-for="@item.InsCode"  @(@Model.companyId==Convert.ToInt32(item.value) ? "selected" : "")>@item.name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="mcid">MCID</label>
+                                        <div>
+                                            <input type="text" id="mcid" class="form-control form-control-sm" value="@Model.mcid">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" id="divPGNum">
+                                    <div class="form-group">
+                                        <label for="policyGroupNumber">Policy Group Number *</label>
+                                        <div>
+                                            <input type="text" id="policyGroupNumber" class="form-control form-control-sm" value="@Model.policyGroupNumber">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" id="divRelation">
+                                    <div class="form-group">
+                                        <label for="relationshipSelect">Relationship *</label>
+                                        <select id="atcRelId" class="form-control form-control-sm">
+                                            @foreach (var item in Model.InsuranceRelationShips)
+                                            {
+                                                <option value="@item.value">@item.name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="startDate">Approved From *</label>
+                                        <div class="input-group date">
+                                            <input type="date" id="startDate" class="form-control form-control-sm" autocomplete="off" value="@Model.startDate" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" id="endDateDiv">
+                                    <div class="form-group">
+                                        <label for="endDate">Approved To </label>
+                                        <div class="input-group date">
+                                            <input type="date" id="endDate" class="form-control form-control-sm" autocomplete="off" value="@Model.endDate" />
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-6" id="priorityDiv">
+                                    <div class="form-group">
+                                        <label for="insPrioritySelect">Insurance Priority *</label>
+                                        @Html.DropDownList("InsPriorityDropDown", ViewBag.InsurancePriorityList as SelectList, new { @id = "insPrioritySelect", @class = "form-control form-control-sm" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*Step 3*@
+                    <div class="tab-pane fade" id="tabCPT" role="tabpanel" aria-labelledby="contact-tab">
+                        <div id="divClientServices" style="padding-top:73px; padding-left:17px; padding-right:17px; margin-top:-71px">
+                            <table cellpadding="0" cellspacing="0" id="tblClientServices">
+                                <thead>
+                                    <tr>
+                                        <th>Service</th>
+                                        <th id="thCPT">CPT Code</th>
+                                        <th class="modifierCell">Mod1</th>
+                                        <th class="modifierCell">Mod2</th>
+                                        <th class="modifierCell">Mod3</th>
+                                        <th>Units</th>
+                                        <th>Diagnosis Codes</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.clientServices != null)
+                                    {
+                                        foreach (var item in Model.clientServices)
+                                        {
+                                            <tr data-client-service-id="@item.Id">
+                                                <td>@item.Name</td>
+                                                <td style="width:130px;">
+                                                    <select id="ddlCPTCode" name="CPTCode" style="overflow-y: scroll;width: 126px;border-color: grey;border-radius: 0;padding: 0px 3px;height: 30px;">
+                                                        
+                                                        @foreach (var cptCode in ViewBag.CPTCodes)
+                                                        {
+                                                            <option value="@cptCode.Value" @(item.CPTCode == cptCode.Value ? "selected" : "")>@cptCode.Text</option>
+                                                        }
+                                                    </select>
+                                                    @* @Html.DropDownList("CPTCode", (IEnumerable<SelectListItem>)ViewBag.CPTCodes, new { @id = "ddlCPTCode", style = "overflow-y: scroll;width: 126px;border-color: grey;border-radius: 0;padding: 0px 3px;height: 30px;" }) *@
+                                                </td>
+                                                <td class="modifierCell" style="width:40px;"><input style="width:60px;" type="text" id="txtModifier1" value="@item.Mod1"/></td>
+                                                <td class="modifierCell" style="width:40px;"><input style="width:60px;" type="text" id="txtModifier2" /></td>
+                                                <td class="modifierCell" style="width:40px;"><input style="width:60px;" type="text" id="txtModifier3" /></td>
+                                                <td style="width:60px;">
+                                                    <select class="dropDownUnits" id="dropDownUnits" name="ObjList" style="overflow-y: scroll;width: 60px;border-color: grey;border-radius: 0;padding: 0 3px;height: 30px;">
+                                                        @foreach (var cptUnits in item.Units)
+                                                        {
+                                                            <option value="@cptUnits.Value" @(item.Unit == @cptUnits.Value ? "selected" : "")>@cptUnits.Text</option>
+                                                        }
+                                                    </select>
+                                                    @* @Html.DropDownList("ObjList", (IEnumerable<SelectListItem>) item.Units, new {@id = "dropDownUnits", @class = "dropDownUnits", style = "overflow-y: scroll;width: 60px;border-color: grey;border-radius: 0;padding: 0 3px;height: 30px;"}) *@
+                                                </td>
+                                                <td style="min-width:160px;">
+                                                    <div id="dCodeDD" class="dCodeDDCL"></div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div id="divClientAuths" style="padding-top:73px; padding-left:17px; padding-right:17px; margin-top:-71px">
+                            <table cellpadding="1" cellspacing="0" id="tblClientAuths" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th width="10%">Service</th>
+                                        <th width="10%">HCPC</th>
+                                        <th width="10%">Has Waiver</th>
+                                        <th width="10%">Available Units</th>
+                                        <th width="10%">Start Date</th>
+                                        <th width="10%">End Date</th>
+                                        <th width="40%">Diagnosis Codes</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.DDDClientAuths != null)
+                                    {
+                                        foreach (var item in Model.DDDClientAuths)
+                                        {
+                                            <tr data-client-auth-id="@item.ID">
+                                                <td>@item.ServiceName</td>
+                                                <td>@item.HCPC</td>
+                                                <td>@item.HasWaiver</td>
+                                                <td>@item.DDDUnits</td>
+                                                <td>@item.StartDate &nbsp;</td>
+                                                <td>@item.EndDate &nbsp;</td>
+                                                <td style="min-width:160px;">
+                                                    @item.DiagnosisCode
+                                                    <div id="dddCodeDD" class="dCodeDDCL">
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    @*Step 4*@
+                    <div class="tab-pane fade" id="tabPreAuth" role="tabpanel" aria-labelledby="contact-tab">
+
+                        <div class="hdr" id="addInsPreAuth" style="margin-left: 615px"><i class="fa fa-plus-square faBtn" onclick="addNewPreAuth();"></i>Add Pre Authorization</div>
+
+                        <div id="divPreAuth" style="padding-left: 17px;padding-right: 17px;display: none">
+                            <div id="divInsPreAuth">
+                                <h3 class="display-4" style="font-size:1.7rem">
+                                    Prior Authorization
+                                </h3>
+                                <input type="hidden" id="preAuthKey" value="" />
+                                <input type="hidden" id="PreAuthorizationId" value="0" />
+                                <div>
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <input id="NotApplicable" type="checkbox"  />
+                                            <label for="NotApplicable">Not Applicable</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="completionDate">Services</label>
+                                            <div>
+                                                <select id="_Selectid" class="form-control form-control-sm">
+
+                                                    @foreach (var item in Model.serviceList)
+                                                    {
+                                                        <option value="@item.value">@item.name</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="Units">Units</label>
+                                            <div>
+                                                <input id="_Units" type="text" class="form-control form-control-sm" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="_startDatePw">Approved From *</label>
+                                            <div class="input-group date">
+                                                <input type="date" id="_startDatePw" class="form-control form-control-sm" autocomplete="off" />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="_endDatePw">Approved To</label>
+                                            <div class="input-group date">
+                                                <input type="date" id="_endDatePw" class="form-control form-control-sm" autocomplete="off" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <button type="button" id="SavePreAuth" class="btn btn-success" onclick="savePreAuth()" style="margin-left: 540px;height: 29px;font: caption;">Save</button>
+                                <button type="button" id="CancelPreAuth" class="btn btn-success" onclick="visibilityPreAuthDiv(false)" style="height: 29px;font: caption;width: 75px;">Cancel</button>
+                            </div>
+                        </div>
+
+                        <div class="ridge" id="PreAuthTableDiv">
+                            <table id="InsPreAuthTable" border="1" class="table table-bordered table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                        </th>
+                                        <th>
+                                            Service
+                                        </th>
+                                        <th>
+                                            Start Date
+                                        </th>
+                                        <th>
+                                            End Date
+                                        </th>
+                                        <th>
+                                            Units
+                                        </th>
+                                        <th>
+                                            Not Applicable
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr></tr>
+                                    <tr></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    @*Step 5*@
+                    <div class="tab-pane fade" id="tabWaiver" role="tabpanel" aria-labelledby="contact-tab">
+
+                        <div class="hdr" id="addDDDWaiver" style="margin-left: 615px"><i class="fa fa-plus-square faBtn" onclick="addNewWaiver()"></i>Add DDD Waiver</div>
+
+                        <div id="divWaiver" style="padding-left: 17px;padding-right: 17px;display: none">
+
+                            <div id="divDDDWavier">
+                                <h3 class="display-4" style="font-size:1.7rem">
+                                    DDD Waiver
+                                </h3>
+                                <input type="hidden" id="waiverKey" value="" />
+                                <input type="hidden" id="PolicyWaiverId" value="0" />
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="_startDatedddLB">Approved From</label>
+                                            <div class="input-group date">
+                                                <input type="date" id="_startDateddd" class="form-control form-control-sm" autocomplete="off" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="_endDatedddLB">Approved To</label>
+                                            <div class="input-group date">
+                                                <input type="date" id="_endDateddd" class="form-control form-control-sm" autocomplete="off" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group" style="display:none">
+                                            <label for="lastName">Units</label>
+                                            <div>
+                                                <input type="text" id="_UnitTxtbx" class="form-control form-control-sm" autocomplete="off" readonly="readonly" />
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="_SelectidDDD">Services</label>
+                                            <div>
+                                                <select id="_SelectidDDD" class="form-control form-control-sm">
+                                                    @foreach (var item in Model.serviceList)
+                                                    {
+                                                        <option value="@item.value">@item.name</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <button type="button" id="SaveWaiver" class="btn btn-success" onclick="saveWaiver()" style="margin-left: 540px;height: 29px;font: caption;">Save</button>
+                                <button type="button" id="CancelWaiver" class="btn btn-success" onclick="visibilityWaiverDiv(false)" style="height: 29px;font: caption;width: 75px;">Cancel</button>
+                            </div>
+                        </div>
+                        <div class="ridge" id="WaiverTableDiv">
+                            <table id="DDDWaiverTable" border="1" class="table table-bordered table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                        </th>
+                                        <th>
+                                            Service
+                                        </th>
+                                        <th>
+                                            Start Date
+                                        </th>
+                                        <th>
+                                            End Date
+                                        </th>
+                                        <th>
+                                            Units
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr></tr>
+                                    <tr></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="prevBtn" class="btn btn-success" style="display:none" onclick="nextPrev(-1)">Previous</button>
+                <button type="button" id="nextBtn" class="btn btn-success" onclick="nextPrev(2)">Next</button>
+                <input type="button" id="btnsave" class="btn btn-success" onclick="validatePolicyDates();" value="@(Model.isAddNew ? "Add Policy" : "Update Policy")" style="display:none" />
+            </div>
+
+        </div>
+    </div>
+
+    </div>
+    <div class="modal fade" role="dialog" id="dvCPTAddModal">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5><i class="fa fa-add"></i>Add CPT Code</h5>
+                    <button type="button" class="close" onclick="closeCPTCodeUpdateModal()" aria-label="Close"><i class="fa fa-times"></i></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group-lg">
+                                <label for="txtCptCode">Code *</label>
+                                <input type="text" id="txtCptCode" maxlength="5" class="form-control aplhaNumericOnly">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="txtCptName">Name *</label>
+                                <input type="text" id="txtCptName" class="form-control" maxlength="50">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="addCPTCode();">Add</button>
+                    <button type="button" class="btn btn-secondary" onclick="clearUpdateCPTModel()">Clear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        tr_hover {
+            background-color: #FFFF99;
+        }
+    </style>
+
+    <span id="idSpan"></span>
+    <script type="text/javascript">
+    var isValid;
+    var passedSteps = [];
+    var insuranceTierId = 0;
+    var waiverData = [];
+    var preAuthData = [];
+    var NewPolicyList;
+    var rowId;
+    var insurancePolicyID = @Model.insurancePolicyID;
+    $('#genderSelect').val(@Model.genderId);
+    $('#divPolicyInfo  #atcRelId').val(@Model.insRelId);
+    $('#insPrioritySelect').val(@Model.InsurancePriorityID);   
+    $('#stateSelect').val('@Model.state.Trim()'); //why do I need a trim??????
+
+    var codesMaster = '@Html.Raw(Json.Encode(Model.DiagnosisCodes))';
+    codesMaster = JSON.parse(codesMaster);
+    var serviceCPTs = '@Html.Raw(Json.Encode(Model.ClientServiceCPTRates))';
+    serviceCPTs = JSON.parse(serviceCPTs);
+    var PolicyWaivers = '@Html.Raw(Json.Encode(Model.PolicyWaivers))';
+    PolicyWaivers = JSON.parse(PolicyWaivers);
+    var PreAuths = '@Html.Raw(Json.Encode(Model.PreAuths))';
+    PreAuths = JSON.parse(PreAuths);
+    var CompanyInsuranceList = '@Html.Raw(Json.Encode(Model.companyInsuranceList))';
+    CompanyInsuranceList = JSON.parse(CompanyInsuranceList);
+
+    $("#divPolicyInfo  #companySelect").change(function () {
+        var insCode = $('#companySelect :selected').data('for');
+        var val = $('#companySelect :selected').val();
+        for (var i = 0; i < CompanyInsuranceList.length; i++) {
+
+            if (val == CompanyInsuranceList[i].value) {
+                $('#mcid').val(CompanyInsuranceList[i].MCID);
+                break;
+            }
+        }
+        if (insCode == 'DDD') {
+            $('#awavierLi').hide(); // xxx
+       //    $('#awavierLi').show();  // xxx
+            $('#divAssistId').show();
+            $('#divInsuredId').hide();
+            $('#divPGNum').hide();
+            $('#divRelation').hide();
+            $('#aCPT').html('Services');
+            $('#thCPT').html('HCPC');
+            $('.modifierCell').hide();
+            $('#insPrioritySelect').val(3);
+            $("#priorityDiv").hide();
+
+        }
+        else {
+            $('#aCPT').html('Services CPT');
+            $('#awavierLi').show();  // xxx
+         //   $('#awavierLi').hide();  // xxx
+            $('#divAssistId').hide();
+            $('#divInsuredId').show();
+            $('#divPGNum').show();
+            $('#divRelation').show();
+            $('#thCPT').html('CPT Code');
+            $('.modifierCell').show();
+            $("#priorityDiv").show();
+            $('#insPrioritySelect').val(1);
+
+        }
+        visibilityWaiverTab();
+    })
+    $('.aTabs').click(function (e) {
+        var activeEle = $('#divTabsLink  .active');
+        var activeStep = $(activeEle).data('step');
+        var step = $(this).data('step');
+        passedSteps.push(activeStep);
+        $("#divTabsContent div").removeClass("show active");
+        var tabFor = $(this).data('tabfor');
+        $('#divTabsContent #' + tabFor).addClass('show active');
+        footerButtonVisibility(step);
+
+
+    });
+    //$("#companySelect").trigger("change");
+
+    if ($("#companySelect option:selected").text() !== "DDD") {
+        $('.txtUnits').each(function () { $(this).hide(); });
+        $('.dropDownUnits').each(function () { $(this).show(); });
+        $('#divAssistId').hide();
+        $('#divInsuredId').show();
+        $('#divPGNum').show();
+        $('#divRelation').show();
+        $('#aCPT').html('Services CPT');
+        $('#thCPT').html('CPT Code <span onclick="openCPTCodeUpdateModal()" style="cursor: pointer;"><i class="fa fa-plus-square"></i></span>');
+        $('.modifierCell').show();
+        $('#divClientAuths').hide();
+        $('#divClientServices').show();
+
+        $('#aPreAuthLi').show();
+       // $('#awaiverLi').hide();//xxx
+        $('#awaiverLi').show(); //xxx
+    }
+    else {
+        $('.txtUnits').each(function () { $(this).show(); });
+        $('.dropDownUnits').each(function () { $(this).hide(); });
+
+        $('#thCPT').html('HCPC');
+        $('.modifierCell').hide();
+        $('#aCPT').html('Services');
+        $('#divAssistId').show();
+        $('#divInsuredId').hide();
+        $('#divPGNum').hide();
+
+        $('#divRelation').hide();
+        $('#divClientAuths').show();
+        $('#divClientServices').hide();
+
+       $('#aPreAuthLi').hide();
+       //  $('#awaiverLi').show(); //xxx
+        $('#awaiverLi').hide(); //xxx
+    }
+
+    $('#waiver').hide();
+    $('#endDateDiv').show();
+
+
+    addScrollToMultiselect()
+    addScrollToCPTS();
+
+        if (PolicyWaivers != null && PolicyWaivers !='')
+        bindWaiverTable(true, PolicyWaivers);
+
+    if (PreAuths != '')
+        bindPreAuthTable(true, PreAuths);
+
+        var codesData = transformDataForMultiSelect(codesMaster);
+
+    $("#tblClientAuths tbody tr").each(function (i) {
+/*
+        var currentServiceId = $(this).data('data-client-auth-id');
+        var bindCodeMaster = true;
+        if (serviceCPTs) {
+            var svc = serviceCPTs.filter(function (obj) {
+                return (obj.ClientServiceId === currentServiceId);
+            });
+
+            if (svc && svc[0] && svc[0].ClientServiceId === currentServiceId) {
+                bindCodeMaster = false;
+                var service = svc[0];
+                var codesData2 = transformDataForMultiSelect(service.DiagCodes);
+                $(this).find("#dddCodeDD").bsMultiSelect({
+                    options: codesData2,
+                    getDisabled: () => { },
+                    getIsValid: () => { },
+                    getIsInvalid: () => { }
+                });
+            }
+        }
+
+        if (bindCodeMaster) {
+            var codesData = transformDataForMultiSelect(codesMaster);
+            $(this).find("#dddCodeDD").bsMultiSelect({
+                options: codesData,
+                getDisabled: () => { },
+                getIsValid: () => { },
+                getIsInvalid: () => { }
+            });
+        }
+
+  */
+  });
+
+    $("#tblClientServices tbody tr").each(function (i) {
+
+        var currentServiceId = $(this).data('client-service-id');
+
+        var bindCodeMaster = true;
+        if (serviceCPTs) {
+            var svc = serviceCPTs.filter(function (obj) {
+                return (obj.ClientServiceId === currentServiceId);
+            });
+
+            if (svc && svc[0] && svc[0].ClientServiceId === currentServiceId) {
+                bindCodeMaster = false;
+                var service = svc[0];
+                $(this).find('#ddlCPTCode').val(service.CPTCode.trim());
+                $(this).find('#txtModifier1').val(service.Mod1);
+                $(this).find('#txtModifier2').val(service.Mod2);
+                $(this).find('#txtModifier3').val(service.Mod3);
+
+                $(this).find('#dropDownUnits').val(service.Units);
+                var codesData2 = transformDataForMultiSelect(service.DiagCodes);
+                $(this).find("#dCodeDD").bsMultiSelect({
+                    options: codesData2,
+                    getDisabled: () => { },
+                    getIsValid: () => { },
+                    getIsInvalid: () => { }
+                });
+            }
+        }
+
+        if (bindCodeMaster) {
+            var codesData = transformDataForMultiSelect(codesMaster);
+            $(this).find("#dCodeDD").bsMultiSelect({
+                options: codesData,
+                getDisabled: () => { },
+                getIsValid: () => { },
+                getIsInvalid: () => { }
+            });
+        }
+    });
+    addScrollToMultiselect();
+    allowAlphaNumericOnly();
+
+     function nextPrev(direction) {
+
+        var activeEle = $('#divTabsLink  .active');
+        var activeStep = $(activeEle).data('step');
+        passedSteps.push(activeStep);
+        var nextStep = direction == -1 ? activeStep - 1 : activeStep + 1;
+        showTab(nextStep);
+    }
+
+    function showTab(step) {
+        footerButtonVisibility(step);
+
+        var nextTab = $('#divTabsLink').find("a[data-step='" + step + "']");
+        var tabToShow = $(nextTab).data('tabfor');
+
+        setTimeout(function () {
+            $('#divTabsLink').find("a").removeClass('show active')
+            $(nextTab).addClass("show active");
+        }, 800);
+
+        $("#divTabsContent div").removeClass("show active");
+        $('#divTabsContent #' + tabToShow).addClass('show active');
+    }
+
+    function isFormValidated(step) {
+        if (step == 1) {
+            if ($('#firstName').val() == '') {
+                Alert('No First Name is entered');
+                $('#firstName').focus();
+                return false;
+            }
+            else if ($('#lastName').val() == '') {
+                Alert('No Last Name is entered');
+                return false;
+            }
+            else if ($('#addressLine1').val() == '') {
+                Alert('No Address Line1 is entered');
+                return false;
+            }
+            else if ($('#genderSelect').val() === '') {
+                Alert('No Gender is selected');
+                return false;
+            }
+            else if ($('#city').val() == '') {
+                Alert('No City is entered');
+                return false;
+            }
+            else if ($('#stateSelect :selected').val() == '') {
+                Alert('No State is entered');
+                return false;
+            }
+            else if ($('#postalCode').val() == '') {
+                Alert('No Postal Code is entered');
+                return false;
+            }
+            else if ($('#idob').val() == '') {
+                Alert('No Insurance DOB is entered');
+                return false;
+            }
+
+            else {
+                return true
+            }
+        }
+        else if (step == 2) {
+            if ($("#companySelect option:selected").text() != "DDD") {
+                if ($('#insuredIdNo').val() == '') {
+                    Alert('No Insured ID No is entered');
+                    return false;
+                }
+                /*
+                else if ($('#policyGroupNumber').val() == '') {
+                    Alert('No Policy Group Number is entered');
+                    return false;
+                }
+                */
+            }
+
+            if ($('#insPrioritySelect :selected').val() == '') {
+                Alert('No Insurance Priority is selected');
+                return false;
+            }
+
+            if ($('#companySelect').text() == '') {
+                Alert('No Company is selected');
+                return false;
+            }
+
+            else if ($('#postalCode').val() == '') {
+                Alert('No Postal Code is entered');
+                return false;
+            }
+            else if ($('#atcRelId').val() === '') {
+                Alert('No RelationShip is selected');
+                return false;
+            }
+            else if ($('#startDate').val() == '') {
+                Alert('No Approved From Date is entered');
+                return false;
+            }
+            else if ($("#endDateDiv").is(":visible")) {
+                if ($('#endDate').val() == '') {
+                    Alert('No Approved To Date is entered');
+                    return false;
+                }
+            }
+            else {
+                visibilityWaiverTab()
+                return true
+            }
+        } else if (step == 3) {
+            let cptFields = $('select[name=CPTCode]');
+
+            if (cptFields && cptFields.length) {
+                let bAllSelected = true;
+                $.each(cptFields, function (idx, val) {
+                    if ($(val).val() == "") {
+                        bAllSelected = false;
+                    }
+                });
+                
+                if (!bAllSelected) {
+                    Alert("Select a CPT Code for each service");
+                    return false;
+                }
+                
+                
+                if ($('#divClientServices').css('display') == 'block'){
+                    let missingDiagCode = false;
+                    //check each service if there is at least 1 diagcode
+                    $('#divClientServices').find('.dCodeDDCL').each(function (){
+                        let diagCodeCount = 0;
+                        // iterate through all the li inside the first ul
+                        $(this).find('ul:first-child').find('li').each(function(){
+                            if ($(this).hasClass('badge')) diagCodeCount++;
+                        });
+                        if (diagCodeCount == 0) {
+                            missingDiagCode = true;
+                        }
+                    })
+                    if (missingDiagCode) {
+                        Alert("Please select a diagnosis code for each service")
+                        return false;
+                    }   
+                }
+            }
+        }
+        return true;
+    }
+
+        function footerButtonVisibility(nextStep) {
+        if (nextStep == 1) {
+            $('#btnsave').hide();
+            $('#nextBtn').show();
+            $('#prevBtn').hide();
+        }
+        else if (nextStep == 2) {
+            $('#btnsave').hide();
+            $('#nextBtn').show();
+            $('#prevBtn').show();
+        }
+
+        else if (nextStep == 3) {
+            if ($("#companySelect option:selected").text() == "DDD") {
+                $('#btnsave').show();
+                $('#nextBtn').hide();
+            }
+            else {
+                $('#btnsave').hide();
+                $('#nextBtn').show();
+            }
+            $('#prevBtn').show();
+        }
+        else if (nextStep == 4) {
+            $('#btnsave').hide();
+            $('#nextBtn').show();
+            $('#prevBtn').show();
+        }
+        else if (nextStep == 5) {
+            $('#btnsave').show();
+            $('#nextBtn').hide();
+            $('#prevBtn').show();
+        }
+    }
+
+    function managePolicy() {
+
+        var insCompanyId = $('#companySelect :selected').val();
+        var cptRates = [];
+        var preAuthDataToSend = preAuthData
+        var waiverDataToSend = waiverData;
+
+        var isDDD = 0;
+        if (insCompanyId == '3010') {
+            isDDD = 1;
+        }
+        if (isDDD) {
+            insuredIdNo = $('#txtAssistId').val();
+
+        }
+        else {
+            $("#tblClientServices tbody tr").each(function () {
+
+                // var units = $(this).find("#dropDownUnits option:selected").text();
+                var units = $(this).find("#dropDownUnits option:selected").val();
+                
+                var cptCode = $(this).find("#ddlCPTCode").val();
+                var mod1 = $(this).find("#txtModifier1").val();
+                var mod2 = $(this).find("#txtModifier2").val();
+                var mod3 = $(this).find("#txtModifier3").val();
+
+                if (cptCode)
+                    cptCode = cptCode.trim().length > 0 ? cptCode : null;
+                var diagCodes = [];
+                var root = $(this).find('.dashboardcode-bsmultiselect ul:nth-child(2)');
+                $(root).find('li').each(function () {
+                    var mainEle = $(this).find('div.custom-checkbox');
+                    if ($(mainEle).find('input[type="checkbox"]').prop('checked') == true) {
+                        var code = $(mainEle).find('label').data('value');
+                        diagCodes.push($.trim(code));
+                    }
+                })
+                if (cptCode || mod1 || mod2 || mod3 || diagCodes.length > 0 || units) {
+                    cptRates.push({
+                        'ClientServiceId': $(this).data('client-service-id'),
+                        'CPTCode': cptCode,
+                        'Mod1': mod1,
+                        'Mod2': mod2,
+                        'Mod3': mod3,
+                        'Units': units,
+                        'DiagnosisCodes': diagCodes.length > 0 ? diagCodes : null
+                    });
+                }
+            });
+            insuredIdNo = $('#insuredIdNo').val();//ZZZZ
+
+        }
+
+        var Data = {
+            'companyId': insCompanyId,
+            'phone': $('#phone').val(),
+            'firstName': $('#firstName').val(),
+            'lastName': $('#lastName').val(),
+            'addressLine1': $('#addressLine1').val(),
+            'addressLine2': $('#addressLine2').val(),
+
+            'genderId': $('#genderSelect :selected').val(),
+            'city': $('#city').val(),
+            'dob': $('#idob').val(),
+            'state': $('#stateSelect :selected').val(),
+            'insuredIdNo': insuredIdNo,
+            'postalCode': $('#postalCode').val(),
+            'mcid': $('#mcid').val(),
+            'policyGroupNumber': $('#policyGroupNumber').val(),
+
+            'insRelId': $('#divPolicyInfo #atcRelId :selected').val(),
+            'InsurancePriorityID': $('#insPrioritySelect').val(),
+            'startDate': $('#startDate').val(),
+            'endDate': $('#endDate').val(),
+            'insurancePolicyID': $('#insurancePolicyID').val(),
+            'clientId': $('#CLSVID').val(),
+            'clientservicecptrates': cptRates,
+
+            'Policywaivers': waiverDataToSend,
+            'PreAuths': preAuthDataToSend,
+            'PolicyList': NewPolicyList
+
+        };
+        waitOn();
+        $.ajax({
+            type: 'POST',
+            url: '/Clients/ManagePolicy',
+            data: JSON.stringify(Data),
+            contentType: 'application/json; charset=utf-8',
+            headers: headers,
+            dataType: 'html',
+            success: function (res) {
+                $('#insurance').empty().html(res);
+                $('#actionModal').modal('hide');
+                waitOff();
+            },
+            error: ajaxError
+        });
+    }
+
+    function visibilityWaiverTab() {
+        var insCode = $('#companySelect :selected').data('for');
+        if (insCode == 'DDD') {
+          //  $('#awaiverLi').show(); //xxx
+            $('#awaiverLi').hide(); //xxx
+            $('#aPreAuthLi').hide();
+            $('#divAssistId').show();
+            $('#divInsuredId').hide();
+            $('#divPGNum').hide();
+            $('#divRelation').hide();
+
+            $('#aCPT').html('Services');
+            $('#thCPT').html('HCPC');
+            $('.modifierCell').hide();
+            $('#divClientAuths').show();
+            $('#divClientServices').hide();
+            $('.txtUnits').each(function () { $(this).show(); });
+            $('.dropDownUnits').each(function () { $(this).hide(); });
+        }
+        else {
+            $('#aPreAuthLi').show();
+            //$('#awaiverLi').hide() //xxx;
+            $('#awaiverLi').show() //xxx;
+            $('#divAssistId').hide();
+            $('#divInsuredId').show();
+            $('#divPGNum').show();
+            $('#divRelation').show();
+            $('#aCPT').html('Services CPT');
+            $('#thCPT').html('CPT Code <span onclick="openCPTCodeUpdateModal()" style="cursor: pointer;"><i class="fa fa-plus-square"></i></span>');
+            $('.modifierCell').show();
+            $('#divClientAuths').hide();
+            $('#divClientServices').show();
+            $('.txtUnits').each(function () { $(this).hide(); });
+            $('.dropDownUnits').each(function () { $(this).show(); });
+        }
+    }
+
+        function validatePolicyDates() {
+            if (!isFormValidated(1)) {
+                showTab(1);
+                return;
+            }
+            if (!isFormValidated(2)) {
+                showTab(2);
+                return;
+            }
+            if (!isFormValidated(3)) {
+                showTab(3);
+                return;
+            }
+            if ($('#companySelect :selected').val() != '3010') {
+
+
+            var thisInsId = parseInt($('#insurancePolicyID').val());
+            var thisInsPriorityId = parseInt($('#insPrioritySelect').val());
+
+            var PolicyList = [];
+            NewPolicyList = [];
+            var primaryPolicyCount = 0;
+            var secondaryPolicyIndex = -1;
+            var secondaryPolicyCount = 0;
+            var tertiaryPolicyIndex = -1;
+            var tertiaryPolicyCount = 0;
+
+            var index = 0;
+
+            // now add new item here so it will have priority
+            var _s = $('#tabInsured #startDate').val().split('-')
+            var _e = $('#tabInsured #endDate').val().split('-')
+            var InsEnd;
+            if (_e.length == 3)
+                InsEnd = new Date(_e[0], parseInt(_e[1]) - 1, _e[2])
+            var Data = {
+                'InsId': thisInsId,
+                'InsName': $('#companySelect :selected').text(),
+                'InsPriorityId': thisInsPriorityId,
+                'InsStart': new Date(_s[0], parseInt(_s[1]) - 1, _s[2]),
+                'InsEnd': InsEnd,
+                'tgt': true
+            };
+            PolicyList.push(Data);
+            if (thisInsPriorityId === 1) {
+                primaryPolicyCount++;
+                primaryPolicyIndex = index;
+            }
+            else if (thisInsPriorityId === 2) {
+                secondaryPolicyCount++;
+                secondaryPolicyIndex = index;
+            }
+            else if (thisInsPriorityId === 3) {
+                tertiaryPolicyCount++;
+                tertiaryPolicyIndex = index;
+            }
+            $("#insuranceTable tbody tr").each(function (i) {
+                if (thisInsId !== parseInt($(this).find('#ItemInsuranceId').val()) && $(this).find('#ItemInsuranceExpired').val() !== '1') {
+                    _s = $(this).find('#ItemInsuranceStart').text().split('/')
+                    _e = $(this).find('#ItemInsuranceEnd').text().split('/')
+
+                    var Data = {
+                        'InsId': parseInt($(this).find('#ItemInsuranceId').val()),
+                        'InsName': $(this).find('#spnCompanyName').text(),
+                        'InsPriorityId': parseInt($(this).find('#ItemInsurancePriorityId').val()),
+                        'InsStart': new Date(_s[2], parseInt(_s[0]) - 1, _s[1]),
+                        'InsEnd': new Date(_e[2], parseInt(_e[0]) - 1, _e[1]),
+                        'tgt': false
+                    };
+                    if (Data.InsPriorityId === 1) {
+                        primaryPolicyCount++;
+                    }
+                    else if (Data.InsPriorityId == 2) {
+                        secondaryPolicyCount++;
+                        secondaryPolicyIndex = index;
+                    }
+                    else {
+                        tertiaryPolicyCount++;
+                        tertiaryPolicyIndex = index;
+                    }
+                    PolicyList.push(Data);
+                    index++;
+                }
+            });
+
+            if (primaryPolicyCount === 0) {
+
+                var secondaryPolicyAdded = false;
+                // we need to assign a primary policy
+                if (secondaryPolicyCount !== 0) {
+                    PolicyList[secondaryPolicyIndex].InsPriorityId = 1;
+                    if (PolicyList[secondaryPolicyIndex].tgt)
+                        $(this).find('#ItemInsurancePriorityId').val(1)
+                    NewPolicyList.push(PolicyList[secondaryPolicyIndex])
+                    PolicyList.splice(secondaryPolicyIndex, 1);
+                    if (secondaryPolicyCount == 2) {
+                        newPolicyIdx = NewPolicyList.length - 1;
+                        for (var i = 0; i < PolicyList.length; i++) {
+                            if (PolicyList[i].InsPriorityId === 2) {
+                                if ((PolicyList[i].InsStart < NewPolicyList[newPolicyIdx].InsStart || PolicyList[i].InsEnd < NewPolicyList[newPolicyIdx].InsStart) || (PolicyList[i].InsStart > NewPolicyList[newPolicyIdx].InsEnd || PolicyList[i].InsEnd > NewPolicyList[newPolicyIdx].InsEnd)) {
+                                    // promote the policy
+                                    PolicyList[i].InsPriorityId = 1;
+                                    if (PolicyList[i].tgt)
+                                        $(this).find('#ItemInsurancePriorityId').val(1)
+                                    NewPolicyList.push(PolicyList[i])
+                                    PolicyList.splice(i, 1);
+                                }
+                                else {
+                                    NewPolicyList.push(PolicyList[i])
+                                    PolicyList.splice(i, 1);
+                                    secondaryPolicyAdded = true;
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (tertiaryPolicyCount !== 0) {
+                    PolicyList[tertiaryPolicyIndex].InsPriorityId = 1;
+                    if (PolicyList[tertiaryPolicyIndex].tgt)
+                        $(this).find('#ItemInsurancePriorityId').val(1)
+                    NewPolicyList.push(PolicyList[tertiaryPolicyIndex])
+                    PolicyList.splice(tertiaryPolicyIndex, 1);
+                }
+                else if (PolicyList.length != 0) {
+                    PolicyList[0].InsPriorityId = 1;
+                    NewPolicyList.push(PolicyList[0])
+                    PolicyList.splice(0, 1);
+                }
+                if (!secondaryPolicyAdded) {
+                    for (var i = 0; i < PolicyList.length; i++) {
+                        if (PolicyList[i].InsPriorityId === 2) {
+                            NewPolicyList.push(PolicyList[2])
+                            secondaryPolicyAdded = true;
+                        }
+                    }
+                    if (!secondaryPolicyAdded) {
+                        if (PolicyList.length > 0) {
+                            PolicyList[0].InsPriorityId = 2
+                            if (PolicyList[0].tgt)
+                                $(this).find('#ItemInsurancePriorityId').val(2)
+                            NewPolicyList.push(PolicyList[0])
+                            PolicyList.splice(0, 1);
+                        }
+                    }
+
+                }
+                if (PolicyList.length !== 0) {
+                    for (var i = 0; i < PolicyList.length; i++) {
+                        NewPolicyList.push(PolicyList[i])
+                    }
+                    PolicyList.splice(i, PolicyList.length);
+                }
+
+            }
+            else {
+                var secondaryPolicyAdded = false;
+                for (var i = 0; i < PolicyList.length; i++) {
+                    if (PolicyList[i].InsPriorityId === 1) {
+                        NewPolicyList.push(PolicyList[i])
+                        PolicyList.splice(i, 1);
+                        break;
+                    }
+                }
+
+
+                // check for another primary
+                if (primaryPolicyCount === 2) {
+                    for (var i = 0; i < PolicyList.length; i++) {
+
+                        if (PolicyList[i].InsPriorityId === 1) {
+                            if ((PolicyList[i].InsStart < NewPolicyList[0].InsStart && PolicyList[i].InsEnd < NewPolicyList[0].InsStart) ||
+                                (PolicyList[i].InsStart > NewPolicyList[0].InsEnd && PolicyList[i].InsEnd > NewPolicyList[0].InsEnd)) {
+                                NewPolicyList.push(PolicyList[i])
+                                PolicyList.splice(i, 1);
+                            }
+
+                            else {
+                                PolicyList[i].InsPriorityId = 2;
+                                if (PolicyList[i].tgt)
+                                    $(this).find('#ItemInsurancePriorityId').val(1)
+                                NewPolicyList.push(PolicyList[i])
+                                PolicyList.splice(i, 1);
+                                secondaryPolicyAdded = true;
+                            }
+                            break;
+                        }
+                    }
+                }
+
+                if (!secondaryPolicyAdded) {
+
+                    for (var i = 0; i < PolicyList.length; i++) {
+                        if (PolicyList[i].InsPriorityId === 2) {
+                            NewPolicyList.push(PolicyList[i])
+                            PolicyList.splice(i, 1);
+                            secondaryPolicyAdded = true;
+                            break;
+                        }
+                    }
+                    if (!secondaryPolicyAdded && PolicyList.length !== 0) {
+                        PolicyList[0].InsPriorityId = 2;
+                        if (PolicyList[0].tgt)
+                            $(this).find('#ItemInsurancePriorityId').val(1)
+                        NewPolicyList.push(PolicyList[0])
+                        PolicyList.splice(0, 1);
+                    }
+                }
+            }
+            if (PolicyList.length !== 0) {
+                for (var i = 0; i < PolicyList.length; i++) {
+                    PolicyList[i].InsPriorityId = 3;
+                    if (PolicyList[i].tgt)
+                        $(this).find('#ItemInsurancePriorityId').val(3)
+                    NewPolicyList.push(PolicyList[i])
+                    NewPolicyList.push(PolicyList[i])
+                }
+                PolicyList.splice(0, PolicyList.length);
+            }
+        }
+        managePolicy();
+    }
+
+    function addScrollToCPTS() {
+        $('#tabCPT').css("overflow-y", "scroll");
+        $('#tabCPT').css("height", "400");
+        $('#tabCPT .form-control ').css("overflow-y", "scroll");
+        $('#tabCPT .form-control ').css("max-height", "72");
+        $('#tabCPT .form-control ').css("height", "72");
+    }
+
+    function visibilityWaiverDiv(show) {
+        if (show) {
+            $('#divWaiver').show();
+            $('#WaiverTableDiv').hide();
+            $('#addDDDWaiver').hide();
+        }
+        else {
+            $('#divWaiver').hide();
+            $('#WaiverTableDiv').show();
+            $('#addDDDWaiver').show();
+        }
+     }
+
+    function visibilityPreAuthDiv(show) {
+        if (show) {
+            $('#divPreAuth').show();
+            $('#PreAuthTableDiv').hide();
+            $('#addInsPreAuth').hide();
+        }
+        else {
+            $('#divPreAuth').hide();
+            $('#PreAuthTableDiv').show();
+            $('#addInsPreAuth').show();
+        }
+    }
+
+    function addScrollToMultiselect() {
+        $('.dCodeDDCL .dropdown-menu ').css("overflow-y", "scroll");
+        $('.dCodeDDCL .dropdown-menu ').css("height", "168");
+        $('.dCodeDDCL .form-control ').css("overflow-y", "scroll");
+        $('.dCodeDDCL .form-control ').css("max-height", "72");
+        $('.dCodeDDCL .form-control ').css("height", "72");
+    }
+
+    function addNewPreAuth() {
+        $('#_startDatePw').val('');
+        $('#_endDatePw').val('');
+        $('#_Units').val('');
+        $('#PreAuthorizationId').val('0');
+        $('#preAuthKey').val('');
+        $('#SavePreAuth').text('Add New');
+        visibilityPreAuthDiv(true)
+    }
+       
+
+     function savePreAuth() {
+        var _sPS = $('#_startDatePw').val().split('-');
+        var _sPE = $('#_endDatePw').val().split('-');
+        var _startDatePw = '';
+         var _endDatePw = '';
+         if (!$('#NotApplicable').prop('checked')  && ( $('#_Units').val() == '' || isNaN($('#_Units').val() )  )) {
+            Alert('Pre Auth requires units');
+            return;
+        }
+        if (_sPS.length === 3)
+            _startDatePw = _sPS[1] + '/' + _sPS[2] + '/' + _sPS[0];
+        else {
+            if (!$('#NotApplicable').prop('checked')) {
+                Alert('Pre Auth requires a start date');
+                return;
+            }
+        }
+        if (_sPE.length === 3)
+            _endDatePw = _sPE[1] + '/' + _sPE[2] + '/' + _sPE[0];
+        if ($('#preAuthKey').val() == '') {
+            // new pre Auth
+            var Data = {
+                'StartDate': _startDatePw,
+                'EndDate': _endDatePw,
+                'Units': $('#_Units').val(),
+                'ServiceName': $('#_Selectid :selected').text(),
+                'ServiceId': $('#_Selectid :selected').val(),
+                'PreAuthorizationId': $('#PreAuthorizationId').val(),
+                'NotApplicable': $('#NotApplicable').prop('checked')
+
+            }
+            if (preAuthData === null)
+                preAuthData = [];
+            preAuthData.push(Data);
+        }
+        else {
+            var result = preAuthData[parseInt($('#preAuthKey').val())];
+            result.StartDate = _startDatePw;
+            result.EndDate = _endDatePw;
+            result.Units = $('#_Units').val();
+            result.ServiceId = $('#_Selectid :selected').val();
+            result.ServiceName = $('#_Selectid :selected').text();
+            result.PreAuthorizationId = $('#PreAuthorizationId').val();
+            result.NotApplicable = $('#NotApplicable').prop('checked')
+        }
+        $('#InsPreAuthTable tbody').empty();
+        bindPreAuthTable();
+    }
+ 
+    function bindPreAuthTable(isAllow = false, editPreAuth) {
+        addScrollToPreAuthTable();
+        $('#InsPreAuthTable tbody').empty();
+        if (isAllow) {
+            preAuthData = editPreAuth;
+        }
+        $.each(preAuthData, function (key, value) {
+            $("#InsPreAuthTable > tbody").append("<tr id=tr_" + key + "><td ><i class='fa fa-edit faBtn' onClick='editPreAuth(" + key + ")'></i><i class='fa fa-trash faBtn' style='color:red' onClick='deletePreAuth(" + key + ")'></td><td style='display:none;'>" + value.ServiceId + "</td><td>" + value.ServiceName + "</td><td>" + value.StartDate + "</td><td>" + value.EndDate + "</td><td>" + value.Units + "</td><td>" + (value.NotApplicable? "<i class='fa fa-check' style='color:green'></i>" : "") + "</td><td style='display:none'>" + value.NotApplicable + "</td><td style='display:none;'>" + value.PolicyWaiverId + "</td></tr>");
+        });
+        $('#divPreAuth').hide();
+        $('#PreAuthTableDiv').show();
+        $('#addInsPreAuth').show();
+    }
+
+    function deletePreAuth(id) {
+        preAuthData.splice(id, 1);
+        bindPreAuthTable();
+    }
+
+    function editPreAuth(i) {
+        var result = preAuthData[i];
+        $('#SavePreAuth').text('Save');
+        $('#preAuthKey').val(i);
+        var _sPS = result.StartDate.split('/');
+        var _sPE = result.EndDate.split('/');
+        var StartDate;
+        var EndDate;
+        if (_sPS.length === 3)
+            StartDate = _sPS[2] + '-' + _sPS[0] + '-' + _sPS[1];
+        if (_sPE.length === 3)
+            EndDate = _sPE[2] + '-' + _sPE[0] + '-' + _sPE[1];
+        $('#_startDatePw').val(StartDate);
+            $('#_endDatePw').val(EndDate);
+            $('#_Units').val(result.Units);
+            $('#_Selectid').val(result.ServiceId);
+            $('#PreAuthorizationId').val(result.PreAuthorizationId);
+            $('#NotApplicable').prop('checked', result.NotApplicable);
+        $('#divPreAuth').show();
+        $('#PreAuthTableDiv').hide();
+        $('#addInsPreAuth').hide();
+
+    }
+    function addScrollToPreAuthTable() {
+        $('#PreAuthTableDiv').css("overflow-y", "scroll");
+        $('#PreAuthTableDiv').css("height", "390");
+        $('#PreAuthTableDiv .form-control ').css("overflow-y", "scroll");
+        $('#PreAuthTableDiv .form-control ').css("max-height", "72");
+        $('#PreAuthTableDiv .form-control ').css("height", "72");
+    }
+
+    function addNewWaiver() {
+        $('#_startDateddd').val('');
+        $('#_endDateddd').val('');
+        $('#_UnitTxtbx').val('');
+
+        $('#PolicyWaiverId').val('0');
+        $('#waiverKey').val('');
+        $('#SaveWaiver').text('Add New');
+        visibilityWaiverDiv(true);
+    }
+
+    function saveWaiver() {
+
+        var _sPS = $('#_startDateddd').val().split('-');
+        var _sPE = $('#_endDateddd').val().split('-')
+        var _startDateddd = '';
+        var _endDateddd = '';
+        if (_sPS.length === 3)
+            _startDateddd = _sPS[1] + '/' + _sPS[2] + '/' + _sPS[0];
+        if (_sPE.length === 3)
+            _endDateddd = _sPE[1] + '/' + _sPE[2] + '/' + _sPE[0];
+        if ($('#waiverKey').val() == '') {
+            // new waiver
+            var Data = {
+                'StartDate': _startDateddd,
+                'EndDate': _endDateddd,
+                'Units': $('#_UnitTxtbx').val(),
+                'ServiceName': $('#_SelectidDDD :selected').text(),
+                'ServiceId': $('#_SelectidDDD :selected').val(),
+                'PolicyWaiverId' : 0
+            };
+            waiverData.push(Data);
+        }
+        else {
+            // existing waiver
+            var result = waiverData[parseInt($('#waiverKey').val())];
+            result.StartDate = _startDateddd;
+            result.EndDate = _endDateddd;
+            result.Units = $('#_UnitTxtbx').val();
+            result.ServiceId = $('#_SelectidDDD :selected').val();
+            result.ServiceName = $('#_SelectidDDD :selected').text();
+            result.PolicyWaiverId = $('#PolicyWaiverId').val();
+        }
+        $('#DDDWaiverTable tbody').empty();
+        bindWaiverTable();
+    }
+
+    function bindWaiverTable(isAllow = false, editWaiver) {
+        addScrollToWaiverTable();
+        $('#DDDWaiverTable tbody').empty();
+        if (isAllow) {
+            waiverData = editWaiver;
+        }
+        $.each(waiverData, function (key, value) {
+            $("#DDDWaiverTable > tbody").append("<tr id=tr_" + key + "><td ><i class='fa fa-edit faBtn' onClick='editWaiver(" + key + ")'></i><i class='fa fa-trash faBtn' style='color:red' onClick='deleteWaiver("  + key + ")'></td><td style='display:none;'>" + value.ServiceId + "</td><td>" + value.ServiceName + "</td><td>" + value.StartDate + "</td><td>" + value.EndDate + "</td><td>" + value.Units + "</td><td style='display:none;'>" + value.PolicyWaiverId + "</td></tr>");
+        });
+        $('#divWaiver').hide();
+        $('#WaiverTableDiv').show();
+        $('#addDDDWaiver').show();
+    }
+
+    function deleteWaiver(id) {
+        waiverData.splice(id, 1);
+        $('#DDDWaiverTable tbody').empty();
+        bindWaiverTable();
+    }
+
+    function editWaiver(i) {
+        var result = waiverData[i];
+        $('#SaveWaiver').text('Save');
+        $('#waiverKey').val(i);
+        var StartDate;
+        var EndDate;
+        var _sPS = result.StartDate.split('/');
+        var _sPE = result.EndDate.split('/')
+        if (_sPS.length === 3)
+            StartDate = _sPS[2] + '-' + _sPS[0] + '-' + _sPS[1]
+        if (_sPE.length === 3)
+            EndDate = _sPE[2] + '-' + _sPE[0] + '-' + _sPE[1]
+        $('#_startDateddd').val(StartDate),
+        $('#_endDateddd').val(EndDate),
+        $('#_UnitTxtbx').val(result.Units),
+         $('#_SelectidDDD').val(result.ServiceId),
+        $('#PolicyWaiverId').val(result.PolicyWaiverId),
+        $('#divWaiver').show();
+        $('#WaiverTableDiv').hide();
+        $('#addDDDWaiver').hide();
+    }
+
+
+
+
+    function addScrollToWaiverTable() {
+        $('#WaiverTableDiv').css("overflow-y", "scroll");
+        $('#WaiverTableDiv').css("height", "390");
+        $('#WaiverTableDiv .form-control ').css("overflow-y", "scroll");
+        $('#WaiverTableDiv .form-control ').css("max-height", "72");
+        $('#WaiverTableDiv .form-control ').css("height", "72");
+    }
+
+    function addCPTCode() {
+        if (ValidateCPTModel()) {
+            var Data = {
+                'Code': $('#txtCptCode').val(),
+                'Name': $('#txtCptName').val()
+            };
+            waitOn();
+            $.ajax({
+                type: 'POST',
+                url: '/clients/UpdateCPTCode',
+                data: JSON.stringify(Data),
+                contentType: 'application/json; charset=utf-8',
+                headers: headers,
+                dataType: 'JSON',
+                success: function (r) {
+                    waitOff();
+                    if (r.length > 0) {
+                        var ddldist = $("[name='CPTCode']");
+                        ddldist.empty();
+                        $.each(r, function (i, item) {
+                            ddldist.append(
+                                $('<option></option>').val(item.Value).html(item.Text)
+                            );
+                        });
+                        clearUpdateCPTModel();
+                        closeCPTCodeUpdateModal();
+                        SuccessAlert('CPT code added successfully.');
+                    }
+                    else
+                        Alert(r.msg);
+                },
+                error: ajaxError
+            });
+        }
+    }
+
+    function openCPTCodeUpdateModal() {
+        $('#dvCPTAddModal').modal('show');
+    }
+
+    function closeCPTCodeUpdateModal() {
+        $('#dvCPTAddModal').modal('hide');
+    }
+
+    function clearUpdateCPTModel() {
+        $("#txtCptCode").val('');
+        $("#txtCptName").val('');
+    }
+
+    function ValidateCPTModel() {
+        if ($("#txtCptCode").val() == '') {
+            Alert('Please enter CPT code');
+            return false;
+        }
+        else if ($("#txtCptName").val() == '') {
+            Alert('Please enter CPT name');
+            return false;
+        }
+        return true;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>

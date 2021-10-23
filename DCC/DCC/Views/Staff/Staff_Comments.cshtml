@@ -1,0 +1,25 @@
+﻿@model DCC.Models.Staff.StaffData
+
+@if (Model.prId != Model.userPrId)
+{
+    <div class="staffComments">
+       <div class="hdr"><i class="fa fa-plus-square faBtn" onclick="openAddStaffCommentModal();"></i>Add Comment</div>
+    <table>
+        @foreach (var item in Model.comments)
+        {
+            <tr class="commentItem"><td>@item.date</td><td>@item.name</td><td class="comment">@item.comment</td></tr>
+        }
+
+    </table>
+    </div>
+    <script>
+        $('#commentWindow').show();
+
+    </script>
+}
+else
+{
+    <script>
+        $('#commentWindow').hide();
+    </script>
+}

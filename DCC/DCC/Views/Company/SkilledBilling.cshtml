@@ -1,0 +1,48 @@
+﻿@model DCC.Models.CompanyInfo
+<div class="col-sm-6 col-md-4 col-lg-4">
+    <div class="card">
+        <div class="card-header" style="font-weight:bold">Skilled Billing Info</div>
+        <div class="card-body">
+            <div style="margin:5px">
+                <div class="form-group">
+                    <label for="NPI">NPI:</label>
+                    <input type="text" id="NPI" class="form-control form-control-sm" value="@Model.NPI" />
+                </div>
+                <div class="form-group">
+                    <label for="ProvAhcccsId">AHCCCS ID:</label>
+                    <input type="text" id="ProvAhcccsId" class="form-control form-control-sm" value="@Model.ProvAhcccsId" />
+                </div>
+
+                <div class="form-group">
+                    <label for="SkilledBillingContact">Billing Contact Name</label>
+                    <input type="text" id="SkilledBillingContact" class="form-control form-control-sm" value="@Model.SkilledBillingContact" />
+                </div>
+                <div class="form-group">
+                    <label for="SkilledBillingAddress">Billing Contact Address</label>
+                    <input type="text" id="SkilledBillingAddress" class="form-control form-control-sm" value="@Model.SkilledBillingAddress" />
+                </div>
+                <div class="form-group">
+                    <label for="SkilledBillingAddress">Billing Contact City</label>
+                    <input type="text" id="SkilledBillingCity" class="form-control form-control-sm" value="@Model.SkilledBillingCity" />
+                </div>
+                <div class="form-group">
+                    <label for="SkilledBillingState">Billing Contact State</label>
+                    <input type="text" id="SkilledBillingState" class="form-control form-control-sm" value="@Model.SkilledBillingState" />
+                </div>
+                <div class="form-group">
+                    <label for="SkilledBillingZip">Billing Contact Zip</label>
+                    <input type="text" id="SkilledBillingZip" class="form-control form-control-sm" value="@Model.SkilledBillingZip" />
+                </div>
+                <div class="form-group">
+                    <label for="SkilledBillingPhone">Billing Contact Phone</label>
+                    <input type="text" id="SkilledBillingPhone" class="form-control form-control-sm" value="@Model.SkilledBillingPhone" />
+                </div>
+                <div class="form-group">
+                    <label for="SkilledBillingEmail">Billing Contact Email</label>
+                    <input type="text" id="SkilledBillingEmail" class="form-control form-control-sm" value="@Model.SkilledBillingEmail" />
+                </div>
+            </div>
+        </div>
+        <div class="card-footer"><button class="btn btn-primary" onclick="updateSkilledBilling();">Update Skilled Billing Info</button></div>
+    </div>
+</div>

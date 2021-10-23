@@ -1,0 +1,69 @@
+﻿@model  DCC.Models.NonSkilledRebillPage
+<style>
+    .rebillTable{
+        background-color:#ffffff;
+    }
+    .rebillTable td{
+        padding:4px;
+        vertical-align:top;
+        border:1px solid #c0c0c0;
+
+    }
+        .rebillTable th {
+            text-align: center;
+        }
+    .rebillAuth {
+        color: blue;
+    }
+</style>
+
+    <h5>Rebill Page  @Model.pg  of @Model.pgCnt</h5>
+    <input type="hidden" id="pageNumber" value="@Model.pg" />
+    <ul class="pagination">
+        @for (var i = 1; i <= Model.pgCnt; i++)
+        {
+            if (i == Model.pg)
+            {
+                <li class="page-item active" onclick="return getRebills(@i);"><a class="page-link" href="#">@i</a></li>
+            }
+            else
+            {
+                <li  class="page-item" onclick="return getRebills(@i);"><a class="page-link" href="#">@i</a></li>
+            }
+        }
+    </ul>
+    <table class="rebillTable">
+        <tr>
+            <th>Date</th>
+            <th>Svc</th>
+            <th>Name</th>
+            <th>Orig. Units</th>
+            <th>Adjust</th>
+            <th>Bill Units</th>
+            <th>Billing Error</th>
+            <th>Status</th>
+        </tr>
+        @{int j = 0;
+            foreach (var item in Model.b)
+            {
+                <tr id="@("rw" + @j)">
+                    <td id="@("d" + @j)">
+                        @item.month  @item.day<br />@item.year
+                        <input id="@("rat" + @j)" type="hidden" value="@item.rat" />
+                        <input id="@("tp" + @j)" type="hidden" value="@item.tbl" />
+                        <input id="@("id" + @j)" type="hidden" value="@item.id" />
+                        <input id="@("chg" + @j)" type="hidden" value="0" />
+                    </td>
+                    <td id="@("s" + @j)">@item.svc<br />@item.loc</td>
+                    <td id="@("n" + @j)">@item.ln<br />@item.fn</td>
+                    <td id="@("u" + @j)">@item.un</td>
+                    <td><input id="@("a" + @j)" type="text" class="form-control" value="@item.ajun" onchange="ajun(@j)" style="width:60px" /></td>
+                    <td id="@("tb" + @j)">@(item.un + item.ajun)</td>
+                    <td><div>@item.er</div><div class="rebillAuth">@item.au</div></td>
+                    <td id="@("st" + @j)">REBILL</td>
+                    <td><button id="@("bu" + @j)" type="button" onclick="chgItem(@j);" class="btn btn-danger">Close</button></td>
+                </tr>
+                j++;
+            }
+        }
+    </table>

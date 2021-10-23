@@ -1,0 +1,120 @@
+﻿@model DCC.Models.ClientPageData
+@{
+    var isFirstPolicy = Model.policies.Any();
+}
+
+<div style="font-size:18px">
+    <div class="clBlockData">
+        @if (Model.userLevel != "Provider" && Model.userLevel != "AsstTherapist" )
+        {
+            <div class="hdr"><i class="fa fa-plus-square faBtn" onclick="openaddPolicyModal(0, '@isFirstPolicy' ?'false' : 'true', true);"></i> Add Policy</div>
+        }
+
+        <div class="ridge">
+            <table id="insuranceTable" border="1">
+                <thead>
+                    <tr>
+                        <th>
+                        </th>
+                        <th>
+                            Company
+                        </th>
+                        <th>
+                            Insured Id
+                        </th>
+                        <th>
+                            Group Id
+                        </th>
+                        <th>
+                            Started On
+                        </th>
+                        <th>
+                            Ended On
+                        </th>
+                        <th>
+                            Tier
+                        </th>
+                        <th>
+                            Has Waivers
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.policies)
+                    {
+                        <tr>
+                            <td>
+                                <input type="hidden" id="ItemInsuranceExpired" value="@(item.Expired || item.Inactive ? 1 : 0)" />
+                                <input type="hidden" id="ItemInsuranceId" value="@item.insurancePolicyID" />
+                                <input type="hidden" id="ItemInsurancePriorityId" value="@item.InsurancePriorityID" />
+                                <i class="fa fa-edit faBtn" onclick="openaddPolicyModal(@item.insurancePolicyID);"></i>
+                                @if (!item.Inactive)
+                                {
+                                    <i class="fa fa-trash faBtn" style="color:red" data-company-name="@item.companyName" onclick="resequencePolicy(@item.insurancePolicyID);"></i>
+                                }
+
+                            </td>
+                            <td>
+                                <span id="spnCompanyName">@item.companyName</span>
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.insuredIdNo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.policyGroupNumber)
+                            </td>
+                            <td id="ItemInsuranceStart">
+                                @Html.DisplayFor(modelItem => item.startDate)
+                            </td>
+                            <td id="ItemInsuranceEnd">
+                                @Html.DisplayFor(modelItem => item.endDate)
+                            </td>
+                            <td>
+                                @if (item.Inactive)
+                                {
+                                <br /><span style="color:red">InActive</span>
+                                }
+                                else if (item.Expired)
+                                {
+                                    <br /><span style="color:red">Expired</span>
+                                }
+
+                                else if (item.InsurancePriorityID == 1)
+                                {
+                                    <span>Primary</span>
+                                }
+                                else if (item.InsurancePriorityID == 2)
+                                {
+                                    <span>Secondary</span>
+                                }
+                                else
+                                {
+                                    <span>Tertiary</span>
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.hasWaivers)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<style>
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        border-color: grey;
+    }
+
+        table th {
+            padding: 3px;
+            background-color: #e0efff;
+            font-weight: bold;
+            font-size: 14px;
+            border: 1px solid #a0a0a0;
+        }
+</style>

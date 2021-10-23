@@ -1,0 +1,45 @@
+﻿@model DCC.Models.Reports.ServiceInfo
+
+
+<table class="regTable">
+    <thead>
+        <tr>
+            <th></th>
+            <th></th>
+            <th style="min-width:150px">Goal Area Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var gA in Model.goalAreas)
+        {
+        <tr id="@("goalArea" + gA.goalAreaId)">
+            <td>
+                <i class="fa fa-trash faBtn red" onclick="openRemoveGoalAreaModal(@gA.goalAreaId);"></i>
+
+            </td>
+            <td>
+                <div>
+                    <input type="hidden" class="goalAreaId" />
+                    <i class="fa fa-edit faBtn" onclick="openGoalAreaModal(@gA.goalAreaId);"></i>
+                </div>
+            </td>
+            <td class="name">@gA.name</td>
+        </tr>
+        }
+
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3">
+                <div class="form-group">
+                    <button class="btn btn-primary" onclick="openGoalAreaModal(0);">Add New Goal Area</button>
+                </div>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+
+
+
+
+

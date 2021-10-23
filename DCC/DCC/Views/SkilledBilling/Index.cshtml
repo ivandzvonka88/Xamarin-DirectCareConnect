@@ -1,0 +1,406 @@
+﻿@model DCC.ViewModelBase
+
+@Html.Partial("MenuHeader", @Model)
+
+
+@Html.Partial("BillingHeader", @Model)
+
+
+
+
+@*<link href="~/Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />*@
+<link href="~/Content/bootstrap-datetimepicker-mod.css" rel="stylesheet" />
+
+<div class="row">
+    <div class="col-md-2 mb10">
+    </div>
+    <div class="col-md-7 col-sm-8 text-right mb10">
+        <button id="btn-batchdenial" class="btn btn-primary">Batch Denial</button>
+        <button id="btn-pendingwaiver" class="btn btn-primary">Pending Waiver</button>
+    </div>
+    <div class="col-md-2 col-sm-4 mb10">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i id="afilter" class="fa fa-filter"></i></span>
+            </div>
+            <select class="form-control"><option>filter 1</option><option>filter 2</option><option>filter 2</option> </select>
+
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 col-lg-3">
+        <div class="nameList">
+            <div class='nameListItem'><a href="#" class="insurance1">Aetna</a></div>
+            <div class='nameListItem'><a href="#" class="insurance1">Humana</a></div>
+            <div class='nameListItem'><a href="#" class="insurance1">Mercy Care</a></div>
+        </div>
+
+    </div>
+    <div class="col-md-8 col-lg-9">
+        <div class="row insurance">
+            <div class="col-lg-12">
+                @*class="collapse expand-btn"*@
+                <div class="insurance" style="height:30px;background-color:#d84765;color:white;font-size:20px;font-weight:bold;margin-bottom:10px;padding-left:10px">
+                    <div class="insurance4" style="cursor:pointer">
+
+                        <a href="#" style="color:white">ClientA </a>
+
+
+
+
+                        <div style="float:right;padding-right:10px;border:0" class="insurance5">
+                            <a href="@Url.Action("ClientInvoice", "SkilledBilling")" title="Edit Invoice">
+                                <i class="fa fa-pencil-square" style="color:red"></i>
+
+                            </a>
+                            <i id="btnClientActivate" class="fa fa-check-square" onclick="checkClaimApproval();"></i>&nbsp;<span id="clientActiveState">Approve All</span>
+                        </div>
+
+
+                    </div>
+
+                </div>
+                <div class="row insurance5">
+                    <div>
+                        <table class="regTable insurance" style="width:1000px">
+
+                            <tr>
+                                <td style="color:blue;font-size:15px;font-weight:bold;margin-bottom:10px;padding-left:10px;width:100px">
+                                    <a href="#" class="expand collapse-btn">10/24/2019</a>
+                                    <a href="#" class="collapse expand-btn">10/24/2019</a>
+
+                                </td>
+
+                                <td class="expand collapse">
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <table border="1" style="color:blue;font-size:10px;font-weight:bold;">
+                                                    <tr>
+                                                        <td style="background-color:dodgerblue">DOS 1/Provider/cpt code</td>
+                                                        <td style="background-color:dodgerblue">Paid Amt <input type="text" value="2" /></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="background-color:lightblue">Amt Billed <input type="text" value="3" /></td>
+                                                        <td style="background-color:lightblue">Coinsurance Amt <input type="text" value="4" /></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="background-color:dodgerblue">Amt Paid <input type="text" value="5" /></td>
+                                                        <td style="background-color:dodgerblue">Download HCFA</td>
+
+                                                    </tr>
+                                                </table>
+
+                                            </td>
+                                            <td>
+                                                <table style="color:blue;font-size:10px;font-weight:bold;">
+                                                    <tr>
+                                                        <td><input type="checkbox" value="Deductible" id="chkDeductibleA" onclick="checkDeductible();" />Deductible</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><input type="checkbox" value="Pending Waiver" id="chkPendWaiverA" />Pending Waiver</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><input type="checkbox" value="Clean Denial" id="chkClaimDenialA" onclick="checkClaimDenial();" />Clean Denial</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><input type="checkbox" value="Prior auth alert" id="chkPriorAuthA" onclick="checkPriorAuth();" />Prior auth alert</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                            <td>
+                                                <table border="1" style="color:blue;font-size:10px;font-weight:bold;">
+                                                    <tr>
+                                                        <td style="background-color:dodgerblue">Policy Number and Group Number1</td>
+                                                        <td style="background-color:dodgerblue">DDD authorization and waiver option two</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="background-color:lightblue">Prior Authorization 3</td>
+                                                        <td style="background-color:lightblue">Documentation 4</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style="background-color:dodgerblue">Client Chart 5</td>
+                                                        <td style="background-color:dodgerblue"><a href="#" onclick="showCommentBox();" style="color:blue">Comment Box</a></td>
+                                                    </tr>
+
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+
+                            </tr>
+
+                            @*<tr id="4" >
+
+
+                                </tr>*@
+
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-12">
+                <div class="insurance" style="height:30px;background-color:#d84765;color:white;font-size:20px;font-weight:bold;margin-bottom:10px;padding-left:10px">
+
+                    <div class="insurance2" style="cursor:pointer">
+                        <span id="clFn"></span> <a href="#" style="text-decoration:none;color:white">ClientB</a>
+                        <div style="float:right;padding-right:10px;border:0" class="insurance3"><i id="btnClientActivate" class="fa fa-check-square" onclick="checkClaimApproval();"></i>&nbsp;<span id="clientActiveState">Approve All</span> </div>
+
+                    </div>
+                </div>
+                <div class="row insurance3">
+                    <div>
+                        <table class="regTable insurance" style="width:1000px">
+
+                            <tr>
+                                <td style="color:blue;font-size:15px;font-weight:bold;margin-bottom:10px;padding-left:10px;width:100px">
+                                    <a href="#" class="expand collapse-btn">10/24/2019</a>
+                                    <a href="#" class="collapse expand-btn">10/24/2019</a>
+
+                                </td>
+
+                                <td class="expand collapse">
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <table border="1" style="color:blue;font-size:10px;font-weight:bold;">
+                                                    <tr>
+                                                        <td style="background-color:dodgerblue">DOS 1/Provider/cpt code</td>
+                                                        <td style="background-color:dodgerblue">Paid Amt <input type="text" value="2" /></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="background-color:lightblue">Amt Billed <input type="text" value="3" /></td>
+                                                        <td style="background-color:lightblue">Coinsurance Amt <input type="text" value="4" /></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="background-color:dodgerblue">Amt Paid <input type="text" value="5" /></td>
+                                                        <td style="background-color:dodgerblue">Download HCFA</td>
+
+                                                    </tr>
+                                                </table>
+
+                                            </td>
+                                            <td>
+                                                <table style="color:blue;font-size:10px;font-weight:bold;">
+                                                    <tr>
+                                                        <td><input type="checkbox" value="Deductible" onclick="checkDeductible();" />Deductible</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><input type="checkbox" value="Pending Waiver" />Pending Waiver</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><input type="checkbox" value="Clean Denial" onclick="checkClaimDenial();" />Clean Denial</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><input type="checkbox" value="Prior auth alert" onclick="checkPriorAuth();" />Prior auth alert</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                            <td>
+                                                <table border="1" style="color:blue;font-size:10px;font-weight:bold;">
+                                                    <tr>
+                                                        <td style="background-color:dodgerblue">Policy Number and Group Number1</td>
+                                                        <td style="background-color:dodgerblue">DDD authorization and waiver option two</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="background-color:lightblue">Prior Authorization 3</td>
+                                                        <td style="background-color:lightblue">Documentation 4</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style="background-color:dodgerblue">Client Chart 5</td>
+                                                        <td style="background-color:dodgerblue"><a href="#" onclick="showCommentBox();">Comment Box</a>  </td>
+                                                    </tr>
+
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </td>
+
+                            </tr>
+
+                            @*<tr id="4" >
+
+
+                                </tr>*@
+
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="modal approveClaimItemModal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-edit"></i> Approve Claims</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="chartId">
+                <p id="claimAppoveMsg"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="approveClaims();">Approve</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal approvedClaimsModal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-edit"></i> Approved Claims</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="chartId">
+                <p id="claimAppovedMsg"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal deniedClaimsModal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-edit"></i> Denied Claims</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="chartId">
+                <p id="claimDeniedMsg"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal priorAuthModal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-edit"></i> Prior Auth Alert</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                Comments:<textarea rows="4" cols="20" id="authComments"></textarea>
+
+                <input type="hidden" id="claimDenialId">
+                <p id="claimDenialMsg"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="priorAuth();">Apply</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal priorAuthDisplayModal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-edit"></i> Prior Auth</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="chartId">
+                <p id="priorAuthMsg"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal deductibleDisplayModal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-edit"></i> Deductible</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="chartId">
+                <p id="deductibleMsg"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal commentModal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-edit"></i> Comment Box</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                Comments:<textarea rows="4" cols="20" id="authComments"></textarea>
+
+                <input type="hidden" id="claimDenialId">
+                <p id="claimDenialMsg"></p>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @*<script type="text/javascript" src="~/Scripts/DCC/SkilledBilling.js"></script>*@
+    <script type="text/javascript" src="~/Scripts/DCC/disciplines.js?v=0.0e"></script>
+    @*<script type="text/javascript" src="~/Scripts/DCC/SkilledBillingAP.js"></script>*@
+
+    s
+    @*@if (HttpContext.Current.IsDebuggingEnabled)
+        {
+            <script type="text/javascript" src="~/Scripts/DCC/SkilledBilling.js"></script>
+        }
+        else
+        {
+            <script type="text/javascript" src="~/Scripts/DCC/SkilledBilling.min.js?v=0.0e"></script>
+
+        }*@
+}
+

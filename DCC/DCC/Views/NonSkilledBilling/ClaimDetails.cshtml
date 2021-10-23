@@ -1,0 +1,643 @@
+﻿@model DCC.Models.Providers.ProviderInit
+
+@{
+    var selrowid = ViewBag.selrowid;
+    int j = 0, k = 0;
+    bool displayWaiver = false;  /*to hide / display link*/
+}
+
+@foreach (var cd in Model.ClientDetailsList)
+{
+
+    j = j + 1; k = 0;
+
+    <div class="row  brdr-btm">
+        <div class="col-sm-2 ddate">
+            <span id="ddate-@selrowid-@j.ToString()" class="date-expand" onclick="expandDetails(this)"><i class="fa fa-minus-square"></i> @cd.dos.ToString("MM/dd/yyyy")</span>
+        </div>
+
+        <div class="col-sm-10 ddate-data padtb15" id="ddata-@selrowid-@j.ToString()">
+            @foreach (var cdi in cd.ClientDetailsInfoList)
+            {
+                k = k + 1;
+                var ob = @Html.Raw(Json.Encode(cdi));
+                <script>
+                    var x_@k= JSON.stringify(@ob);
+                </script>
+
+
+
+                if (@cdi.dddStartDate == null || @cdi.dddEndDate == null || @cdi.dddUnit == null)
+                {
+                    displayWaiver = true;
+                }
+
+                string policyIndex = j + "_" + k + "_" + selrowid;
+
+                <div class="data-wrap">
+                    <div class="ddata-dataX row no-gutters">
+                        <div class="chk-sel">
+                            <div class="custom-control custom-checkbox custom-control-inline">
+                                <input type="checkbox" class="custom-control-input claimSelect" id="chk-sel-@selrowid-@j.ToString()-@k.ToString()" onclick="addClaimsForWaiver('@k','@cdi.claimId',this)" />
+                                <label class="custom-control-label" for="chk-sel-@selrowid-@j.ToString()-@k.ToString()">&nbsp;</label>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6 table-responsive">
+
+                            <table class="table table-bordered table-striped ddata-table">
+                                <tbody style="font-size:small">
+                                    <tr>
+                                        <td style="height:auto!important">
+                                            <div class="form-group">
+                                                <label>DOS / Provider / CPT Code / Therapist Supervisor:</label><div class="clearfix"></div>
+                                                @(cd.dos.ToString("MM/dd/yyyy") + " / " + cdi.provider + " / " + cdi.cptCode + " / " + cdi.therapistSupervisor)
+                                            </div>
+                                        </td>
+                                        @*@{
+                                            if (cdi.fileId > 0)
+                                            {*@
+                                        <td>
+
+                                            <label>Download Report:</label><div class="input-group input-group-sm">
+
+                                                @*<div class="form-group">
+
+                                                        @Html.DropDownList("downloadItem", (IEnumerable<SelectListItem>)((Dictionary<long, List<SelectListItem>>)ViewBag.downloadCategory)[cdi.fileId], "- Select -", new { @class = "custom-select custom-select-sm ddreport" })
+                                                                                                                    <div class="input-group-append">
+                                                            <button class="btn btn-light btn-sm btn-sm1 btn-download" type="button"><i class="fa fa-download f11"></i></button>
+                                                        </div>
+                                                    </div>*@
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        @Html.DropDownList("downloadItem", (IEnumerable<SelectListItem>)((Dictionary<long, List<SelectListItem>>)ViewBag.downloadCategory)[cdi.fileId], "- Select -", new { @class = "custom-select custom-select-sm ddreport" })
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-light btn-sm btn-sm1 btn-download" type="button"><i class="fa fa-download f11"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </td>
+                                        @*}
+                                            }*@
+                                        @*<td>
+                                                <div class="form-group">
+                                                    <label class="">Paid Amount:</label>
+                                                    <input type="text" value="200" size="5" class="form-control form-control-sm" />
+                                                </div>
+                                            </td>*@
+                                    </tr>
+                                    @{
+                                        if (cdi.claimId > 0)
+                                        {
+                                            <tr>
+                                                <td style="height:auto!important">
+                                                    <div class="form-group">
+                                                        <label class="">Amount Billed:</label>
+                                                        <input onblur="callUpdate(this,'BilledAmount',@cdi.claimId,0);" type="text" value=@cdi.billedAmount size="5" class="form-control form-control-sm" />
+                                                    </div>
+                                                </td>
+                                                <td style="height:auto!important">
+                                                    <div class="form-group">
+                                                        <label class="">Co-insurance Amount:</label>
+                                                        <input type="text" value="50" size="5" class="form-control form-control-sm" />
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            foreach (var amt in Model.OtherClaimPayments.Where(o => o.clientSessionTherapyId == cdi.clientSessionTherapyID).Select(o => o))
+                                            {
+                                                <tr>
+                                                    <td style="height:auto!important">
+                                                        <div class="form-group">
+                                                            <label class=""></label>
+                                                            @{ switch (amt.insurancePriority)
+                                                                {
+                                                                    case 1:
+                                                                        <span class=" font100p ">Primary</span>
+                                                                        break;
+                                                                    case 2:
+                                                                        <span class=" font100p">Secondary</span>
+                                                                        break;
+                                                                    case 3:
+                                                                        <span class=" font100p ">Tertiary</span>
+                                                                        break;
+                                                                    default: break;
+                                                                }
+                                                            }
+
+                                                        </div>
+                                                    </td>
+                                                    <td style="height:auto!important">
+                                                        <div class="form-group">
+                                                            <label class="">Co-insurance Amount</label>
+                                                            <input type="text" onblur="callUpdate(this,'CoInsuranceAmount',@cdi.claimId,0);" value=@cdi.coInsuranceAmount size="5" class="form-control form-control-sm" />
+                                                            @*<input type="text" value="@amt.coInsuranceAmount" size="5" readonly="readonly" class="form-control form-control-sm" />*@
+                                                        </div>
+                                                    </td> 
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                    <tr>
+                                        <td style="height:auto!important;" colspan="2">
+                                            <div class="form-group">
+                                                <label><a href="#" style="color:blue">Prior Authorization</a> :</label>
+                                                <div class="row no-gutters custom-group">
+                                                    @*<div class="col-sm-3"><label>Ref Nbr</label><input type="text" name="refNumber" alt="Reference#" value="23478" size="7" class="form-control form-control-sm firstcontrol" /></div>*@
+                                                    <div class="col-sm-3"><label>Start Date</label><input type="text" name="startDate" alt="StartDate" onblur="callUpdate(this,'PriorStart',@cdi.claimId,@cdi.serviceId);" value="@cdi.PAuthStart" size="7" class="form-control form-control-sm dateControl" /></div>
+                                                    <div class="col-sm-1"><label>&nbsp;</label><span class="form-control form-control-sm text-center" style="background-color:#e9e9e9;">-</span></div>
+                                                    <div class="col-sm-3"><label>End Date</label><input type="text" alt="EndDate" name="startDate" onblur="callUpdate(this,'PriorEnd',@cdi.claimId,@cdi.serviceId);" value="@cdi.PAuthEnd" size="7" class="form-control form-control-sm dateControl" /></div>
+
+                                                </div>
+
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="col-md-6">
+                            <table class="table table-bordered table-striped ddata-table">
+                                <tbody style="font-size:small">
+                                    <tr>
+                                        <td>
+                                            <div class="form-group">
+                                                <label>Policy Nbr / Group Nbr: </label><div class="clearfix"></div>
+                                                @*<a href="#" >*@
+                                                <label style="color:blue;text-decoration:underline;cursor:pointer" onclick="openaddPolicyModal(@cdi.InsurancePolicyId,'@policyIndex');">@(cdi.policyNumber + " / " + cdi.groupNumber)</label>
+                                                @{ switch (cdi.insurancePriority)
+                                                    {
+                                                        case 1:
+                                                            <span class="badge font100p badge-success">Primary</span>
+                                                            break;
+                                                        case 2:
+                                                            <span class="badge font100p badge-secondary badge-success">Secondary</span>
+                                                            break;
+                                                        case 3:
+                                                            <span class="badge font100p badge-success">Tertiary</span>
+                                                            break;
+                                                        default: break;
+                                                    }
+                                                }
+                                                @*</a>*@
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-group">
+                                                <label>
+                                                    Prescription:
+                                                </label>
+                                                <div class="clearfix"></div>
+                                                <!--85750 / 10/12/2019 / 12/24/2019-->
+                                                <div class="row no-gutters custom-group">
+                                                    @*<div class="col-sm-3"><label>Ref Nbr</label><span class="form-control form-control-sm firstcontrol">23478</span></div>*@
+                                                    <div class="col-sm-4"><label>Start Date</label><span class="form-control form-control-sm ">@cdi.PresStart</span></div>
+                                                    <div class="col-sm-1"><label>&nbsp;</label><span class="form-control form-control-sm text-center" style="background-color:#e9e9e9;">-</span></div>
+                                                    <div class="col-sm-4"><label>End Date</label><span class="form-control form-control-sm lastcontrol">@cdi.PresStart</span></div>
+
+                                                </div>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @{
+                                        if (cdi.claimId > 0)
+                                        {
+                                            <tr>
+                                                <td style="height:auto!important">
+                                                    <div class="form-group">
+                                                        <label class="">Allowed Amount:</label>
+                                                        <input type="text" onblur="callUpdate(this,'AllowedAmount',@cdi.claimId,0);" value=@cdi.allowedAmount size="5" class="form-control form-control-sm" />
+                                                    </div>
+                                                </td>
+                                                <td style="height:auto!important">
+                                                    <div class="form-group">
+                                                        <div class="col-sm-9" style="margin-left:-12px">
+                                                            <label class="">Paid Amount:</label>
+                                                            <input type="text" onblur="callUpdate(this,'PaidAmount',@cdi.claimId,0);" value=@cdi.paidAmount size="5" class="form-control form-control-sm" />
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+
+                                            foreach (var amt in Model.OtherClaimPayments.Where(o => o.clientSessionTherapyId == cdi.clientSessionTherapyID).Select(o => o))
+                                            {
+                                                <tr>
+                                                    <td style="height:auto!important">
+                                                        <div class="form-group">
+                                                            <label class="">Allowed Amount : @amt.allowedAmount</label>
+                                                            @*<input type="text" value="@amt.allowedAmount" size="5" readonly="readonly" class="form-control form-control-sm" />*@
+                                                        </div>
+                                                    </td>
+                                                    <td style="height:auto!important">
+                                                        <div class="form-group">
+                                                            <div class="col-sm-9" style="margin-left:-12px">
+                                                                <label class="">Paid Amount : @amt.paidAmount</label>
+                                                                @*<input type="text" value=@amt.paidAmount size="5" readonly="readonly" class="form-control form-control-sm" />*@
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                    <tr>
+                                        <td style="height:auto!important" colspan="2">
+                                            <div class="form-group">
+                                                <label>
+                                                    <a href="#" style="color:blue"> DDD Authorization / Waiver: </a>
+                                                    <a class="@(displayWaiver ? "visible-item" : "hidden-item")" href="#" style="color: blue;text-decoration: underline;margin-left: 15px;" download>Apply Waiver</a>
+                                                </label>
+                                                <div class="row no-gutters custom-group">
+                                                    @*<div class="col-sm-3"><label>Nbr</label><input type="text" name="refNumber" alt="Reference#" value="23478" size="7" class="form-control form-control-sm firstcontrol" /></div>*@
+                                                    <div class="col-sm-3"><label>Start Date</label><input type="text" name="startDate" alt="StartDate" onblur="callUpdate(this,'DDDStart',@cdi.claimId,0);" value="@cdi.dddStartDate" size="7" class="form-control form-control-sm dateControl" /></div>
+                                                    <div class="col-sm-1"><label>&nbsp;</label><span class="form-control form-control-sm text-center" style="background-color:#e9e9e9;">-</span></div>
+                                                    <div class="col-sm-3"><label>End Date</label><input type="text" alt="EndDate" name="startDate" onblur="callUpdate(this,'DDDEnd',@cdi.claimId,0);" value="@cdi.dddEndDate" size="7" class="form-control form-control-sm dateControl" /></div>
+                                                    <div class="col-sm-2"><label>Units</label><input type="text" name="unit" alt="Unit" onblur="callUpdate(this,'DDDAu',@cdi.claimId,0);" value="@cdi.dddUnit" size="7" class="form-control form-control-sm lastcontrol" /></div>
+                                                </div>
+                                            </div>
+
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        @{
+                            if (cdi.claimId > 0)
+                            {
+                                <div class="col-md-12">
+                                    <table class="table table-bordered ddata-table">
+                                        <tbody style="font-size:small">
+                                            <tr>
+                                                <td style="height:auto!important; vertical-align:bottom">
+
+                                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                                        <input type="checkbox" value="Deductible" class="custom-control-input" id="chkDeductibleA" onclick="checkDeductible(x_@k);">
+                                                        <label class="custom-control-label" for="chkDeductibleA">Deductible</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox custom-control-inline chkPending">
+                                                        <input type="checkbox" value="Pending Waiver" class="custom-control-input" id="chkPendWaiverA-@selrowid-@j.ToString()-@k.ToString()">
+
+                                                        <label class="custom-control-label" for="chkPendWaiverA-@selrowid-@j.ToString()-@k.ToString()">Pending Waiver</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox custom-control-inline">
+
+                                                        <input type="checkbox" value="Clean Denial" class="custom-control-input" id="chkCleanDenial-@selrowid-@j.ToString()-@k.ToString()" onclick="checkClaimDenial(this,x_@k);">@*@Html.Raw(Json.Encode(cdi))*@
+                                                        <label class="custom-control-label" for="chkCleanDenial-@selrowid-@j.ToString()-@k.ToString()">Clean Denial</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                                        <input type="checkbox" value="Prior auth alert" class="custom-control-input" id="chkPriorAuthA" onclick="checkPriorAuth();">
+                                                        <label class="custom-control-label" for="chkPriorAuthA">Prior auth alert</label>
+                                                    </div>
+                                                </td>
+                                                <td style="height:auto !important">
+                                                    <div>
+                                                        <label>Status</label>
+                                                        <select id="claimStatus" class="custom-select custom-select-sm" onchange="callUpdate(this,'Status',@cdi.claimId,0);">
+                                                            @*onchange="updateClaimStatus(@cdi.claimId);"*@
+                                                            @foreach (var item in Model.claimStatusList)
+                                                            {
+                                                                if (cdi.ClaimStatusID == item.claimstatusid)
+                                                                {
+                                                                    <option value="@item.claimstatusid" selected>@item.name</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@item.claimstatusid">@item.name</option>
+                                                                }
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-12">
+                                    <table class="table table-bordered table-striped ddata-table">
+                                        <tbody style="font-size:small">
+                                            <tr>
+                                                <td style="height:auto!important">
+                                                    <div class="form-group">
+                                                        <label>Comments:</label>
+                                                        <input type="text" onblur="callUpdate(this,'Comments',@cdi.claimId,0);" name="comments" alt="Comments#" value="@cdi.comments" class="form-control form-control-sm" />
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+                if (k == (int)ViewBag.selectedClientIndex)
+                {
+                    //id="policyModal_@policyIndex"
+                    <div id="policyModal" class="modal policyModal fade" tabindex="-1" role="dialog">
+                        <div class="modal-dialog  modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div id="headingAdd">
+                                        <h5><i class="fa fa-add"></i> Add Policy</h5>
+                                    </div>
+                                    <div id="headingEdit" style="display:none">
+                                        <h5><i class="fa fa-edit"></i> Edit Policy</h5>
+                                    </div>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" id="insurancePolicyID">
+                                    @*Tabs*@
+                                    <ul class="nav nav-tabs" id="divTabsLink" style="margin-bottom: 15px;" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active aTabs" id="aPersonalInfo" data-step="1" data-toggle="tab" data-tabFor="tabPersonalInfo" role="tab" aria-controls="tabPersonalInfo" aria-selected="true">Personal Info</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link aTabs" id="aInsured" data-toggle="tab" data-step="2" data-tabFor="tabInsured" role="tab" aria-controls="tabInsured" aria-selected="false">Insured Info</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link aTabs" id="aCPT" data-toggle="tab" data-step="3" data-tabFor="tabCPT" role="tab" aria-controls="tabCPT" aria-selected="false">Services CPT</a>
+                                        </li>
+                                        <li class="nav-item" id="awaiverLi" style="display:none">
+                                            <a class="nav-link aTabs" id="aWaiver" data-toggle="tab" data-step="4" data-tabFor="tabWaiver" role="tab" aria-controls="contact" aria-selected="false">Waiver</a>
+                                        </li>
+
+                                    </ul>
+                                    @*Step 1*@
+                                    <div class="tab-content" id="divTabsContent">
+                                        <div class="tab-pane fade show active" id="tabPersonalInfo" role="tabpanel" aria-labelledby="aPersonalInfo">
+                                            <div id="divIndividualInfo">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="completionDate">First Name</label>
+                                                            <div>
+                                                                <input type="text" id="firstName_@policyIndex" class="form-control form-control-sm">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="lastName">Last Name</label>
+                                                            <div>
+                                                                <input type="text" id="lastName_@policyIndex" class="form-control form-control-sm">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="addressLine1">Address Line 1</label>
+                                                            <div>
+                                                                <input type="text" id="addressLine1_@policyIndex" class="form-control form-control-sm">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="addressLine2">Address Line 2</label>
+                                                            <div>
+                                                                <input type="text" id="addressLine2_@policyIndex" class="form-control form-control-sm">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="genderSelect">Gender</label>
+                                                        @Html.DropDownList("EnumDropDown", ViewBag.EnumList as SelectList, new { @id = "genderSelect_" + @policyIndex, @class = "form-control form-control-sm" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="addressLine2">City</label>
+                                                        <div>
+                                                            <input type="text" id="city_@policyIndex" class="form-control form-control-sm">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="postalCode">Postal Code</label>
+                                                        <div>
+                                                            <input type="text" id="postalCode_@policyIndex" class="form-control form-control-sm">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="stateSelect">State</label>
+                                                        @Html.Partial("_StateSelector", Model?.InsurancePolicy?.state ?? "")
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="idob">Insured Date Of Birth</label>
+                                                        <div class="input-group date">
+                                                            <input id="idob_@policyIndex" type="text" class="form-control form-control-sm" autocomplete="off" />
+                                                            <i class="input-group-text fa fa-calendar"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="phone">Phone</label>
+                                                        <div>
+                                                            <input type="text" id="phone_@policyIndex" class="form-control form-control-sm" required="required">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="tab-pane fade" id="tabInsured" role="tabpanel" aria-labelledby="aInsured">
+                                            <div id="divPolicyInfo">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="insuredIdNo">Insured Id No</label>
+                                                            <div>
+                                                                <input type="text" id="insuredIdNo_@policyIndex" class="form-control form-control-sm">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="companySelect">Company</label>
+                                                            <select id="companySelect_@policyIndex" class="form-control form-control-sm">
+                                                                @foreach (var item in Model.companyInsuranceList)
+                                                                {
+                                                                    <option value="@item.value"> @item.name </option>
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="mcid">MCID</label>
+                                                            <div>
+                                                                <input type="text" id="mcid_@policyIndex" class="form-control form-control-sm">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="policyGroupNumber">Policy Group Number</label>
+                                                            <div>
+                                                                <input type="text" id="policyGroupNumber_@policyIndex" class="form-control form-control-sm">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="patientIdNo">Patient Id No</label>
+                                                            <div>
+                                                                <input type="text" id="patientIdNo_@policyIndex" class="form-control form-control-sm">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="relationshipSelect">Relationship</label>
+                                                            <select id="atcRelId_@policyIndex" class="form-control form-control-sm">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="startDate">Start</label>
+                                                            <div class="input-group date">
+                                                                <input id="startDate_@policyIndex" type="text" class="form-control form-control-sm" false" autocomplete="off" />
+                                                                <i class="input-group-text fa fa-calendar"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="endDate">End</label>
+                                                            <div class="input-group date">
+                                                                <input id="endDate_@policyIndex" type="text" class="form-control form-control-sm" autocomplete="off" />
+                                                                <i class="input-group-text fa fa-calendar"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="isPrimary">Is Primary<input type="checkbox" id="isPrimary_@policyIndex" class="form-control form-group-lg" /></label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="tabCPT" role="tabpanel" aria-labelledby="aCPT">
+                                            <div id="divClientServices" style="padding-top:73px; padding-left:17px; padding-right:17px">
+                                                <div class="row">
+                                                    <input type="hidden" id="PolicyWaiverId_@policyIndex">
+                                                    <table id="waivers" border="1">
+                                                        <thead>
+                                                            <tr>
+                                                                <th></th>
+                                                                <th>From</th>
+                                                                <th>To</th>
+                                                                <th>Service</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <i class="fa fa-plus faBtn" style="color:green" onclick="addDynamicRows()"></i>
+                                                                </td>
+                                                                <td colspan="3">
+                                                                    <select id="atcServiceId_@policyIndex" class="form-control form-control-sm">
+                                                                    </select>
+                                                                    <input id="clientId_@policyIndex" name="clientId" type="hidden" />
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <input type="button" id="btnSave_@policyIndex" class="btn btn-success" onclick="ManagePolicy(@cdi.InsurancePolicyId,'@policyIndex');" value="Add Policy" />
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+}
+@*code embed*@
+@*<div class="modal insuarancePolicyModal fade">
+
+    </div>*@
+<div class="modal clientInvoiceModal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-edit"></i> Client Invoice</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="dvAllPaymentList">
+                    @{Html.RenderPartial("Payments", Model);
+                    }
+                </div>
+                <input type="hidden" id="claimDenialId">
+                <p id="claimDenialMsg"></p>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('.dateControl').Zebra_DatePicker({
+        direction: 0,
+        format: 'm/d/yyyy'
+    });
+    $(document).ready(function () {
+        $('#divTabsLink a').on('click', function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
+    });
+</script>
+
+<input type="hidden" id="hdnDedModel" value="" />
+<input type="hidden" id="hdnDenialModel" value="" />
+
+
+

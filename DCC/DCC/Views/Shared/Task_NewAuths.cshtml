@@ -1,0 +1,22 @@
+﻿@model DCC.Models.Home.HomeStaffPage
+<div class="clBlockData newAuthorizations">
+    <table>
+        <tr>
+            <th>Client</th>
+            <th>Svc</th>
+            <th>Starts</th>
+            <th>Ends</th>
+            <th>Units</th>
+        </tr>
+        @foreach (var item in Model.newAuthorizations)
+        {
+            <tr>
+                <td class="name">@item.nm</td>
+                <td class="service">@item.svc</td>
+                <td class="stDate">@item.stDate</td>
+                <td class="edDate">@item.edDate</td>
+                <td class="units">@item.units</td>
+            </tr>
+        }
+    </table>
+</div>

@@ -1,0 +1,191 @@
+﻿@model DCC.ViewModelBase
+@*<style>
+        /* ##### DROPDOWN MENU WIDTH ##### */
+
+        .nav li ul {
+            width: 280px !important;
+        }
+
+        .nav li li ul {
+            left: 280px !important;
+        }
+
+        #top-menu li li a {
+            width: 240px;
+        }
+
+    </style>*@
+
+<style>
+    /*menu command Submenu styling*/
+    /*#menu-Payor .active{background-color:#caebf6;}*/
+    #menu-Payor .active {
+        background-color: #5e7fb1 !important;
+    }
+
+        #menu-Payor .active a {
+            color: #fff !important;
+        }
+</style>
+<input type="hidden" id="userPrId" value="@Model.userPrid" />
+<input type="hidden" id="staffName" value="@Model.staffname" />
+<input type="hidden" id="sendBirdUserId" value="@Model.sendBirdUserId" />
+<div class="header">
+    <a href="~/" title="Dashboard"><img src="~/Content/Images/Therapy-Corner-Logo.png" class="site-logo" /><span class="sr-only">Dashboard</span></a>
+    <div class="menu">
+
+        <nav class="navbar navbar-expand-sm">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="~/" title="View Dashboard"><i class="fa fa-home" aria-hidden="true"></i> <span class="sr-only">Dashboard</span></a>
+                </li>
+                @{
+                    if (Model.userLevel != "Provider" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor" && Model.userLevel != "Supervisor")
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" title="OIG Check" href="~/OIGCheck"><i class="fa fa-table" aria-hidden="true"></i> <span class="sr-only">OIG Check</span></a>
+                        </li>
+                    }
+                }
+                @if (true)
+                {
+                    <li class="nav-item message">
+                        <a class="nav-link" href="~/GCMessaging" title="View Messages"><i class="fa fa-comments" aria-hidden="true"></i> <span class="sr-only">Message</span></a>
+                    </li>
+                }
+                @{
+                    if (Model.userLevel == "SuperAdmin" || Model.userLevel == "BillingManager" || Model.userLevel == "BillingAdmin")
+                    {
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true" title="Billing"><span class="nav-label"><i class="fa fa-usd" aria-hidden="true"></i><span class="sr-only">Billing</span></span><span class="caret"></span></a>
+                            <ul class="dropdown-menu submn-shadow">
+                                <li>
+                                    <a class="dropdown-item" title="DDD Auths" href="~/DDDAuthorizations"> DDD Auths</a>
+                                </li>
+                                @*
+        <li>
+            <a class="dropdown-item" title="SFTP Credential" href="~/Credential/SFTPCredential">SFTP Credential</a>
+        </li>
+                                *@
+                                <li><a class="dropdown-item" href="~/SkilledBilling">Skilled Billing</a></li>
+                                <li><a class="dropdown-item" href="~/SkilledBilling/ReconcileGovt">Government Reconcile</a></li>
+                                <li><a class="dropdown-item" href="~/AccountsReceivable">Accounts Receivable</a></li>
+                                <li><a class="dropdown-item" href="~/CashBilling">Cash Pay/School Clients</a></li>
+                                <li><a class="dropdown-item" href="~/UnSkilledBilling">Non Skilled Billing (Manual)</a></li>
+                                <li><a class="dropdown-item" href="~/NonSkilledReconciliation">Non Skilled Reconciliation (Manual)</a></li>
+                                <li><a class="dropdown-item" href="~/NonSkilledRebill">Non Skilled ReBills</a></li>
+                                <li><a class="dropdown-item" href="~/NonSkilledPayrollInput">Non Skilled Payroll</a></li>
+                                <li><a class="dropdown-item" href="~/NonSkilledPayrollManagement">Non Skilled Payroll Management</a></li>
+                                <li><a class="dropdown-item" href="~/SkilledPayrollInput">Skilled Payroll</a></li>
+                                <li><a class="dropdown-item" href="~/SkilledPayrollManagement">Skilled Payroll Management</a></li>
+
+                            </ul>
+                        </li>
+                    }
+                }
+
+
+
+                @*Added submenu for Billing*@
+                @*<li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Billing <span class="caret"></span></a>
+            <ul class="dropdown">
+                <li style="white-space: nowrap;"> <a href="/SkilledBilling">Skilled Billing</a></li>
+                <li style="white-space: nowrap;"><a href="/CashBilling">Cash Pay/School Clients</a></li>
+                <li style="white-space: nowrap;"><a href="/NonSkilledBilling">Non Skilled Billing</a></li>
+            </ul>
+        </li>*@
+                @if (Model.userLevel != "Provider" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor" && Model.userLevel != "Supervisor")
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href="~/Clients" title="View Clients"><i class="fa fa-users" aria-hidden="true"></i> <span class="sr-only">Clients</span></a>
+                    </li>
+                }
+
+
+
+
+
+                <li class="nav-item">
+                    <a class="nav-link" href="~/Staff" title="View Staff"><i class="fa fa-briefcase" aria-hidden="true"></i> <span class="sr-only">Staff</span></a>
+                </li>
+                @{
+                    if (Model.userLevel != "Provider" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="~/Guardians" title="View Guardians"><i class="fa fa-shield" aria-hidden="true"></i> <span class="sr-only">Guardians</span></a>
+                        </li>
+                    }
+                }
+                @{
+                    if (Model.userLevel != "Provider" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor" && Model.userLevel != "Supervisor")
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="~/Settings" title="Settings"><i class="fa fa-cog" aria-hidden="true"></i> <span class="sr-only">Settings</span></a>
+                        </li>
+                    }
+                }
+                <li class="nav-item">
+                    <a class="nav-link" href="~/Calendar" title="Schedules"><i class="fa fa-calendar" aria-hidden="true"></i> <span class="sr-only">Schedules</span></a>
+                </li>
+                <li class="nav-item dropdown">
+                    @* Can this be a link instead or does it need to be a button?*@
+                    @*<button type="button" class="dropdown-toggle" data-toggle="dropdown">
+                @Model.companyName
+            </button>*@
+                    <a href="#" class="nav-link nav-link-highlight dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"><span class="nav-label"> @Model.companyName</span> <span class="caret"></span></a>
+                    <input type="hidden" id="CurrentCompanyId" value="@Model.CompanyID" />
+                    <div class="dropdown-menu">
+                        @foreach (var item in Model.companies)
+                        {
+                            <a class="dropdown-item" href="~/Account/ChangeCompany/@item.coid">@item.name</a>
+                        }
+                        <a class="dropdown-item" href="~/Account/Logoff" title="Log Out"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
+                    </div>
+
+
+                </li>
+
+            </ul>
+        </nav>
+    </div>
+
+
+</div>
+<script>
+        var srvcUrl = '';
+        var srvcUrl1 = '';
+        var i = 0;
+        var pathname = window.location.pathname;
+        var t = document.location.hostname;
+        var VirtualDir = pathname.split('/');
+        VirtualDir.forEach(function (item) {
+            if (t != 'localhost') {
+                if (i == 1) {
+                    srvcUrl1 = item;
+                    if (srvcUrl1 != '')
+                        srvcUrl1 = '/' + item
+                }
+            }
+            i = i + 1;
+            if (item != '') {
+                srvcUrl += '/' + item;
+            }
+            else {
+                srvcUrl += '';
+            }
+        });
+
+  
+
+
+</script>
+
+
+
+
+
+
+
+
+

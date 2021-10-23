@@ -1,0 +1,37 @@
+﻿<div class="modal fade" id="actionModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-edit"></i> Add new Client</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="clientFirstName">First Name</label>
+                            <input type="text" id="clientFirstName" class="form-control form-control-sm name" placeholder="First Name" />
+                        </div>
+                        <div class="form-group">
+                            <label for="clientLastName">Last Name</label>
+                            <input type="text" id="clientLastName" class="form-control form-control-sm name" placeholder="Last Name" />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="assistNumber">Assist ID</label>
+                            <input type="text" id="assistNumber" class="form-control form-control-sm name" placeholder="Assist ID" />
+                        </div>
+                    </div>
+                </div>
+                <p style="color:#900000">You must enter the 10 digit DDD Assist ID for the client, if they have DDD Services</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="addNewClient();">Add Client</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#actionModal').modal('show');
+</script>

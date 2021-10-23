@@ -1,0 +1,297 @@
+﻿@model DCC.Models.Providers.ProviderInit
+
+    <div class="modal policyModal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog  modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div id="headingAdd">
+                        <h5><i class="fa fa-add"></i> Add Policy</h5>
+                    </div>
+                    <div id="headingEdit" style="display:none">
+                        <h5><i class="fa fa-edit"></i> Edit Policy</h5>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="insurancePolicyID">
+                    @*Tabs*@
+                    <ul class="nav nav-tabs" id="divTabsLink" style="margin-bottom: 15px;" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active aTabs" id="aPersonalInfo" data-step="1" data-toggle="tab" data-tabFor="tabPersonalInfo" role="tab" aria-controls="home" aria-selected="true">Personal Info</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link aTabs" id="aInsured" data-toggle="tab" data-step="2" data-tabFor="tabInsured" role="tab" aria-controls="profile" aria-selected="false">Insured Info</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link aTabs" id="aCPT" data-toggle="tab" data-step="3" data-tabFor="tabCPT" role="tab" aria-controls="contact" aria-selected="false">Services CPT</a>
+                        </li>
+                        <li class="nav-item" id="awaiverLi" style="display:none">
+                            <a class="nav-link aTabs" id="aWaiver" data-toggle="tab" data-step="4" data-tabFor="tabWaiver" role="tab" aria-controls="contact" aria-selected="false">Waiver</a>
+                        </li>
+
+                    </ul>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="companySelect">Company</label>
+                                <select id="companySelect" class="form-control form-control-sm">
+
+                                    @*@foreach (var item in Model.companyInsuranceList)
+                        {
+                            <option value="@item.value">@item.name</option>
+                        }*@
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="phone">Phone</label>
+                                <div>
+                                    <input type="text" id="phone" class="form-control form-control-sm" required="required">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="completionDate">First Name</label>
+                                <div>
+                                    <input type="text" id="firstName" class="form-control form-control-sm">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="addressLine1">Address Line 1</label>
+                                <div>
+                                    <input type="text" id="addressLine1" class="form-control form-control-sm">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <div>
+                                    <input type="text" id="lastName" class="form-control form-control-sm">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="addressLine2">Address Line 2</label>
+                                <div>
+                                    <input type="text" id="addressLine2" class="form-control form-control-sm">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="genderSelect">Gender</label>
+                                @*@Html.DropDownList("EnumDropDown", ViewBag.EnumList as SelectList, new { @id = "genderSelect", @class = "form-control form-control-sm" })*@
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="addressLine2">City</label>
+                                <div>
+                                    <input type="text" id="city" class="form-control form-control-sm">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="idob">Insured Date Of Birth</label>
+                                <div class="input-group date">
+                                    <input id="idob" type="date" class="form-control form-control-sm" autocomplete="off" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="stateSelect">State</label>
+                                @*@Html.DropDownList("CategoryID", new SelectList(Model.ChildCategories, "ID", "DisplayName"), new { @class = "form-control" })*@
+
+                                @*@Html.Partial("_StateSelector", Model?.policy?.state ?? "")*@
+                                @*@Html.Partial("_StateSelector",Model.policy.Select(x=> x.state));*@
+                                @*<select id="stateSelect" class="form-control form-control-sm">
+                        <option value="1">abcState</option>
+                        <option value="2">dfState</option>
+                    </select>*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="insuredIdNo">Insured Id No</label>
+                                <div>
+                                    <input type="text" id="insuredIdNo" class="form-control form-control-sm">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="postalCode">Postal Code</label>
+                                <div>
+                                    <input type="text" id="postalCode" class="form-control form-control-sm">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="mcid">MCID</label>
+                                <div>
+                                    <input type="text" id="mcid" class="form-control form-control-sm">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="policyGroupNumber">Policy Group Number</label>
+                                <div>
+                                    <input type="text" id="policyGroupNumber" class="form-control form-control-sm">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="patientIdNo">Patient Id No</label>
+                                <div>
+                                    <input type="text" id="patientIdNo" class="form-control form-control-sm">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="relationshipSelect">Relationship</label>
+                                <select id="atcRelId" class="form-control form-control-sm">
+                                    @*@foreach (var item in Model.atcRelationships)
+                        {
+                            <option value="@item.value">@item.name</option>
+                        }*@
+                                </select>
+                                @*<select id="relationshipSelect" class="form-control form-control-sm">
+                    </select>*@
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="isPrimary">Is Primary<input type="checkbox" id="isPrimary" class="form-control form-group-lg" /></label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="startDate">Start</label>
+                                <div class="input-group date">
+                                    <input id="startDate" type="text" class="form-control form-control-sm" autocomplete="off" />
+                                    <i class="input-group-text fa fa-calendar"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="endDateDiv" style="display:none">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="endDate">End</label>
+                                <div class="input-group date">
+                                    <input id="endDate" type="text" class="form-control form-control-sm" autocomplete="off" />
+                                    <i class="input-group-text fa fa-calendar"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="waiver" style="display:none">
+                        <input type="hidden" id="PolicyWaiverId">
+                        <table id="waivers" border="1">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>From</th>
+                                    <th>To</th>
+                                    <th>Service</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <i class="fa fa-plus faBtn" style="color:green" onclick="addDynamicRows()"></i>
+                                    </td>
+                                    <td colspan="3">
+                                        <select id="atcServiceId" class="form-control form-control-sm">
+                                            @*@foreach (var item in Model.serviceList)
+                                {
+                                    <option value="@item.value">@item.name</option>
+                                }*@
+                                        </select>
+                                        <input id="clientId" name="clientId" type="hidden" />
+                                        @*<input id="requestVerificationToken" name="requestVerificationToken" type="hidden" />*@
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="modal-footer">
+                        <input type="button" id="btnSave" class="btn btn-success" onclick="ManagePolicy();" value="Add Policy" />
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>

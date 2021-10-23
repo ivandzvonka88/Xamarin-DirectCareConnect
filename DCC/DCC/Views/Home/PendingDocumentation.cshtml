@@ -1,0 +1,127 @@
+﻿@model DCC.Models.Home.HomeStaffPage
+@if (Model.pendingDocumentation != null)
+{
+    <style>
+        .pendingDocumentaion td {
+            padding: 3px;
+            vertical-align: top;
+        }
+         .pendingDocumentaion   tr:nth-child(even) {background: #F1F1F1}
+        .pendingDocumentaion tr:nth-child(odd) {
+            background: #FFF
+        }
+    </style>
+    <table class="pendingDocumentaion">
+        @foreach (var item in @Model.pendingDocumentation)
+        {
+        <tr>
+            <td>
+                <i class="fa fa-exclamation-circle redAlert"></i>
+            </td>
+            <td>
+                <span>@item.svc</span>
+            </td>
+            <td>
+                <span>@item.noteType</span>
+            </td>
+            <td>
+                <span>@item.status</span>
+            </td>
+            <td>
+                <span>@item.clientName/@item.providerName
+                @(item.providerName2 != null ? "/" + item.providerName2 : "")
+
+                </span>
+            </td>
+            <td>
+                <span>@item.dueDt</span>
+            </td>
+            <td>
+                @if (item.docType == "PlanOfCare")
+                {
+
+                    <i class="fa fa-edit faBtn edBtn" onclick="openTherapyPlanOfCareEditModal(@item.docId)"></i>
+                    if (Model.userLevel != "Provider" && Model.userLevel != "Supervisor" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+                    {
+                        <i class="fa fa-trash faBtn delBtn red" onclick="openDocumentDeleteModal('@item.docType',@item.docId,'@item.dueDt','@item.clientName','@item.svc', '@item.noteType')"></i>
+                    }
+                }
+                else if (item.docType == "TherapyReport")
+                {
+                    if (item.completed && !item.approved)
+                    {
+                        <i class="fa fa-check faBtn verBtn green" onclick="openTherapyProgressReportEditModal(@item.docId, true)"></i>
+                    }
+                    else
+                    {
+                        <i class="fa fa-edit faBtn edBtn" onclick="openTherapyProgressReportEditModal(@item.docId, false)"></i>
+                    }
+                    if (Model.userLevel != "Provider" && Model.userLevel != "Supervisor" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+                    {
+                        <i class="fa fa-trash faBtn delBtn red" onclick="openDocumentDeleteModal('@item.docType',@item.docId,'@item.dueDt','@item.clientName','@item.svc', '@item.noteType')"></i>
+                    }
+                }
+
+                else if (item.docType == "HabReport")
+                {
+                    if (item.completed && !item.approved)
+                    {
+                        <i class="fa fa-check faBtn verBtn green" onclick="openHabProgressReportEditModal(@item.docId, true)"></i>
+                    }
+                    else
+                    {
+                        <i class="fa fa-edit faBtn edBtn" onclick="openHabProgressReportEditModal(@item.docId, false)"></i>
+                    }
+                    if (Model.userLevel != "Provider" && Model.userLevel != "Supervisor" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+                    {
+                        <i class="fa fa-trash faBtn delBtn red" onclick="openDocumentDeleteModal('@item.docType',@item.docId,'@item.dueDt','@item.clientName','@item.svc', '@item.noteType')"></i>
+                    }
+                }
+                else if (item.docType == "MonitoringNote")
+                {
+                    <i class="fa fa-edit faBtn edBtn" onclick="openATCMonitoringEditModal(@item.docId)"></i>
+                    if (Model.userLevel != "Provider" && Model.userLevel != "Supervisor" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+                    {
+                        <i class="fa fa-trash faBtn delBtn red" onclick="openDocumentDeleteModal('@item.docType',@item.docId,'@item.dueDt','@item.clientName','@item.svc', '@item.noteType')"></i>
+                    }
+                }
+                else
+                {
+                    if (item.docType == "ATCServiceNote")
+                    {
+                        <i class="fa fa-edit faBtn edBtn" onclick="openATCNoteEditModal(@item.docId);"></i>
+                    }
+                    else if (item.docType == "HAHServiceNote")
+                    {
+                        <i class="fa fa-edit faBtn edBtn" onclick="openHAHNoteEditModal(@item.docId);"></i>
+                    }
+                    else if (item.docType == "RSPServiceNote")
+                    {
+                        <i class="fa fa-edit faBtn edBtn" onclick="openRSPNoteEditModal(@item.docId);"></i>
+                    }
+                    else if (item.docType == "EvalServiceNote")
+                    {
+                        <i class="fa fa-edit faBtn edBtn" onclick="openEvalNoteEditModal(@item.docId);"></i>
+                    }
+
+                    else if (item.docType == "TherapyServiceNote")
+                    {
+
+                        if (item.completed && !item.approved)
+                        {
+                            <i class="fa fa-check faBtn verBtn green" onclick="openTherapyNoteEditModal(@item.docId, true);"></i>
+                        }
+                        else
+                        {
+                            <i class="fa fa-edit faBtn edBtn" onclick="openTherapyNoteEditModal(@item.docId, false);"></i>
+                        }
+                    }
+                }
+            </td>
+        </tr>
+        }
+    </table>
+
+
+}
+

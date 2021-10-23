@@ -1,0 +1,33 @@
+﻿@model  DCC.Models.ClientService
+<div id="actionModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>
+                    <i class="fa fa-edit"></i>
+                    @if (@Model.deleted)
+                    {
+                        <span>Acivate Service</span>
+                    }
+                    else
+                    {
+                        <span>Deacivate Service</span>
+                    }
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="clsvidId" value="@Model.clsvidId">
+                <input type="hidden" id="newState" value="@(Model.deleted? "false": "true")">
+                <p> Deactivate the @Model.svcLong service</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="toggleService();">Confirm</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#actionModal').modal('show');
+</script>

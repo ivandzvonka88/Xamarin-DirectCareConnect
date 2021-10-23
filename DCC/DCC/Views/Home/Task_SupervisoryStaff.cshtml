@@ -1,0 +1,11 @@
+﻿@using DCC.Models.Home;
+@model DCC.Models.Home.HomeStaffPage
+
+
+<div class="clBlockData supervisors">
+    @foreach (var item in Model.supervisors)
+    {
+        <div class="supervisorItem"><span class="rowLink" onclick="getTaskStaffPage('@item.prId')">@item.sNm</span> &nbsp; <i class="fa fa-comment-o faBtn msgBtn" onclick="openTaskMessageModal(@item.sendBirdUserId, '@item.sNm')"></i></div>
+    }
+
+</div>

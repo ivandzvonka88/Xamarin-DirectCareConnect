@@ -1,0 +1,42 @@
+﻿@model DCC.Models.Providers.ProviderInit
+
+<table class="table table-bordered table-striped" style="font-size:small">
+    <thead style="background-color:lightblue">
+        <tr>
+            <th style="width:100px">Date of Service</th>
+            <th>CPT Codes</th>
+            <th>Amt Billed</th>
+            <th>Paid Amt</th>
+            <th>Allowed Amt</th>
+            <th>Co-Insurance Amt</th>
+            <th class="text-center" style="width:150px">Voided At</th>
+            <th class="text-center" style="width:150px">Error</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ClaimPaymentList)
+        {
+            <tr>
+                <td class="name">@item.DOS</td>
+                <td class="discipline">@item.Code</td>
+                <td class="text-center serviceModel">@item.Amount</td>
+                <td class="locations"></td>
+                <td class="locations"></td>
+                <td class="locations"></td>
+                <td class="text-center isActive">
+                    @if (item.VoidedAt == DateTime.MinValue)
+                    {
+                        <a href="#" onclick="editVoidPayment(@item.ClaimId,@item.PaymentId,@item.StaffId)">Void Payment</a>
+                    }
+                    else
+                    {
+                        <span>@item.VoidedAt.ToString()</span>
+                    }
+                </td>
+                <td class="text-center isActive"><a href="#" onclick="updateDenialError(@item.ClaimId, @item.StaffId)">Denial Error</a></td>
+            </tr>
+
+        }
+    </tbody>
+</table>

@@ -1,0 +1,22 @@
+﻿@model DCC.Models.GeoLocation
+<div class="modal fade" id="actionModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-edit"></i> Remove Location</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="locId" value="@Model.clLocId">
+                <p> Remove the location<br /><b> @Model.name <br />@Model.ad1 <br />@Model.cty<br />@Model.st @Model.zip</b><br />from this client. </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="removeGeoLocation();">Remove This Location</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#actionModal').modal('show');
+</script>

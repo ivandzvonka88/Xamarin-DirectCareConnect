@@ -1,0 +1,13 @@
+﻿@model DCC.Models.GuardianPageData
+<span id="clFn">@Model.guardianProfile.firstName</span>
+<span id="clLn">@Model.guardianProfile.lastName</span>
+<input id="GUARDIANID" type="hidden" value="@Model.guardianProfile.guardianUId" />
+<div style="float:right;padding-right:10px;border:0">
+    <span id="clientActiveState">
+        @(Model.guardianProfile.deleted == true ? "Inactive" : "Active")
+    </span>
+    @if (Model.userLevel != "Provider" && Model.userLevel != "Supervisor" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+    {
+        <i id="btnClientActivate" class="fa @(Model.guardianProfile.deleted ? "fa-toggle-off" : "fa-toggle-on")" onclick="openGuardianActivateDeactivateModal();"></i>
+    }
+</div>

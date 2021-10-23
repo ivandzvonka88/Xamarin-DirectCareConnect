@@ -1,0 +1,147 @@
+﻿@model DCC.Models.Staff.StaffData
+<div id="actionModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-edit"></i> Update Staff Employment Data</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+
+                                <label for="roleId">Employee Role</label>
+                                <select id="roleId" class="form-control form-control-sm" onchange="getStaffStaffSupervisorList()">
+                                    <option value="0"></option>
+                                    @foreach (var item in Model.employeeRoles)
+                                    {
+                                        <option value="@item.id" @(Model.roleId==Convert.ToInt32(item.id) ? "selected" : "")>@item.name</option>
+                                    }
+                                </select>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="form-group" id="supBlock" @(!(Model.staffSupervisorList.hasSupervisors) ? "style=\"display:none\"" : ""))>
+                                <label for="supId">Immediate Supervisor</label>
+                                <select id="supId" class="form-control form-control-sm">
+                                    <option value="0"></option>
+                                    @if (Model.staffSupervisorList.hasSupervisors)
+                                    {
+                                        foreach (var item in Model.staffSupervisorList.supervisors)
+                                        {
+                                            <option value="@item.id" @(Model.supId == Convert.ToInt32(item.id) ? "selected" : "")>@item.name</option>
+                                        }
+
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group" id="tempsupBlock" @(!(Model.staffSupervisorList.hasSupervisors) ? "style=\"display:none\"" : ""))>
+                                <label for="tempsupId">Temporary Supervisor</label>
+                                <select id="tempsupId" class="form-control form-control-sm">
+                                    <option value="0"></option>
+                                    @if (Model.staffSupervisorList.hasSupervisors)
+                                    {
+                                        foreach (var item in Model.staffSupervisorList.supervisors)
+                                        {
+                                            <option value="@item.id" @(Model.tempsupId == Convert.ToInt32(item.id) ? "selected" : "")>@item.name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <label for="hiredtf">Hire Date</label>
+                            <div class="input-group date">
+                                <input id="hiredtf" type="date" class="form-control form-control-sm" value="@Model.hiredtfISO" />
+                            </div>
+                            <label for="termdt">Termination Date</label>
+                            <div class="input-group date">
+                                <input id="termdt" type="date" class="form-control form-control-sm"  value="@Model.termdtISO"/>
+                            </div>
+                            <label for="CRverf">Central Registration Date</label>
+                            <div class="input-group date">
+                                <input id="CRverf" type="date" class="form-control form-control-sm"   value="@Model.CRverfISO"/>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="title">Title</label><input id="title" type="text" class="form-control form-control-sm" value="@Model.title" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label for="npi">NPI</label><input id="npi" type="text" class="form-control form-control-sm" value="@Model.npi" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label for="ahcccsId">AHCCCS Id</label><input id="ahcccsId" type="text" class="form-control form-control-sm" value="@Model.ahcccsId" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label for="CAQH">CAQH</label><input id="CAQH" type="text" class="form-control form-control-sm" value="@Model.CAQH" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label for="MedicaidId">PTAN</label><input id="MedicaidId" type="text" class="form-control form-control-sm" value="@Model.MedicaidId" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label for="eId">Payroll Id</label>
+                                <input id="eId" class="form-control form-control-sm payroll" type="text" value="@Model.eId" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label for="iSolvedID">ISolved Payroll Id</label>
+                                <input id="iSolvedID" class="form-control form-control-sm payroll" type="text" value="@Model.iSolvedID" autocomplete="off" />
+                            </div>
+
+                            <div>Other Required Credentials:</div>
+                            @foreach (var cred in Model.otherRequiredCredentials)
+                            {
+                                <div class="form-group">
+                                    <label for="@(cred.id)"><input class="reqCredentials" id="@(cred.id)" type="checkbox" @(cred.isChecked ? "checked" : "") /> @cred.name</label>
+                                </div>
+                            }
+                        </div>
+                        <div class="col-md-4">
+                            <div style="border:1px dashed #c0c0c0;padding:4px">
+                                <div class="form-group">
+                                    <label for="qualifiedTherapist"><input id="qualifiedTherapist" type="checkbox" @(@Model.qualifiedTherapist ? "checked" : "") /> Master Therapist</label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="assistantTherapist"><input id="assistantTherapist" type="checkbox" @(@Model.assistantTherapist ? "checked" : "") /> Therapist Assistant</label>
+                                </div>
+                                <div style="text-indent:20px">
+                                    <div class="form-group">
+                                        <label for="occupationalTherapy"><input id="occupationalTherapy" type="checkbox" @(@Model.occupationalTherapy ? "checked" : "") /> Occupational Therapy</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="speechTherapy"><input id="speechTherapy" type="checkbox" @(@Model.speechTherapy ? "checked" : "") /> Speech Therapy</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="physicalTherapy"><input id="physicalTherapy" type="checkbox" @(@Model.physicalTherapy ? "checked" : "") /> Physical Therapy</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="basicProvider"><input id="basicProvider" type="checkbox" @(@Model.basicProvider ? "checked" : "") /> Basic Provider</label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="bcba"><input id="bcba" type="checkbox" @(@Model.BCBA ? "checked" : "") /> BCBA </label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rbt"><input id="rbt" type="checkbox" @(@Model.RBT ? "checked" : "") /> RBT </label>
+                                </div>
+
+
+                                <div call="form-group">
+                                    <label for="zipCodes">ZipCodes</label>
+                                    <textarea id="zipCodes" class="form-control form-control-sm" rows="2">@Model.zipCodes</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="guBtn" type="button" class="btn btn-primary" onclick="updateStaffEmployment();">Update</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$('#actionModal').modal('show');
+</script>

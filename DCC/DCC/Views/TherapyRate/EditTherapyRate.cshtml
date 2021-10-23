@@ -1,0 +1,240 @@
+﻿@model DCC.Models.TherapyRate
+@{
+    Layout = null;
+}
+
+<div class="modal-dialog  modal-lg" role="document">
+    <div class="modal-content" style="width: 946px">
+        <div class="modal-header">
+            <div id="headingAdd">
+                <h4><i class="fa fa-add"></i> Add Therapy Rate</h4>
+            </div>
+            <div id="headingEdit" style="display:none">
+                <h4 id="editHeading"><i class="fa fa-edit"></i> Edit - @Model.Service </h4>
+            </div>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <div id="divPolicyInfo">
+                <div class="row" id="divInsCompany">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div>
+                                <input type="hidden" id="hdnSvId" value="@Model.ServiceId" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="Ratio">Ratio</label>
+                            <div>
+                                <input type="text" id="ratio" class="form-control form-control-sm" value="@(@Model.Ratio == 0 ? string.Empty : @Model.Ratio.ToString())" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="BillingTierId">Billing Tier ID</label>
+                            <div>
+                                <input type="text" id="billingTierId" class="form-control form-control-sm" value="@Model.BillingTierId" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top: 9px">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="Rate">Rate</label>
+                            <div>
+                                <input type="text" id="rate" class="form-control form-control-sm" value="@Model.Rate" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="serviceSelectLabel">Services</label>
+                            <select id="serviceSelect" class="form-control form-control-sm">
+
+                                @foreach (var item in Model.Services)
+                                {
+                                    <option value="@item.ServiceId">@item.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="EFDate">From:</label>
+                            <div class="input-group date">
+                                <input type="date" id="efDate" class="form-control form-control-sm" value="@Model.From" autocomplete="off" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="FNDate">To:</label>
+                            <div class="input-group date">
+                                <input type="date" id="fnDate" class="form-control form-control-sm" value="@Model.To" autocomplete="off" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="checkbox" id="isClinic" checked="@Model.IsClinic"> Is Clinic<br>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="checkbox" id="isQualifiedTherapist" checked="@Model.IsQualifiedTherapist"> Is QualifiedTherapist <br>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="checkbox" id="cur" checked="@Model.Cur"> Cur <br>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <input type="button" id="btnsave" class="btn btn-success" onclick="manageTherapyRate(@Model.RateId);" value="Save" />
+        </div>
+    </div>
+</div>
+
+@Session Scripts
+{
+<script>
+    $(document).ready(function () {
+        var serviceId = $('#hdnSvId').val();
+        if (serviceId > 0) {
+            $('#serviceSelect').val(serviceId);
+        }
+    });
+
+    function manageTherapyRate(rateId) {
+        var isValid = isFormValid();
+        if (!isValid) {
+            return;
+        }
+        var data = {
+            'Ratio': $('#ratio').val(),
+            'BillingTierId': $('#billingTierId').val(),
+            'IsClinic': $('#isClinic').is(':checked'),
+            'IsQualifiedTherapist': $('#isQualifiedTherapist').is(':checked'),
+            'Cur': $('#cur').is(':checked'),
+            'From': $('#efDate').val(),
+            'To': $('#fnDate').val(),
+            'Rate': $('#rate').val(),
+            'RateId': rateId,
+            'Service': setServiceName(),
+            'ServiceId': $('#serviceSelect').val(),
+            'ServiceName': $("#serviceSelect option:selected").text()
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: srvcUrl + '/ManageTherapyRate',
+            data: JSON.stringify(data),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (data) {
+                if (data.IsADD) {
+                    $('#therapyRatesTable').DataTable().ajax.reload();
+                    $('#editTherapyRate').modal('hide');
+                    Alert("Saved successfully.");
+                }
+                else if (data.IsUpdate == true) {
+                    $('#therapyRatesTable').DataTable().ajax.reload();
+                    $('#editTherapyRate').modal('hide');
+                    Alert("Updated successfully.");
+                }
+                else {
+                    Alert("Therapy rate already added");
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log('error manageTherapyRate');
+            }
+        });
+    }
+
+    function isFormValid() {
+        if (($('#ratio').val() == null) || $('#ratio').val() == "") {
+            Alert("Please enter valid ratio.");
+            return;
+        }
+        else if ($('#rate').val() == null || $('#rate').val() == "") {
+            Alert("Please enter valid rate.");
+            return;
+        }
+        else if ($('#efDate').val() == null || $('#efDate').val() == "") {
+            Alert("Please enter valid From Date.");
+            return;
+        }
+        else if ($('#fnDate').val() == null || $('#fnDate').val() == "") {
+            Alert("Please enter valid To Date.");
+            return;
+        }
+        else {
+            return true;
+        }
+    }
+
+    function setServiceName() {
+        var identifier, toReturn, hasTier = true, tierTxt = " Tier ", isAsst = false;
+        var name = $("#serviceSelect option:selected").text();
+        var billingTierId = $('#billingTierId').val();
+        var ratio = $('#ratio').val();
+        var isClinic = $('#isClinic').is(':checked');
+
+        if (isClinic) { identifier = "Clinic"; }
+        else { identifier = "Nat"; }
+
+        if (billingTierId == "0") {
+            tierTxt = " Base ";
+            hasTier = false;
+        }
+        else if ((billingTierId == null || billingTierId == "") && !isClinic) {
+            tierTxt = " Setting Eval ";
+            hasTier = false
+        }
+        else if ((billingTierId == null || billingTierId == "") && isClinic) {
+            tierTxt = " Eval ";
+            hasTier = false;
+        }
+
+        if (billingTierId == "0" && isClinic) {
+            tierTxt = " Asst " + tierTxt;
+            isAsst = true;
+        }
+
+        if (hasTier) {
+            toReturn = name + " " + identifier + tierTxt + billingTierId + " " + 1 + ":" + ratio;
+        }
+        else if (!hasTier && isAsst) {
+            toReturn = name + " " + identifier + tierTxt + 1 + ":" + ratio;
+        }
+        else {
+            toReturn = name + " " + identifier + tierTxt;
+        }
+
+        return toReturn;
+
+    }
+
+</script>
+}
+

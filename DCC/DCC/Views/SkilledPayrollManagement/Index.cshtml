@@ -1,0 +1,41 @@
+﻿@model DCC.Models.Payroll
+@Html.Partial("MenuHeader", @Model)
+@Html.AntiForgeryToken()
+
+<h1>Skilled Payroll Management</h1>
+<table>
+
+    <tbody>
+        @foreach (var item in Model.Periods)
+        {
+        <tr>
+            <td>@item.startDate - @item.endDate  </td>
+            @if (Model.hasISolved)
+            {
+                <td>
+                    <button type="button" onclick="getIsolvedPayollReport(@item.periodId)"><i class="fa fa-file-excel-o"></i> ISolved Payroll Report</button>
+                </td>
+            }
+            <td>
+                <button type="button" onclick="getPayollReport(@item.periodId)"><i class="fa fa-file-excel-o"></i> Payroll Report</button>
+            </td>
+            <td>
+                <button type="button" onclick="getPayollExport(@item.periodId)"><i class="fa fa-file-excel-o"></i> Export Payroll</button>
+            </td>
+            @if (Model.hasISolved)
+            {
+                <td>
+                    <button type="button" onclick="openIsolvedPayrollPreview(@item.periodId)"><i class="fa fa-file-excel-o"></i> Isolved Payroll Upload</button>
+                </td>
+            }
+        </tr>
+        }
+    </tbody>
+</table>
+
+<div id="actionModals">
+</div>
+
+@section Scripts {
+    <script type="text/javascript" src="~/Scripts/DCC/SkilledPayrollManagement.js?v=0.01"></script>
+}

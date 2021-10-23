@@ -1,0 +1,164 @@
+﻿@model DCC.Models.Home.ProgressReportPdf
+<head>
+    <style type="text/css">
+        body {
+            font-size: 12px;
+        }
+
+        h1 {
+            font-size: 15px;
+            text-align: center;
+            padding: 0;
+        }
+
+        table {
+            margin-top: 0px;
+            margin-bottom: 5px;
+            width: 100%;
+        }
+
+        th {
+            font-size: 14px;
+            vertical-align: top;
+            text-align: center;
+            background-color: aliceblue;
+        }
+
+        td {
+            vertical-align: top;
+            font-weight: bold;
+            padding: 2px;
+            border: 0.5px solid #c0c0c0;
+        }
+
+        div {
+            margin-top: 1px;
+            margin-bottom: 5px;
+            padding: 0px 5px 0px 5px;
+            font-size: 12px;
+            font-weight: normal;
+            text-indent: 15px;
+        }
+
+        span {
+            font-size: 12px;
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <h1>Plan Of Care/Treatment Plan @Model.serviceName  @Model.clientName</h1>
+    <table>
+        <tr>
+            <th colspan="4">Member Information</th>
+        </tr>
+        <tr>
+            <td>Member Name:<div>@Model.clientName</div></td>
+            <td>Date of Birth:<div>@Model.dob</div></td>
+            <td>Assist ID:<div>@Model.clId</div></td>
+            <td>Diagnosis:<div>@Model.diagnosis</div></td>
+        </tr>
+        <tr>
+            <td>Qualified Vendor Agency:<div>@(Model.agency + " NPI:" + Model.npi)</div></td>
+            <td>Most Recent Evaluation:<div>@Model.lastEvaluationDate</div></td>
+
+            <td>First Treatment Date:<div>@Model.serviceStartDate</div></td>
+            <td></td>
+        </tr>
+
+    </table>
+
+    @foreach (var question in @Model.questions)
+    {
+        <div style="font-size: 14px;font-weight:bold"> @Html.Raw(question.title)</div>
+        <div style="padding-bottom:15px">@Html.Raw(question.answer)</div>
+
+        @*
+        <table>
+            <tr>
+                <td>@Html.Raw(question.title)<div>@Html.Raw(question.answer)</div></td>
+            </tr>
+        </table>
+    *@
+    }
+
+
+    <table>
+        <tr>
+            <th colspan="4">Treatment Request</th>
+        </tr>
+        <tr>
+            <td>Treatment Start:<div>@Model.treatmentStart</div></td>
+            <td>Treatment End:<div>@Model.treatmentEnd</div></td>
+
+            @if (Model.svc != "ABAE" && Model.svc != "ABA")
+            {
+                <td>Requested Visits<div>@Model.numberOfVisits</div></td>
+                <td>Frequency<div>@Model.treatmentFrequency</div></td>
+                <td>Visit Duration<div>@Model.duration minutes</div></td>
+            }
+        </tr>
+    </table>
+
+
+
+
+    <table>
+        @foreach (var o in @Model.longTermObjectives)
+        {
+            <tr>
+                <td style="font-size: 11px;">
+                    <span style="font-size:12px;font-weight:bold">GOAL AREA: @o.goalAreaName.ToUpper()</span><br />
+                    @o.objIndex Long Term Goal:<div>@Html.Raw(o.longTermGoal)</div>
+
+                </td>
+            </tr>
+
+            foreach (var s in o.shortTermGoals)
+            {
+                <tr>
+                    <td style="border:0px">
+                        <table style="margin-left: 10px; background-color:aliceblue">
+                            <tr>
+                                <td>
+                                    @s.goalIndex Action Step/Short Term Goal:<div>@Html.Raw(s.shortTermGoal)</div>
+
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+
+    <table>
+        <tr>
+            <th colspan="6">Signature Section</th>
+        </tr>
+
+        <tr>
+            <td>Therapist<br /><span>@Model.completedBy @Model.completedByTitle</span></td>
+            <td>NPI<br /><span>@Model.completedByCredentials</span></td>
+            <td>Phone<br /><span>@Model.completedByPhone</span></td>
+            <td>Email<br /><span>@Model.completedByEmail</span></td>
+            <td style="width: 100px"></td>
+            <td style="width: 50px"><i>@Model.currentDate<br />@Model.currentTime</i></td>
+        </tr>
+        <tr>
+            <td>Physician<br /><br /></td>
+            <td>NPI<br /><br /></td>
+            <td>Phone<br /><br /></td>
+            <td>Email<br /><br /></td>
+            <td>Signature<br /><br /></td>
+            <td>Date<<br /><br /></td>
+        </tr>
+    </table>
+
+    <div class="disclaimer">
+        I  @Model.completedBy  hereby attest that the medical record entry for @Model.completedDt accurately reflects signatures/notations that I made in my capacity as a  @Model.completedByTitle   I do hereby attest that this information is true, accurate, and complete to the best of my knowledge and that any falsifications, omissions, or concealment of material fact may subject me to administrative, civil, or criminal liability.
+    </div>
+
+
+</body>
+

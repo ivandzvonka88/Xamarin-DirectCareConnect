@@ -1,0 +1,101 @@
+﻿@model DCC.Models.BillingLocations
+<div class="modal fade" id="actionModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-edit"></i> <span>New Service Location</span></h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="gClLId">
+                <input type="hidden" id="gGeoId">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="gLtype">Location Type</label>
+                            <select id="gLtype" class="form-control form-control-sm" onchange="locationTypeIdChanged();">
+                                <option value="0"></option>
+                                @foreach (var item in Model.billingLocationTypes)
+                                {
+                                    <option value="@item.value">@item.name</option>
+                                }
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="geoByAddress" style="display:none">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="gLname">Name</label>
+                            <input id="gLname" class="form-control form-control-sm" type="text" />
+                        </div>
+                        <div class="form-group">
+                            <label for="gLAd1">Address</label>
+                            <input id="gLAd1" class="form-control form-control-sm " type="text" autocomplete="off" />
+                        </div>
+                        <div class="form-group">
+                            <label for="gLAd2">Apartment# </label>
+                            <input id="gLAd2" class="form-control form-control-sm address" type="text" autocomplete="off" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="gLCty">City</label>
+                            <input id="gLCty" class="form-control form-control-sm address" form-control-sm type="text" autocomplete="off" />
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="stateSelect">State</label>
+                                    @Html.Partial("_StateSelector", "AZ")
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="gLZ">Zip</label>
+                                    <input id="gLZ" class="form-control form-control-sm zip" type="text" autocomplete="off" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="gLLandline" style="color:red">Landline for EVV</label>
+                                    <input id="gLLandline" class="form-control form-control-sm address" type="text" autocomplete="off" />
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group" style="display:none">
+                                    <label for="gLRad">Radius (feet)</label>
+                                    <input id="gLRad" class="form-control form-control-sm address" type="text" autocomplete="off" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="geoByLocation" style="display:none">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <label for="gLcoLocation">Location</label>
+                            <select id="gLcoLocation" class="form-control form-control-sm address">
+                                <option value="0"></option>
+                                @foreach (var item in Model.billingLocations)
+                                {
+                                    <option value="@item.value">@item.name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="gLBtn" type="button" class="btn btn-primary" onclick="updateGeoLocation();">Add Location</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#actionModal').modal('show');
+</script>
+
+

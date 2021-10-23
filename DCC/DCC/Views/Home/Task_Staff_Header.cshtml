@@ -1,0 +1,23 @@
+﻿
+@model DCC.Models.Home.HomeStaffPage
+<div class="row mb-3 align-items-center provider-search">
+    <div class="col-sm-12 col-md-8">
+        <div class="provider-name" style="">
+            <span id="fn">@Model.fn</span> <span id="ln">@Model.ln</span>
+        </div>
+    </div>
+    <div class="col-sm-12 col-lg-4">
+        <div class="input-group">
+            <input class="form-control form-control-sm" id="searchBox" onkeyup="search();" placeholder="search staff and clients" />
+            <div class="input-group-append">
+                <!--  <span class="input-group-text"><i class="fa fa-search faBtn"></i></span>-->
+                <span class="input-group-text"><i class="fa fa-times" onclick="clearSearch();"></i></span>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#TPRID').val(@Model.prId);
+    hash = '@("TPRID" + @Model.prId)';
+    window.location.hash = hash + '-' + $('#CurrentCompanyId').val();
+</script>

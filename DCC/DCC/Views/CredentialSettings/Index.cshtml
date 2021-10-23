@@ -1,0 +1,101 @@
+﻿
+@model DCC.ViewModelBase
+@Html.AntiForgeryToken()
+
+@Html.Partial("MenuHeader", @Model)
+
+
+@Html.Partial("SettingsHeader", @Model)
+<style>
+    .roleRow th {
+        font-size: 14px;
+        text-align: center
+    }
+
+    .reqRow th {
+        font-size: 12px;
+        text-align: center
+    }
+
+    tbody td {
+        text-align: center
+    }
+    /* for credentials set in employee profile*/
+    .empCredential {
+        background-color: #c1c1c1 !important;
+    }
+</style>
+<div id="credentials">
+
+
+</div>
+
+
+<div class="form-group btns" style="display:none">
+    <button class="btn btn-primary" onclick="saveCredentialSettings()"> Save Credential Settings</button>
+    <button class="btn btn-primary" onclick="openAddNewCredential()"> Create New Credential</button>
+    <button class="btn btn-secondary" onclick="cancelChanges()"> Cancel Changes</button>
+</div>
+<!-- Modals -->
+<div class="modal addCredentialModal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-edit"></i> Add New Credential</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="credName">Credential Name</label>
+                    <input class="form-control form-control-sm" id="credName" />
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="credRadios" id="roleRadio" value="b">
+                    <label class="form-check-label" for="roleRadio">
+                        Role Specific
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="credRadios" id="empRadio" value="c">
+                    <label class="form-check-label" for="empRadio">
+                        Employee Specific
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="DBtn" type="button" class="btn btn-primary" onclick="saveNewCredential();">Save New Credential</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+
+
+    <script>
+        var srvcUrl = '';
+        var srvcUrl1 = '';
+        var i = 0;
+        var pathname = window.location.pathname;
+        var t = document.location.hostname;
+        var VirtualDir = pathname.split('/');
+        VirtualDir.forEach(function (item) {
+            if (t != 'localhost') {
+                if (i == 1) {
+                    srvcUrl1 = item;
+                    if (srvcUrl1 != '')
+                        srvcUrl1 = '/' + item
+                }
+            }
+            i = i + 1;
+            if (item != '') {
+                srvcUrl += '/' + item;
+            }
+            else {
+                srvcUrl += '';
+            }
+        });
+    </script>
+    <script type="text/javascript" src="~/Scripts/DCC/CredentialSettings.js?v=0.04"></script>
+
+}

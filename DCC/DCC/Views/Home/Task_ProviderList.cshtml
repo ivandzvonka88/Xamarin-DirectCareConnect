@@ -1,0 +1,9 @@
+﻿@model DCC.Models.Home.HomeStaffPage
+
+<div class="clBlockData providers">
+    @foreach (var item in Model.providers)
+    {
+        <div class="providerItem"><span class="rowLink "onclick="getTaskStaffPage('@item.prId')">@item.sNm</span> &nbsp; <i class="fa fa-comment-o faBtn msgBtn" onclick="openTaskMessageModal(@item.sendBirdUserId, '@item.sNm')"></i></div>
+    }
+</div>
+

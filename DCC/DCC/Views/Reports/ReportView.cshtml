@@ -1,0 +1,34 @@
+﻿@model DCC.Models.Reports.ServiceInfo
+
+<input type="hidden" id="currentServiceId" value="@Model.serviceId" />
+<div class="service" style="margin-top:12px; margin-bottom:12px;font-size:20px;font-weight:bold">
+ 
+</div>
+
+
+<div class="row">
+    @if (!Model.isEvaluation)
+    {
+        <div class="col-md-4">
+            <div id="goalAreaWrapper">
+                @Html.Partial("GoalAreaView", @Model)
+            </div>
+        </div>
+    }
+
+    <div class="col-md-8">
+        @if (Model.isTherapy)
+        {
+            <div id="periodicQuestionWrapper">
+                @Html.Partial("PeriodicQuestionView", @Model)
+            </div>
+        }
+        else if (Model.isEvaluation)
+        {
+            <div id="sessionQuestionWrapper">
+                @Html.Partial("SessionQuestionView", @Model)
+            </div>
+        }
+    </div>
+
+</div>

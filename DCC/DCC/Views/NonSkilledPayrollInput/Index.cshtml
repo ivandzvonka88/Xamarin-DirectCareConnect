@@ -1,0 +1,29 @@
+﻿@model DCC.Models.Payroll
+@Html.Partial("MenuHeader", @Model)
+@Html.AntiForgeryToken()
+
+<h1>Non-Skilled Payroll Timesheets</h1>
+<select id="providerSelect" onchange="selectionChanged();">
+    <option value="0"></option>
+    @foreach (var p in Model.Providers)
+    {
+        <option value="@p.providerId">@p.providerName</option>
+    }
+</select>
+
+
+<select id="periodSelect" onchange="selectionChanged()">
+    <option value="0"></option>
+    @foreach (var p in Model.Periods)
+    {
+        <option value="@p.periodId" @(p.periodId == Model.PeriodId ? "selected" : "")>@p.startDate-@p.endDate</option>
+    }
+</select>
+
+<div id="payRollInfo">
+</div>
+<div id="actionModals">
+</div>
+@section Scripts {
+    <script type="text/javascript" src="~/Scripts/DCC/NonSkilledPayrollInput.js?v=0.01"></script>
+}

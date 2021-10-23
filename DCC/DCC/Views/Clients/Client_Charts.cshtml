@@ -1,0 +1,25 @@
+﻿@model DCC.Models.ClientPageData
+@if (Model.userLevel != "Provider" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+{
+    <div class="hdr"><i class="fa fa-plus-square faBtn" onclick="openChartUploadModal()"></i> Upload Chart</div>
+}
+<table>
+    @foreach (var item in Model.charts)
+    {
+    <tr class="chartItem">
+        @if (Model.userLevel != "Provider" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+        {
+            <td style="vertical-align:top">
+                <i class="fa fa-trash faBtn" onclick="openDeleteChartItemModal(@item.chartId, '@item.fileName.Replace("'","")')"></i>
+            </td>
+
+        }
+        <td style="vertical-align:top"><a class="chartLink" target="_Chart" href="~/Clients/GetChart?id=@item.chartId"><span id="@("chart" + @item.chartId)">@item.fileName</span></a></td>
+        <td><span>@item.startDate</span><br /><span>@item.endDate</span></td>
+        <td style="vertical-align:top">@item.service</td>
+        <td style="vertical-align:top">@item.docType</td>
+    </tr>
+    }
+</table>
+
+

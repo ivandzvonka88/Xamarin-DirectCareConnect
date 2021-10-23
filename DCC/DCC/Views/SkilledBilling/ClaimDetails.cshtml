@@ -1,0 +1,656 @@
+﻿@model DCC.Models.Providers.ProviderInit
+@using DCC.Models.Providers
+<style>
+    .txtSixe {
+        width: 128px !important;
+    }
+</style>
+@{
+    var selrowid = ViewBag.selrowid;
+    int j = 0, k = 0;
+    bool displayWaiver = false;  /*to hide / display link*/
+    int insuranceFlag = ViewBag.insuranceFlag;
+    bool hasDDD = false;
+    int dddIndFlag;
+    bool isSelfPay = false;
+    List<int> nonPendWaiver = new List<int> { 0, 3, 4, 7, 9 };
+    List<int> nonPymtFields = new List<int> { 0, 2, 8 };
+}
+
+@foreach (var cd in Model.ClientDetailsList.OrderByDescending(c => c.dos))
+{
+
+    j = j + 1; k = 0;
+
+    <div class="row  brdr-btm">
+        <div class="col-sm-2 ddate">
+            <span id="ddate-@selrowid-@j.ToString()" class="date-expand" onclick="expandDetails(this)"><i class="fa fa-minus-square"></i> @cd.dos.ToString("MM/dd/yyyy")</span>
+        </div>
+
+        <div class="col-sm-10 ddate-data padtb15" id="ddata-@selrowid-@j.ToString()">
+            @foreach (var cdi in cd.ClientDetailsInfoList)
+            {
+                k = k + 1;
+                string policyIndex = j + "_" + k + "_" + selrowid;
+                var ob = @Html.Raw(Json.Encode(cdi));
+                <script>
+                    var x_@policyIndex= JSON.stringify(@ob);
+                </script>
+
+                if(cdi.InsurancePolicyId == 0)
+                {
+                    isSelfPay = true;
+                }
+
+                if (@cdi.dddStartDate == null || @cdi.dddEndDate == null || @cdi.dddUnit == null)
+                {
+                    displayWaiver = true;
+                }
+
+                if (@cdi.dddStartDate != null || @cdi.dddEndDate != null || @cdi.dddUnit != null)
+                {
+                    hasDDD = true;
+                }
+
+                <div class="data-wrap">
+                    <div class="ddata-dataX row no-gutters">
+                        <div class="chk-sel">
+                            <div class="custom-control custom-checkbox custom-control-inline">
+                                @* <input type="checkbox" class="custom-control-input claimSelect" id="chk-sel-@selrowid-@j.ToString()-@k.ToString()" data-claim-id="@cdi.claimId" onclick="addClaimsForWaiver('@k','@cdi.claimId',this)" /> *@
+                                <input type="checkbox" class="custom-control-input claimSelect" id="chk-sel-@selrowid-@j.ToString()-@k.ToString()" data-claim-id="@cdi.claimId" 
+                                       data-client-name="@cdi.Client" data-payment-id="@cdi.paymentId" data-deductibleInd="@cdi.DeductibleInd" 
+                                       data-denial="@Model.ClaimPaymentList.Where(x => x.ClaimId == cdi.claimId).Select(x => x.IsDenial).FirstOrDefault()" 
+                                       onclick="addClaimsForWaiver('@k','@cdi.claimId',this)" />
+                                <label class="custom-control-label" for="chk-sel-@selrowid-@j.ToString()-@k.ToString()">&nbsp;</label>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6 table-responsive">
+
+                            <table class="table table-bordered table-striped ddata-table tblSkilledBilling-@selrowid-@j.ToString()-@k.ToString()">
+                                <tbody style="font-size:small">
+                                    <tr>
+                                        <td style="height:auto!important">
+                                            <div class="display-grid grid-5col grid-column-gap">
+                                                <div>
+                                                    <strong>DOS:</strong>&nbsp;@cd.dos.ToString("MM/dd/yyyy")
+                                                    <span style="float:right">
+                                                        @if (cdi.claimId != 0)
+                                                        {
+                                                            <strong>Session ID:</strong> @cdi.clientSessionTherapyID
+                                                        }
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <strong>CPT Code:</strong>&nbsp;@cdi.cptCode
+                                                    <span style="float:right">
+                                                        @if (cdi.claimId != 0)
+                                                        {
+                                                            <strong>Claim ID:</strong> @cdi.claimId
+                                                        }
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <strong>Provider:</strong>&nbsp;@cdi.provider
+                                                </div>
+                                                @if (!string.IsNullOrEmpty(cdi.therapistSupervisor))
+                                                {
+                                                    <div>
+                                                        <strong>Supervisor:</strong>&nbsp;@cdi.therapistSupervisor
+                                                        <span class="pull-right badge font100p claim-age">Age: @cdi.ClaimAgingBucket</span>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div>
+                                                        <span class="pull-right badge font100p claim-age">Age: @cdi.ClaimAgingBucket</span>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </td>
+                                        @*@{
+                                            if (cdi.fileId > 0)
+                                            {*@
+                                        <td>
+                                            <label>Download Report:</label><div class="input-group input-group-sm">
+
+                                                @*<div class="form-group">
+
+                                                        @Html.DropDownList("downloadItem", (IEnumerable<SelectListItem>
+                                                            )((Dictionary<long, List<SelectListItem>>)ViewBag.downloadCategory)[cdi.fileId], "- Select -", new { @class = "custom-select custom-select-sm ddreport" })
+                                                                                                                        <div class="input-group-append">
+                                                                <button class="btn btn-light btn-sm btn-sm1 btn-download" type="button"><i class="fa fa-download f11"></i></button>
+                                                            </div>
+                                                    </div>*@
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        @Html.DropDownList("downloadItem", (IEnumerable<SelectListItem>
+                                                            )((Dictionary<long, List<SelectListItem>>)ViewBag.downloadCategory)[cdi.claimId], "- Select -", new { @class = "custom-select custom-select-sm ddreport" })
+                                                        <div class="input-group-append">
+                                                            <input type="hidden" value="@cdi.claimId" class="claimId" />
+                                                            <input type="hidden" value="@cdi.clientChartFileId" class="chartfileid" />
+                                                            <input type="hidden" value="@cdi.clientChartFileExtension" class="chartfileex" />
+                                                            <input type="hidden" value="@cdi.progressReportFileId" class="progressfileid" />
+                                                            <input type="hidden" value="@cdi.noteTherapyFileId" class="notefileid" />
+                                                            <input type="hidden" value="@cdi.progressReportFileName" class="progressfile" />
+                                                            <input type="hidden" value="@cdi.noteTherapyFileName" class="notefile" />
+                                                            <input type="hidden" value="@cdi.progressReportFileExtension" class="progressfileex" />
+                                                            <input type="hidden" value="@cdi.noteTherapyFileExtension" class="notefileex" />
+                                                            <button class="btn btn-light btn-sm btn-sm1 btn-download" type="button"><i class="fa fa-download f11"></i></button>
+                                                        </div>
+                                                        <input class="claimId" type="hidden" value="@cdi.claimId" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        @*}
+                                            }*@
+                                        @*
+                                            <td>
+                                                <div class="form-group">
+                                                    <label class="">Paid Amount:</label>
+                                                    <input type="text" value="200" size="5" class="form-control form-control-sm" />
+                                                </div>
+                                            </td>*@
+                                    </tr>
+                                    @{
+                                        if (cdi.claimId > 0)
+                                        {
+
+                                            <tr>
+                                                <td style="height:auto!important">
+                                                    <div class="form-group">
+                                                        <label class="">Amount Billed:</label>
+                                                        <input readonly="readonly" type="text" value=@cdi.billedAmount size="5" class="form-control form-control-sm txtSixe amountInput" />
+                                                    </div>
+                                                </td>
+                                                <td style="height:auto!important">
+                                                    <div class="form-group">
+                                                        @{ if (!nonPymtFields.Contains(cdi.ClaimStatusID) && !isSelfPay)
+                                                           {
+                                                                <label class="">Co-insurance Amount:</label>
+                                                                <input type="text" value="@cdi.coInsuranceAmount" onblur="callUpdate(this,'CoInsuranceAmount',@cdi.claimId,0,@cdi.InsurancePolicyId,@cdi.allowedAmount);" size="5" class="form-control form-control-sm txtSixe amountInput" />
+                                                            } 
+                                                        }
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    <tr>
+                                        <td style="height:auto!important;" colspan="2">
+                                            <div class="form-group">
+                                                <label><a href="#" style="color:blue">Prior Authorization</a> :</label>
+                                                <div class="row no-gutters custom-group">
+                                                    <div class="col-sm-3"><label>Start Date</label>
+                                                    <input type="text" name="startDate" alt="StartDate" onblur="callUpdate(this,'PriorStart',@cdi.claimId,@cdi.serviceId,@cdi.InsurancePolicyId);" value="@cdi.PAuthStart" size="7" class="form-control form-control-sm dateControl" /></div>
+                                                    <div class="col-sm-1"><label>&nbsp;</label><span class="form-control form-control-sm text-center" style="background-color:#e9e9e9;">-</span></div>
+                                                    <div class="col-sm-3"><label>End Date</label>
+                                                    <input type="text" alt="EndDate" name="startDate" onblur="callUpdate(this,'PriorEnd',@cdi.claimId,@cdi.serviceId,@cdi.InsurancePolicyId);" value="@cdi.PAuthEnd" size="7" class="form-control form-control-sm dateControl" /></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="col-md-6">
+                            <table class="table table-bordered table-striped ddata-table tblSkilledBilling-@selrowid-@j.ToString()-@k.ToString()">
+                                <tbody style="font-size:small">
+                                    <tr>
+                                        <td>
+                                            <div class="form-group">
+                                                <label>Policy Nbr / Group Nbr: </label><div class="clearfix"></div>
+                                                <a href="#">
+                                                    @if (cdi.policyNumber != "" && cdi.groupNumber != "")
+                                                    {
+                                                        @*<label style="color:blue;text-decoration:underline;cursor:pointer" onclick="openaddPolicyModal(@cdi.InsurancePolicyId,'');">@(cdi.policyNumber + " / " + cdi.groupNumber)</label>*@<label style="color:blue;text-decoration:underline;cursor:pointer" onclick="openaddPolicyModal(@cdi.InsurancePolicyId,'');"></label><label style="color:blue;text-decoration:underline;cursor:pointer" onclick="openaddPolicyModal(@cdi.InsurancePolicyId,'');"></label><label style="color:blue;text-decoration:underline;cursor:pointer" onclick="openaddPolicyModal(@cdi.InsurancePolicyId,'');"></label><label style="color:blue;text-decoration:underline;cursor:pointer" onclick="openaddPolicyModal(@cdi.InsurancePolicyId,'');"></label><label style="color:blue;text-decoration:underline;cursor:pointer" onclick="openaddPolicyModal(@cdi.InsurancePolicyId,'');"></label><label style="color:blue;text-decoration:underline;cursor:pointer" onclick="openaddPolicyModal(@cdi.InsurancePolicyId,'');"></label><label style="color:blue;text-decoration:underline;cursor:pointer" onclick="openaddPolicyModal(@cdi.InsurancePolicyId,'');"></label>
+                                                        <label style="color:blue;text-decoration:underline;cursor:pointer" onclick="OpenManagePolicyView(@cdi.InsurancePolicyId,false,false,false);">@(cdi.policyNumber + " / " + cdi.groupNumber)</label>
+
+                                                    }
+                                                    @{ switch (cdi.insurancePriority)
+                                                        {
+                                                            case -1:
+                                                                <span class="badge font100p badge-success">No Insurance</span>
+                                                                break;
+                                                            case 1:
+                                                                <span class="badge font100p badge-success">Primary</span>
+                                                                break;
+                                                            case 2:
+                                                                <span class="badge font100p badge-secondary badge-success">Secondary</span>
+                                                                break;
+                                                            case 3:
+                                                                <span class="badge font100p badge-success">Tertiary</span>
+                                                                break;
+                                                            default: break;
+                                                        }
+                                                    }
+                                                </a>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-group">
+                                                <label>
+                                                    Prescription:
+                                                </label>
+                                                <div class="clearfix"></div>
+                                                <!--85750 / 10/12/2019 / 12/24/2019-->
+                                                <div class="row no-gutters custom-group">
+                                                    @{
+                                                        if (!string.IsNullOrEmpty(cdi.PresStart))
+                                                        {
+                                                            <div class="col-sm-5"><label>Start Date</label><span class="form-control form-control-sm ">@cdi.PresStart</span></div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="col-sm-5"><label>Start Date</label><span class="form-control form-control-sm ">Missing</span></div>
+                                                        }
+                                                    }
+                                                    <div class="col-sm-2"><label>&nbsp;</label><span class="form-control form-control-sm text-center" style="background-color:#e9e9e9;">-</span></div>
+                                                    @{
+                                                        if (!string.IsNullOrEmpty(cdi.PresEnd))
+                                                        {
+                                                            <div class="col-sm-5"><label>End Date</label><span class="form-control form-control-sm lastcontrol">@cdi.PresStart</span></div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="col-sm-5"><label>End Date</label><span class="form-control form-control-sm lastcontrol">Missing</span></div>
+                                                        }
+                                                    }
+
+
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @{
+                                        if (cdi.claimId > 0)
+                                        {
+                                            <tr>
+                                                <td style="height:auto!important">
+                                                    <div class="col-sm-6" style="margin-left:-12px;display:inline-block">
+                                                        <div class="form-group">
+                                                            @{ if (!nonPymtFields.Contains(cdi.ClaimStatusID) && !isSelfPay)
+                                                                {
+                                                                    <label class="">Allowed Amount:</label>
+                                                                    <input type="text" value="@cdi.allowedAmount" onblur="callUpdate(this,'AllowedAmount',@cdi.claimId,0,@cdi.InsurancePolicyId);" size="5" class="form-control form-control-sm txtSixe amountInput" />
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label style="visibility:hidden;">Allowed Amount:</label>
+                                                                    <input style="visibility:hidden;" type="text" size="5" class="form-control form-control-sm txtSixe" />
+                                                                }
+
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6" style="display:inline-block">
+                                                        <div class="form-group">
+                                                            @{ if (!nonPymtFields.Contains(cdi.ClaimStatusID))
+                                                                {
+                                                                    <label class="">Paid Amount:</label>
+                                                                    <input type="text" onblur="callUpdate(this,'PaidAmount',@cdi.claimId,0,@cdi.InsurancePolicyId, @cdi.allowedAmount);" value=@cdi.paidAmount size="5" class="form-control form-control-sm amountInput" />
+                                                                }
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td style="height:auto!important">
+                                                    <div class="form-group">
+                                                        <div class="col-sm-9" style="margin-left:-12px">
+                                                            @{ if (!nonPymtFields.Contains(cdi.ClaimStatusID))
+                                                                {
+                                                                    string dte = cdi.paymentDate.HasValue ? cdi.paymentDate.Value.ToString("MM/dd/yy") : "";
+                                                                    <label class="">Payment Date:</label>
+                                                                    <input type="text" onblur="callUpdate(this,'PaymentDate',@cdi.claimId,0,@cdi.InsurancePolicyId);" value="@dte"  size="5" class="form-control form-control-sm dateControl" />
+                                                                }
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    <tr>
+                                        <td style="height:auto!important" colspan="2">
+                                            <div class="form-group">
+                                                <label>
+                                                    <a href="#" style="color:blue" onclick="OpenManagePolicyView(@cdi.InsurancePolicyId,false,false,true);"> DDD Authorization / Waiver: </a>
+                                                    <a class="@(displayWaiver ? " visible-item" : "hidden-item" )" href="#" style="color: blue;text-decoration: underline;margin-left: 15px;" download>Apply Waiver</a>
+                                                </label>
+                                                <div class="row no-gutters custom-group">
+                                                    <div class="col-sm-3"><label>Start Date</label><input type="text" name="startDate" alt="StartDate" onblur="callUpdate(this,'DDDStart',@cdi.claimId,0,@cdi.InsurancePolicyId);" value="@cdi.dddStartDate" size="7" class="form-control form-control-sm dateControl" /></div>
+                                                    <div class="col-sm-1"><label>&nbsp;</label><span class="form-control form-control-sm text-center" style="background-color:#e9e9e9;">-</span></div>
+                                                    <div class="col-sm-3"><label>End Date</label><input type="text" alt="EndDate" name="startDate" onblur="callUpdate(this,'DDDEnd',@cdi.claimId,0,@cdi.InsurancePolicyId);" value="@cdi.dddEndDate" size="7" class="form-control form-control-sm dateControl" /></div>
+                                                    <div class="col-sm-2"><label>Units</label><input type="text" name="unit" alt="Unit" onblur="callUpdate(this,'DDDAu',@cdi.claimId,0,@cdi.InsurancePolicyId);" value="@cdi.dddUnit" size="7" class="form-control form-control-sm lastcontrol" /></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        @if (cdi.insurancePriority == -1)
+                        {
+                            <div class="col-md-12">
+                                <table class="table table-bordered table-striped ddata-table">
+                                    <tbody style="font-size:small">
+                                        <tr>
+                                            <td style="height:auto!important; vertical-align:bottom">
+
+                                                <div>
+                                                    <label>Status:</label>
+
+                                                    <select id="claimStatus" class="custom-select custom-select-sm claimStatus-@j" style="width:200px" onchange="callUpdate(this,'SelfPayStatus',@cdi.clientSessionTherapyID,0,@cdi.InsurancePolicyId);">
+                                                        @*onchange="updateClaimStatus(@cdi.claimId);"*@
+                                                        @foreach (var item in Model.claimStatusList)
+                                                        {
+                                                            if (cdi.ClaimStatusID == item.claimstatusid)
+                                                            {
+                                                                <option value="@item.claimstatusid" selected>@item.name</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@item.claimstatusid">@item.name</option>
+                                                            }
+                                                        }
+                                                    </select>
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        @if (cdi.insurancePriority == -1)
+                        {
+                            if (cdi.claimId > 0 && !isSelfPay)
+                            {
+                                <div class="col-md-12">
+                                    <table class="table table-bordered ddata-table">
+                                        <tbody style="font-size:small">
+                                            <tr>
+                                                <td style="height:auto!important; vertical-align:bottom">
+                                                    @if (insuranceFlag != 2)  //2 == DDD
+                                                    {
+                                                        dddIndFlag = hasDDD ? 1 : 0;
+                                                        <div class="custom-control custom-checkbox custom-control-inline">
+                                                            <input type="checkbox" value="Deductible" class="custom-control-input" id="chkDeductibleA-@policyIndex" onclick="checkDeductible(x_@policyIndex,@policyIndex, @dddIndFlag);">
+                                                            <label class="custom-control-label" for="chkDeductibleA">Deductible</label>
+                                                        </div>
+                                                    }
+                                                    @if (hasDDD && !nonPendWaiver.Contains(cdi.ClaimStatusID))
+                                                    {
+                                                        <div class="custom-control custom-checkbox custom-control-inline chkPending">
+                                                            <input type="checkbox" value="Pending Waiver" class="custom-control-input" id="chkPendWaiverA-@selrowid-@j.ToString()-@k.ToString()" onclick="checkClaimDenial(this,x_@policyIndex,'@cd.dos');">
+
+                                                            <label class="custom-control-label" for="chkPendWaiverA-@selrowid-@j.ToString()-@k.ToString()">Pending Waiver</label>
+                                                        </div>
+                                                    }
+                                                    @if (insuranceFlag != 2)
+                                                    {
+                                                        if (!hasDDD)
+                                                        {
+                                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                                @*<input type="checkbox" value="Clean Denial" class="custom-control-input" id="chkCleanDenial-@selrowid-@j.ToString()-@k.ToString()" onclick="checkClaimDenial(this,x_@policyIndex);">@*@Html.Raw(Json.Encode(cdi))*@*@*@
+                                                                <label class="custom-control-label" for="chkCleanDenial-@selrowid-@j.ToString()-@k.ToString()">Denial Reason:</label>&nbsp;
+                                                                <input id="txtReasons" placeholder="Reason" onkeyup="resetFilter();">
+                                                            </div>
+                                                        }
+                                                        <div class="custom-control custom-checkbox custom-control-inline">
+                                                            <input type="checkbox" value="Prior auth alert" class="custom-control-input" id="chkPriorAuthA_@cdi.claimId" data-claimid="@cdi.claimId" onclick="checkPriorAuth(@cdi.claimId);">
+                                                            <label class="custom-control-label" for="chkPriorAuthA_@cdi.claimId">Prior Auth Alert</label>
+                                                        </div>
+                                                    }
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-12">
+                                    <table class="table table-bordered table-striped ddata-table">
+                                        <tbody style="font-size:small">
+                                            <tr>
+                                                <td style="height:auto!important">
+                                                    <div class="form-group">
+                                                        <label>Comments:</label>
+                                                        <a href="#" id="claimComments_@cdi.claimId" onclick="showClaimComments(this,@cdi.claimId); return false;" style="display: @(cdi.comments.Count > 0 ? "inline" : "none");">View Comments</a>
+                                                        <input type="text" onblur="callUpdate(this,'Comments',@cdi.claimId,0,@cdi.InsurancePolicyId);" name="comments" alt="Comments#" value="" class="form-control form-control-sm" />
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                                                            }
+
+                        else
+                        {
+                            if (cdi.claimId > 0 && !isSelfPay)
+                            {
+                                <div class="col-md-12">
+                                    <table class="table table-bordered ddata-table">
+                                        <tbody style="font-size:small">
+                                            <tr>
+                                                @if (insuranceFlag != 2 || cdi.ClaimStatusID != 7)
+                                                {
+                                                <td style="height:auto!important; vertical-align:bottom">
+                                                    @if (insuranceFlag != 2)  //2 == DDD
+                                                    {
+                                                        dddIndFlag = hasDDD ? 1 : 0;
+                                                        <div class="custom-control custom-checkbox custom-control-inline">
+                                                            <input type="checkbox" value="Deductible" class="custom-control-input abc123" id="chkDeductibleA-@selrowid-@j.ToString()-@k.ToString()" onclick="checkDeductible(x_@policyIndex, '', @dddIndFlag);">
+                                                            <label class="custom-control-label" for="chkDeductibleA-@selrowid-@j.ToString()-@k.ToString()">Deductible</label>
+                                                        </div>
+                                                    }
+                                                    @if (hasDDD && !nonPendWaiver.Contains(cdi.ClaimStatusID))
+                                                    {
+                                                        <div class="custom-control custom-checkbox custom-control-inline chkPending">
+                                                            <input type="checkbox" value="Pending Waiver" class="custom-control-input" id="chkPendWaiverA-@selrowid-@j.ToString()-@k.ToString()" onclick="checkClaimDenial(this,x_@policyIndex,'@cd.dos');">
+
+                                                            <label class="custom-control-label" for="chkPendWaiverA-@selrowid-@j.ToString()-@k.ToString()">Pending Waiver</label>
+                                                        </div>
+                                                    }
+                                                    @if (insuranceFlag != 2)  //2 == DDD
+                                                    {
+                                                        if (!hasDDD)
+                                                        {
+                                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                                @*<input type="checkbox" value="Clean Denial" class="custom-control-input" id="chkCleanDenial-@selrowid-@j.ToString()-@k.ToString()" onclick="checkClaimDenial(this,x_@policyIndex);">@*@Html.Raw(Json.Encode(cdi))*@*@*@
+                                                                <label class="custom-control-label" for="chkCleanDenial-@selrowid-@j.ToString()-@k.ToString()">Denial Reason:</label>&nbsp;
+                                                                <input id="txtReasons" placeholder="Reason" onkeyup="resetFilter();">
+                                                            </div>
+                                                        }
+                                                        <div class="custom-control custom-checkbox custom-control-inline">
+                                                            <input type="checkbox" value="Prior auth alert" class="custom-control-input" id="chkPriorAuthA_@cdi.claimId" data-claimid="@cdi.claimId" onclick="checkPriorAuth(@cdi.claimId);">
+                                                            <label class="custom-control-label" for="chkPriorAuthA_@cdi.claimId">Prior Auth Alert</label>
+                                                        </div>
+                                                    }
+                                                </td>
+                                                }
+                                                <td style="height:auto !important">
+                                                    @if (cdi.insurancePriority != -1)
+                                                    {
+                                                        <div style="float:right;">
+                                                            <label>Status</label>
+                                                            <select id="claimStatus" class="custom-select custom-select-sm claimStatus-@j" style="width:300px" onchange="callUpdate(this,'Status',@cdi.claimId,0,@cdi.InsurancePolicyId);">
+                                                                @*onchange="updateClaimStatus(@cdi.claimId);"*@
+                                                                @foreach (var item in Model.claimStatusList)
+                                                                {
+                                                                    if (cdi.ClaimStatusID == item.claimstatusid)
+                                                                    {
+                                                                        <option value="@item.claimstatusid" selected>@item.name</option>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <option value="@item.claimstatusid">@item.name</option>
+                                                                    }
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                    }
+
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-12">
+                                    <table class="table table-bordered table-striped ddata-table">
+                                        <tbody style="font-size:small">
+                                            <tr>
+                                                <td style="height:auto!important">
+                                                    <div class="form-group">
+                                                        <label>Comments:</label>
+                                                        @* @if (cdi.comments.Count > 0) *@
+                                                        @* {<a href="#" id="claimComments_@cdi.claimId" onclick="showClaimComments(this,@cdi.claimId); return false;">View Comments</a>} *@
+                                                        <a href="#" id="claimComments_@cdi.claimId" onclick="showClaimComments(this,@cdi.claimId); return false;" style="display: @(cdi.comments.Count > 0 ? "inline" : "none");">View Comments</a>
+                                                        <input type="text" onblur="callUpdate(this,'Comments',@cdi.claimId,0,@cdi.InsurancePolicyId);" name="comments" alt="Comments#" value="" class="form-control form-control-sm" />
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+@*code embed*@
+<div class="modal insuarancePolicyModal fade">
+
+</div>
+<div class="modal clientInvoiceModal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-edit"></i> Client Invoice</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="dvAllPaymentList">
+                    @*@{Html.RenderPartial("Payments", Model);
+                        }*@
+                </div>
+                <input type="hidden" id="claimDenialId">
+                <p id="claimDenialMsg"></p>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal claimComments fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-edit"></i> Claim Comments</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal DDDWaverModel fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-edit"></i>DDD Waiver</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="_startDatedddLB">Approved From</label>
+                            <div class="input-group date">
+                                <input placeholder="MM/DD/YYYY" type="text" id="_startDateddd" class="form-control form-control-sm" autocomplete="off" />
+                                <i class="input-group-text fa fa-calendar"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="_endDatedddLB">Approved To</label>
+                            <div class="input-group date">
+                                <input placeholder="MM/DD/YYYY" type="text" id="_endDateddd" class="form-control form-control-sm" autocomplete="off" />
+                                <i class="input-group-text fa fa-calendar"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="lastName">Units</label>
+                            @if (Model.ClientDetailsList.Any() && Model.ClientDetailsList[0].ClientDetailsInfoList.Any())
+                            {
+                                <div>
+                                    @Html.TextBoxFor(m => m.ClientDetailsList[0].ClientDetailsInfoList[0].dddUnit, new { @class = "form-control", @readonly = "readonly", id = "_UnitTxtbx" })
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="completionDate">Services</label>
+                            <div>
+
+                                <select id="_SelectidDDD" class="form-control form-control-sm">
+                                    @if (Model.serviceList != null)
+                                    {
+                                        foreach (var itm in Model.serviceList)
+                                        {
+                                            <option value="@itm.value">@itm.name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('.dateControl').Zebra_DatePicker({
+        direction: 0,
+        format: 'm/d/yyyy'
+    });
+    $(document).ready(function () {
+        $('#divTabsLink a').on('click', function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
+    });
+</script>
+
+<input type="hidden" id="hdnDedModel" value="" />
+<input type="hidden" id="hdnDenialModel" value="" />
+
+
+

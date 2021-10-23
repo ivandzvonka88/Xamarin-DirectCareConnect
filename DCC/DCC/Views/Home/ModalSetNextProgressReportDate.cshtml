@@ -1,0 +1,41 @@
+﻿@model DCC.Models.ClientService
+
+<div id="actionModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-edit"></i> Next Period Report End Date</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="nextReportDueDate">Next Period Report End Date</label>
+                    <div class="input-group date">
+                        @if (Model.reportPeriodEndDateOption != null)
+                        {
+                            <select id="nextReportDueDate" class="form-control form-control-sm">
+                                <option value=""></option>
+                                @foreach (var date in Model.reportPeriodEndDateOption)
+                                {
+                                    <option value="@date.value">@date.name</option>
+                                }
+
+
+                            </select>
+                        }
+                        else
+                        {
+                            <input id="nextReportDueDate" value="@Model.nextReportDueDate" type="date" class="form-control form-control-sm" />
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="updateNextProgressReportDate(@Model.clsvidId);">Set Next Report Date</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#actionModal').modal('show');
+</script>

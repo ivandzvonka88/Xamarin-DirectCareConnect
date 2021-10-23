@@ -1,0 +1,112 @@
+﻿@model DCC.Models.Staff.StaffData
+
+
+<div class="hdr">
+    @if (Model.userLevel != "Provider" && Model.userLevel != "Supervisor" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+    {
+        <i class="fa fa-edit faBtn btnEditEmpDet" onclick="openStaffEmploymentModal();"></i>
+    }
+    Employment Data
+</div>
+<table class="staffData">
+    <tr>
+        <td>
+            <div class="title">Employee Role</div>
+            <div class="data">@Model.roleName</div>
+        </td>
+        <td>
+            <div class="title">Title</div>
+            <div class="data">@Model.title</div>
+        </td>
+        <td rowspan="6">
+            <div class="title">Disciplines</div>
+            <div>Master Therapist: <span style="font-weight:bold">@(Model.qualifiedTherapist ? "Yes" : "No")</span></div>
+            <div>Assistant Therapist: <span style="font-weight:bold">@(Model.assistantTherapist ? "Yes" : "No")</span></div>
+            <div style="text-indent:15px">
+                <div>Occupational Therapy: <span style="font-weight:bold">@(Model.occupationalTherapy ? "Yes" : "No")</span></div>
+                <div>Speech Therapy: <span style="font-weight:bold">@(Model.speechTherapy ? "Yes" : "No")</span></div>
+                <div>Physical Therapy: <span style="font-weight:bold">@(Model.physicalTherapy ? "Yes" : "No")</span></div>
+            </div>
+            <div>Basic Provider: <span style="font-weight:bold">@(Model.basicProvider ? "Yes" : "No")</span></div>
+            <div>BCBA: <span style="font-weight:bold">@(Model.BCBA ? "Yes" : "No")</span></div>
+            <div>RBT: <span style="font-weight:bold">@(Model.RBT ? "Yes" : "No")</span></div>
+            <div class="title">Zip Codes</div>
+            <div class="data">@Model.zipCodes</div>
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="title">Immediate Supervisor</div>
+            <div class="data">@Model.supName</div>
+        </td>
+        <td>
+            <div class="title">Temporary Supervisor</div>
+            <div class="data">@Model.tempsupName</div>
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="title">Employee Payroll Id</div>
+            <div class="data">@Model.eId</div>
+        </td>
+        <td>
+            <div class="title">Central Registry Date</div>
+            <div class="data">@Model.CRverf</div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="title">Hire Date</div>
+            <div class="data">@Model.hiredtf</div>
+        </td>
+        <td>
+            <div class="title">Termination Date</div>
+            <div class="data">@Model.termdt</div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="title">NPI</div>
+            <div class="data">@Model.npi</div>
+        </td>
+        <td>
+            <div class="title">AHCCCS Id</div>
+            <div class="data">@Model.ahcccsId</div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="title">CAQH</div>
+            <div class="data">@Model.CAQH</div>
+        </td>
+        <td>
+            <div class="title">PTAN</div>
+            <div class="data">@Model.MedicaidId</div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="title">ISolved Payroll ID</div>
+            <div class="data">@Model.iSolvedID</div>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <div class="title">Other Specific Credentials</div>
+            @foreach (var cred in Model.otherRequiredCredentials)
+
+            {
+                <span class="data" style="margin-right:15px">
+                    @(cred.name + ": " + (cred.isChecked ? "YES" : "NO"))
+
+                </span>
+
+
+            }
+        </td>
+    </tr>
+
+
+</table>

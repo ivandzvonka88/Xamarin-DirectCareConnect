@@ -1,0 +1,35 @@
+﻿@model DCC.Models.CompanyInfo
+<div class="col-sm-6 col-md-4 col-lg-4">
+    <div class="card">
+        <div class="card-header" style="font-weight:bold">Company Name</div>
+        <div class="card-body">
+            <div style="margin:5px">
+                <div class="form-group">
+                    <label for="Name">Company Name</label>
+                    <input type="text" id="Name" class="form-control form-control-sm" value="@Model.Name" />
+                </div>
+                <div class="form-group">
+                    <label for="pCode">DDD Alpha Code</label>
+                    <input type="text" id="pCode" class="form-control form-control-sm" value="@Model.pCode"/>
+                </div>
+                <div class="form-group">
+                    <label for="TaxId">Provider Tax Id</label>
+                    <input type="text" id="TaxId" class="form-control form-control-sm" value="@Model.TaxId" />
+                </div>
+                <div class="form-group">
+                    <label for="TimeZoneId">TimeZone</label>
+                    <select id="TimeZoneId" class="form-control form-control-sm" disabled="disabled">
+                        @foreach (var item in Model.TimeZones)
+                        {
+                            <option value="@item.value" @(item.value == Model.TimeZoneId ? "selected" : "")>@item.name</option>
+                        }
+
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-primary" onclick="saveGeneralInfo();">Update Info</button>
+        </div>
+    </div>
+</div>

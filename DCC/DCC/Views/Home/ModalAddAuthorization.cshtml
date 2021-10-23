@@ -1,0 +1,62 @@
+﻿@model int
+<div class="modal fade" id="actionModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Add Authorization Service Name</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="clsvidId" value="@Model" />
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table>
+                            <tr>
+                                <th>
+                                    <div class="form-group">
+                                        <label for="authStart">Auth Start</label>
+                                        <div class="input-group date">
+                                            <input id="authStart" type="date" class="form-control form-control-sm" />
+                                        </div>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="form-group">
+                                        <label for="authEnd">Auth End</label>
+                                        <div class="input-group date">
+                                            <input id="authEnd" type="date" class="form-control form-control-sm" />
+                                        </div>
+                                    </div>
+                                </th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table>
+                            <tr>
+                                <th>Auth Units From DDD</th>
+                                <th>Addtional Units Promised</th>
+                                <th>Total Units</th>
+                            </tr>
+                            <tr>
+                                <td><input value="0.00" type="text" id="authUnits" style="max-width:100px" onchange="authUnitsChanged()" readonly="readonly" /></td>
+                                <td><input value="0.00" type="text" id="addUnits" style="max-width:100px" onchange="authUnitsChanged()" /></td>
+                                <td><span id="totUnits">0.00</span></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="AddNewAuth();">Add Authorization</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#actionModal').modal('show');
+</script>
+

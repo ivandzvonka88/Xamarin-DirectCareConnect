@@ -1,0 +1,41 @@
+﻿@model DCC.Models.ClientService
+<div class="modal fade" id="actionModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Update @Model.svcLong</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="clsvidId" value="@Model.clsvidId" />
+                <div class="form-group">
+                    <label for="dddPay"><input id="dddPay" type="checkbox" @(Model.dddPay ? "checked" : "") /> DDD Pay</label>
+                </div>
+                <div class="form-group">
+                    <label for="pInsPay"><input id="pInsPay" type="checkbox" @(Model.pInsPay ? "checked" : "") /> Private Insurance Pay</label>
+                </div>
+                <div class="form-group">
+                    <label for="ppPay"><input id="ppPay" type="checkbox" @(Model.ppPay ? "checked" : "") /> Cash Pay</label>
+                </div>
+                <div class="form-group">
+                    <label for="contingencyPlanId"> Contingency Plan</label>
+                    <select id="contingencyPlanId"  class="score form-control form-control-sm">
+                        @foreach (var cp in Model.contingencyPlans)
+                        {
+                            <option value="@cp.value" @(cp.value == Model.contingencyPlanId ? "selected" : "")>@cp.name</option>
+                        }
+                    </select>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="updateService();">Update Service</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#actionModal').modal('show');
+</script>
+

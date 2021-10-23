@@ -1,0 +1,54 @@
+﻿@model DCC.Models.Reports.ServiceInfo
+
+<table class="regTable sessionQuestions">
+    <thead>
+        <tr>
+            <th colspan="6">Evaluation Questions</th>
+        </tr>
+        <tr>
+            <th style="width:30px"></th>
+            <th style="width:400px">Question</th>
+            <th style="min-width:100px">Order Number</th>
+            <th class="text-center" style="width:100px">Required</th>
+            <th class="text-center" style="width:100px">Pre-populate</th>
+            <th class="text-center" style="width:100px">Shared Question</th>
+        </tr>
+    </thead>
+    <tbody id="sessionQuestions">
+        @{
+            int nextOrderNumber = 0;
+
+            foreach (var Q in Model.sessionQuestions)
+            {
+                <tr id="@("sessionQuestionId" + Q.questionId)">
+                    <td><input type="hidden" class="questionId" value="@Q.questionId" /><i class="fa fa-trash faBtn red" onclick="deleteSessionQuestion(@Q.questionId);"></i></td>
+                    <td class="question">@Q.question</td>
+                    <td><button class="minus btn btn-sm btn-secondary" style="width:25px;display:inline" onclick="decOrderNumber($(this));">-</button><input type="text" class="orderNumber form-control form-control-sm" style="width:40px;display:inline" value="@Q.orderNumber" /><button class="plus btn btn-sm btn-secondary" style="width:25px;display:inline" onclick="incOrderNumber($(this));">+</button></td>
+                    <td class="text-center"><input type="checkbox" class="isRequired" @(Q.isRequired ? "checked" : "") /></td>
+                    <td class="text-center"><input type="checkbox" class="prepopulate" @(Q.prepopulate ? "checked" : "") /></td>
+                    <td class="text-center"><input type="checkbox" class="sharedQuestion" @(Q.sharedQuestion ? "checked" : "") /></td>
+                </tr>
+                { nextOrderNumber = Q.orderNumber + 1; }
+            }
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="6">
+                <input type="text" id="newSessionQuestion" class="form-control form-control-sm" onkeyup="getSessionMatch()" />
+                <div id="matchingSessionQuestions">
+                </div>
+                <input type="hidden" id="nextSessionQuestionIndex"  value="@nextOrderNumber" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6">
+                <div class="form-group">
+                    <button class="btn btn-primary" onclick="updateSessionQuestions();">Save</button>
+                    <button class="btn btn-secondary" onclick="cancelSessionChanges()">Cancel</button>
+                </div>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+

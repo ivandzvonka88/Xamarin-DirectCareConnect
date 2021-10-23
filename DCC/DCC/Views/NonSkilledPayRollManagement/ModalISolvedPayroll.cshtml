@@ -1,0 +1,69 @@
+﻿@model DCC.Models.ISolvedPayroll
+<div class="modal fade" id="actionModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-edit"></i> Review ISolved Payroll Report</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <input type="checkbox" id="show-error" name="show-error" onchange="toggleErrors(this);">
+                    <label for="show-error">Show Errors</label>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Key</th>
+                            <th>PayItem</th>
+                            <th>Hours</th>
+                            <th style="display: none">Error</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var prLine in Model.payrollLines)
+                        {
+                            <tr>
+                                <td>@prLine.iSolvedID</td>
+                                <td>@prLine.PayRollCode</td>
+                                <td>@prLine.units</td>
+                                <td style="display: none">@prLine.error</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer" style="justify-content: space-between">
+                
+                @if(Model.status != null)
+                {
+                    <span>@Model.status.status</span>
+                } else {
+                    <span>Not Initiated</span>
+                }
+
+            <div>
+                @if (Model.status != null)
+                {
+                    if (Model.status.status != "ImportingComplete")
+                    {
+                        <button type="button" class="btn btn-primary" onclick="initiateISolvedPayrollReport(@Model.payrollId);">ReInitiate</button>
+                        if (Model.status.canCommit)
+                        {
+                            <button type="button" class="btn btn-primary" onclick="submitISolvedPayrollReport(@Model.payrollId);">Submit</button>
+                        }
+                    }
+                }
+                else
+                {
+                    <button type="button" class="btn btn-primary" onclick="initiateISolvedPayrollReport(@Model.payrollId);">Initiate</button>
+                }
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#actionModal').modal('show');
+</script>

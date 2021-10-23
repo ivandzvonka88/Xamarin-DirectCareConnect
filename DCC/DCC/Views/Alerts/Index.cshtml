@@ -1,0 +1,79 @@
+﻿
+@model DCC.Models.Alerts.AlertList
+@Html.AntiForgeryToken()
+@Html.Partial("MenuHeader", @Model)
+@Html.Partial("SettingsHeader", @Model)
+<style>
+    .regTable {
+        display: block;
+    }
+
+    th {
+        text-align: center;
+        font-weight:normal;
+    }
+
+    .alertRow th {
+        font-size: 14px;
+        text-align: center
+    }
+
+    .colorRow th {
+        font-size: 14px;
+        text-align: center
+    }
+
+    .reqRow th {
+        font-size: 12px;
+        text-align: center
+    }
+
+    input[type=text] {
+        width: 40px;
+        font-size: 14px;
+        height: 20px;
+    }
+
+    input[type=checkbox] {
+        width: 16px;
+        height: 16px;
+    }
+
+    td {
+        text-align: center;
+    }
+</style>
+<div id="alertsWrapper">
+    @Html.Partial("AlertsPage", @Model)
+</div>
+<div class="form-group">
+    <button class="btn btn-primary" onclick="saveAlertSettings()"> Save Alert Settings</button>
+</div>
+<script>
+    var srvcUrl = '';
+    var srvcUrl1 = '';
+    var i = 0;
+    var pathname = window.location.pathname;
+    var t = document.location.hostname;
+    var VirtualDir = pathname.split('/');
+    VirtualDir.forEach(function (item) {
+        if (t != 'localhost') {
+            if (i == 1) {
+                srvcUrl1 = item;
+                if (srvcUrl1 != '')
+                    srvcUrl1 = '/' + item
+            }
+        }
+        i = i + 1;
+        if (item != '') {
+            srvcUrl += '/' + item;
+        }
+        else {
+            srvcUrl += '';
+        }
+    });
+</script>
+
+@section Scripts {
+    <script type="text/javascript" src="~/Scripts/DCC/Alerts.js?v=0.04"></script>
+}

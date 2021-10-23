@@ -1,0 +1,177 @@
+﻿@model DCC.Models.ClientProfile
+<div id="actionModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-edit"></i> Update Client Data</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <table style="width:100%">
+                    <tr>
+                        <td style="vertical-align:top">
+                            <div class="form-group">
+                                <label for="fnx">Client First Name:</label>
+                                <input type="text" id="fnx" value="@Model.fn" class="form-control form-control-sm" placeholder="Client First Name" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label for="lnx">Client Last Name:</label>
+                                <input type="text" id="lnx" value="@Model.ln" class="form-control form-control-sm" placeholder="Client Last Name" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label for="clId">Client DDD ID:</label>
+                                <input type="text" id="clId" value="@Model.clId" class="form-control form-control-sm" placeholder="DDD Client ID" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label for="medicaidId">Medicaid Id</label>
+                                <input type="text" id="medicaidId" value="@Model.medicaidId" class="form-control form-control-sm" placeholder="Medicaid ID" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label for="clwNm">Support Coordinator Name</label>
+                                <input type="text" id="clwNm" value="@Model.clwNm" class="form-control form-control-sm" placeholder="Support Coordinator Name" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label for="clwPh">Support Coordinator Phone</label>
+                                <input type="text" id="clwPh" value="@Model.clwPh" class="form-control form-control-sm" placeholder="Support Coordinator Phone" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label for="clwEm">Support Coordinator Email</label>
+                                <input type="text" id="clwEm" value="@Model.clwEm" class="form-control form-control-sm" placeholder="Support Coordinator Email" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label for="dob">Birth Date</label>
+                                <div class="input-group date">
+                                    <input id="dob" value="@Model.dobISO" type="date" class="form-control form-control-sm" autocomplete="off" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="sex">Gender</label>
+                                <select id="sex" class="form-control form-control-sm name">
+                                    <option value=""></option>
+                                    <option value="Female" @("Female" == Model.sex ? "selected" : "")>Female</option>
+                                    <option value="Male" @("Male" == Model.sex ? "selected" : "")>Male</option>
+                                    <option value="Other" @("Other" == Model.sex ? "selected" : "")>Other</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td style="vertical-align:top">
+                            <div class="form-group">
+                                <label for="physicianTitle">Physician Title</label>
+                                <input type="text" id="physicianTitle" value="@Model.physicianTitle" class="form-control form-control-sm" placeholder="Physician Title" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label for="physicianFirstName">Physician First Name</label>
+                                <input type="text" id="physicianFirstName" value="@Model.physicianFirstName" class="form-control form-control-sm" placeholder="Physician First Name" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label for="physicianMI">Physician MI</label>
+                                <input type="text" id="physicianMI" value="@Model.physicianMI" class="form-control form-control-sm" placeholder="Physician MI" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label for="physicianLastName">Physician Last Name</label>
+                                <input type="text" id="physicianLastName" value="@Model.physicianLastName" class="form-control form-control-sm" placeholder="Physician Last Name" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label for="physicianSuffix">Physician Name Sufffix</label>
+                                <input type="text" id="physicianSuffix" value="@Model.physicianSuffix" class="form-control form-control-sm" placeholder="Physician Suffix (MD,Jr,Sr)" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label for="physicianNPI">NPI</label>
+                                <input type="text" id="physicianNPI" value="@Model.physicianNPI" class="form-control form-control-sm" placeholder="NPI" />
+                            </div>
+                            <div class="form-group">
+                                <label for="physicianAgency">Office Name</label>
+                                <input type="text" id="physicianAgency" value="@Model.physicianAgency" class="form-control form-control-sm" placeholder="Medical Office" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label for="physicianPhone">Phone</label>
+                                <input type="text" id="physicianPhone" value="@Model.physicianPhone" class="form-control form-control-sm" placeholder="Phone" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label for="physicianFax">Fax</label>
+                                <input type="text" id="physicianFax" value="@Model.physicianFax" class="form-control form-control-sm" placeholder="Fax" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label for="physicianEmail">Email</label>
+                                <input type="text" id="physicianEmail" value="@Model.physicianEmail" class="form-control form-control-sm" placeholder="Email" autocomplete="off" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="physicianAddress">Address</label>
+                                <input type="text" id="physicianAddress" value="@Model.physicianAddress" class="form-control form-control-sm" placeholder="Address" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label for="physicianCity">City</label>
+                                <input type="text" id="physicianCity" value="@Model.physicianCity" class="form-control form-control-sm" placeholder="City" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label for="physicianState">State</label>
+                                @Html.Partial("_StateSelectorPhysician", Model?.physicianState ?? "")
+                            </div>
+                            <div class="form-group">
+                                <label for="physicianZip">Zip</label>
+                                <input type="text" id="physicianZip" value="@Model.physicianZip" class="form-control form-control-sm" placeholder="zip" autocomplete="off" />
+                            </div>
+                        </td>
+                        <td style="vertical-align:top">
+                            <div class="form-group">
+                                <label for="responsiblePersonLn">Responsible Person Last Name</label>
+                                <input type="text" id="responsiblePersonLn" value="@Model.responsiblePersonLn" class="form-control form-control-sm" placeholder="Last Name" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label for="responsiblePersonFn">Responsible Person First Name</label>
+                                <input type="text" id="responsiblePersonFn" value="@Model.responsiblePersonFn" class="form-control form-control-sm" placeholder="First Name" autocomplete="off" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="responsiblePersonRelationshipId">Relationship</label>
+                                <select id="responsiblePersonRelationshipId"class="form-control form-control-sm">
+                                    <option value="0"></option>
+                                    @foreach(var option in Model.relationshipOptions)
+                                    {
+                                        <option value="@option.value"  @(option.value== Model.responsiblePersonRelationshipId.ToString()? "selected" : "")>@option.name</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="responsiblePersonPhone">Phone</label>
+                                <input type="text" id="responsiblePersonPhone" value="@Model.responsiblePersonPhone" class="form-control form-control-sm" placeholder="Phone" autocomplete="off" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="responsiblePersonEmailx">Email</label>
+                                <input type="text" id="responsiblePersonEmail" value="@Model.responsiblePersonEmail" class="form-control form-control-sm" placeholder="Email" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label for="responsiblePersonAddress">Address Line 1</label>
+                                <input type="text" id="responsiblePersonAddress" value="@Model.responsiblePersonAddress" class="form-control form-control-sm" placeholder="Address 1" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label for="responsiblePersonAddress2">Address Line 2</label>
+                                <input type="text" id="responsiblePersonAddress2" value="@Model.responsiblePersonAddress2" class="form-control form-control-sm" placeholder="Address 2" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label for="responsiblePersonCity">City</label>
+                                <input type="text" id="responsiblePersonCity" value="@Model.responsiblePersonCity" class="form-control form-control-sm" placeholder="City" autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label for="responsiblePersonState">State</label>
+                                @Html.Partial("_StateSelectorResponsiblePerson", Model?.responsiblePersonState ?? "")
+                            </div>
+                            <div class="form-group">
+                                <label for="responsiblePersonZip">Zip</label>
+                                <input type="text" id="responsiblePersonZip" value="@Model.responsiblePersonZip" class="form-control form-control-sm" placeholder="Zip" autocomplete="off" />
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="updateClientProfile();">Update Client Profile</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#actionModal').modal('show');
+</script>

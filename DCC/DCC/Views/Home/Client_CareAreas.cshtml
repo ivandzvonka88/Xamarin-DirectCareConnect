@@ -1,0 +1,28 @@
+﻿@model DCC.Models.ClientPageData
+@if (Model.hasCareAreas)
+{
+    <div class="hdr">
+        @if (Model.userLevel != "Provider" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+        {
+            <i class="fa fa-plus-square faBtn" onclick="openaddCareAreaModal(0);"></i>
+        }
+        Care Areas
+    </div>
+}
+
+
+@foreach (var item in Model.careAreas)
+{
+    <div>
+        @if (Model.userLevel != "Provider" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+        {
+            <i class="fa fa-trash faBtn red" onclick="openDeleteCareAreaModal(@item.careId, '@item.careArea')"></i>
+        }
+        <span>@item.careArea</span>
+    </div>
+}
+
+
+
+
+

@@ -1,0 +1,15 @@
+﻿@model DCC.Models.Staff.StaffData
+
+
+<span id="stFn">@Model.fn</span>
+<span id="stLn">@Model.ln</span>
+<input id="PRID" type="hidden" value="@Model.prId" />
+@if (Model.userLevel != "Provider"  && Model.userLevel != "TherapyAssistant" && Model.userLevel != "Supervisor" && Model.userLevel != "TherapySupervisor")
+{
+    <div style="float:right;padding-right:10px;border:0">
+        <span id="staffActiveState">
+            @(Model.deleted == true ? "Inactive" : "Active")
+        </span>
+        <i id="btnStaffActivate" class="faBtn fa @(Model.deleted == true ? "fa-toggle-off" : "fa-toggle-on")" style="color:white" onclick="checkStaffActiveState();"></i>
+    </div>
+}

@@ -1,0 +1,64 @@
+﻿@model DCC.Models.Providers.ProviderInit
+<div  tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-edit"></i> Insurance Policy</h5>
+                <button type="button" onclick="closeModal()" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                @*Tabs*@
+                <ul class="nav nav-tabs" id="divTabsLink" style="margin-bottom: 15px;" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active aTabs" id="aPersonalInfo" data-step="1" data-toggle="tab" data-tabFor="tabPersonalInfo" role="tab" aria-controls="home" aria-selected="true">Personal Info</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link aTabs" id="aInsured" data-toggle="tab" data-step="2" data-tabFor="tabInsured" role="tab" aria-controls="profile" aria-selected="false">Insured Info</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link aTabs" id="aCPT" data-toggle="tab" data-step="3" data-tabFor="tabCPT" role="tab" aria-controls="contact" aria-selected="false">Services CPT</a>
+                    </li>
+                    <li class="nav-item" id="awaiverLi" style="display:none">
+                        <a class="nav-link aTabs" id="aWaiver" data-toggle="tab" data-step="4" data-tabFor="tabWaiver" role="tab" aria-controls="contact" aria-selected="false">Waiver</a>
+                    </li>
+
+                </ul>
+                <table class="table" style="font-size:15px;margin-bottom:10px;padding-left:10px;padding-right:10px;">
+                    <tr>
+                        <td>Company:<br /><input type="text" id="cmpy" value="@Model.InsurancePolicy.Company" /></td>
+                        <td>Policy Group No:<br /><input type="text" id="plyGroup" value="@Model.InsurancePolicy.PolicyNumber" /></td>
+                    </tr>
+                    <tr>
+                        <td>First Name:<br /><input type="text" id="ftName" value="@Model.InsurancePolicy.FirstName" /></td>
+                        <td>Last Name:<br /><input type="text" id="ltName" value="@Model.InsurancePolicy.LastName" /></td>
+                    </tr>
+                    <tr>
+                        <td>Insured DOB:<br /><input type="text" id="dob" value="@Model.InsurancePolicy.InsuredDoB" /></td>
+                        <td>Gender:<br /><input type="text" id="gend" value="@Model.InsurancePolicy.Gender" /></td>
+                    </tr>
+                    <tr>
+                        <td>MCID:<br /><input type="text" id="@Model.InsurancePolicy.MCID" /></td>
+                        <td>Patient Id No:<br /><input type="text" id="@Model.InsurancePolicy.PatientIdNo" /></td>
+                    </tr>
+                    <tr>
+                        <td>Relationship:<br /><input type="text" id="@Model.InsurancePolicy.Relationship" value="CHILD" /></td>
+                        <td>Is Primary:<br /><input type="checkbox" id="isPrimary" /></td>
+                    </tr>
+                    <tr>
+                        <td>Start Date:<br /><input type="text" id="stDate" value="@Model.InsurancePolicy.StartDate" /></td>
+                        <td>End Date:<br /><input type="text" id="@Model.InsurancePolicy.EndDate" /></td>
+                    </tr>
+                </table>
+
+
+                <input type="hidden" id="claimDenialId">
+                <p id="claimDenialMsg"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,182 @@
+﻿@model DCC.EmptyView
+@{
+
+}
+@Html.AntiForgeryToken()
+@Html.Partial("MenuHeader", @Model)
+@Html.Partial("SettingsHeader", @Model)
+
+<div id="insuranceCompany">
+    <div class="hdr"><i class="fa fa-plus-square faBtn" onclick="openAddRateModal(0);"></i> Add Therapy Rate</div>
+
+    <table data-order='[2,"asc"]' class="table-bordered" id="therapyRatesTable">
+        <thead>
+            <tr>
+                <th style="width:44px">
+                </th>
+                <th>
+                    Service Name
+                </th>
+                <th>
+                    BillingTier ID
+                </th>
+                <th>
+                    Is Clinic
+                </th>
+                <th>
+                    Is QualifiedTherapist
+                </th>
+                <th>
+                    Cur
+                </th>
+                <th>
+                    From
+                </th>
+                <th>
+                    To
+                </th>
+                <th>
+                    Rate
+                </th>
+                <th>
+                    Ratio
+                </th>
+                <th>
+                    Service
+                </th>
+            </tr>
+        </thead>
+    </table>
+
+    @*Edit*@
+    <div id="editTherapyRate" class="modal fade" role="dialog">
+    </div>
+</div>
+
+
+<style>
+    table td {
+        padding: 4px;
+        background-color: white;
+    }
+
+    table th {
+        padding: 4px;
+        color: white;
+        background-color: #36A3BC;
+    }
+</style>
+
+@section Scripts
+    {
+
+    <script>
+        var token;
+        var headers;
+        $(document).ready(function () {
+            token = $('input[name="__RequestVerificationToken"]').val();
+            headers = {};
+            headers['__RequestVerificationToken'] = token;
+            headers['__CompanyId'] = $('#CurrentCompanyId').val();  
+            $(function () {
+                var columns = [
+                    {
+                        data: "RateId", orderable: false, mRender: function (data, type, full) {
+                            var toReturn = '';
+                            toReturn = ' <i class="fa fa-edit faBtn" onclick="openAddRateModal(' + data + ')"></i>';
+                            toReturn += '<i class="fa fa-trash faBtn" style="color:red" onclick="deleteTherapyRate(' + data + ')"></i>';
+                            return toReturn;
+                        }
+                    },
+                    {
+                        data: "ServiceName"
+                    },
+                    {
+                        data: "BillingTierId"
+                    },
+                    {
+                        data: "IsClinicTxt"
+                    },
+                    {
+                        data: "IsQualifiedTherapistTxt"
+                    },
+                    {
+                        data: "CurTxt"
+                    },
+                    {
+                        data: "From"
+                    },
+                    {
+                        data: "To"
+                    },
+                    {
+                        data: "Rate"
+                    },
+                    {
+                        data: "Ratio"
+                    },
+                    {
+                        data: "Service"
+                    }
+                ];
+                createGridForAjax('#therapyRatesTable', 'TherapyRate/GetAllRates', columns, null);
+            });
+
+        });
+
+        function setVisibility(i) {
+            if (i > 0) {
+                $('#headingAdd').hide();
+                $('#headingEdit').show();
+                $("#btnsave").attr('Value', 'Update');
+                $("#selector").hide();
+                $("#divInsCompany").hide();
+            }
+            else {
+                $('#headingEdit').hide();
+                $('#headingAdd').show();
+                $("#btnsave").attr('Value', 'Save');
+            }
+        }
+
+        function openAddRateModal(i) {
+            $.ajax({
+                type: 'POST',
+                url: srvcUrl + '/EditTherapyRate?rateId=' + i,
+                dataType: 'html',
+                headers: headers,
+                success: function (res) {
+                    $("#editTherapyRate").html(res);
+                    setVisibility(i)
+                    $('#editTherapyRate').modal('show');
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log('error in openAddRateModal');
+                }
+            });
+        }
+
+        function deleteTherapyRate(id) {
+            $.ajax({
+                type: 'GET',
+                url: srvcUrl + '/DeleteTherapyRate?rateId=' + id,
+                contentType: 'application/json; charset=utf-8',
+                headers: headers,
+                dataType: 'json',
+                success: function (data) {
+                    if (data == true) {
+                        Alert("Deleted successfully.");
+                        $('#therapyRatesTable').DataTable().ajax.reload();
+                    }
+                    else {
+                        Alert("Cannot be deleted.");
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log('error in deleteTherapyRate', textStatus);
+                }
+            });
+        }
+
+    </script>
+}

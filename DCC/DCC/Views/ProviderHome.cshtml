@@ -1,0 +1,647 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<input type="hidden" id="TCLSVID" />
+<input type="hidden" id="TPRID" />
+<div class="row">
+    <div class="col-md-6 col-lg-4">
+        <div style="height:30px;background-color:#d84765;margin-bottom:10px">
+            <input class="form-control form-control-sm" />
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-8">
+        <div style="height: 30px;
+        background-color: #d84765;
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        padding-left: 10px">
+            <span id="fn"></span> <span id="ln"></span>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6 col-lg-4">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="clientAlertView contentBox">
+                    <div class="boxContainerTitle">Client Alerts</div>
+                    <div class="boxContainer active normalSize">
+                        <div class="clBlockData alertList clientAlertList">
+                            <table>
+                                <tr class="template">
+                                    <td><i class="fa fa-exclamation-circle redAlert"></i></td>
+                                    <td class="rowLink"><span class="msg" onclick="getClient(121);">Leo Abundez has expired service authorizations</span></td>
+
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="staffAlertView contentBox">
+                    <div class="boxContainerTitle">Staff Alerts</div>
+                    <div class="boxContainer active normalSize">
+                        <div class="clBlockData alertList staffAlertList">
+                            <table>
+                                <tr>
+                                    <td><i class="fa fa-exclamation-circle redAlert"></i></td>
+                                    <td><span onclick="getStaff(121);">Lovelyn Abbey has expired or missing credentials</span></td>
+                                    <td onclick="sendMessage();"><i class="fa fa-edit"></i></td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fa fa-triangle amberAlert"></i></td>
+                                    <td><span onclick="getStaff(121);">Manuela Acevedo has credentials expiring in 3 weeks</span></td>
+                                    <td onclick="sendMessage();"><i class="fa fa-edit"></i></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-8">
+        <div class="row">
+            <!-- Superadmin/Director/Assistant Director views -->
+            <div class="col-lg-6">
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Comment History <i class="fa fa-plus-square-o d-none d-lg-block btnExpand"></i></div>
+                    <div class="boxContainer active normalSize">
+                        <div class="clBlockData directorCommentHistoryList">
+                        </div>
+                    </div>
+                </div>
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">New Authorizations <i class="fa fa-plus-square-o d-none d-lg-block btnExpand"></i></div>
+                    <div class="boxContainer active normalSize">
+                        <div class="clBlockData directorNewAuthorizationsList">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Staff List <i class="fa fa-plus-square-o d-none d-lg-block btnExpand"></i></div>
+                    <div class="boxContainer active halfSize">
+                        <div class="clBlockData staffList directorSupervisor">
+                        </div>
+                    </div>
+                </div>
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Provider List <i class="fa fa-plus-square-o d-none d-lg-block btnExpand"></i></div>
+                    <div class="boxContainer active halfSize">
+                        <div class="clBlockData directoryProviderList">
+                        </div>
+                    </div>
+                </div>
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Client List <i class="fa fa-plus-square-o d-none d-lg-block btnExpand"></i></div>
+                    <div class="boxContainer active halfSize">
+                        <div class="clBlockData directorClientList">
+                        </div>
+                    </div>
+                </div>
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Credentials/Certifications <i class="fa fa-plus-square-o d-none d-lg-block btnExpand"></i></div>
+                    <div class="boxContainer active halfSize">
+                        <div class="clBlockData directorCredentialsList">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <!-- Service Coordinator view for service coordinator and above -->
+            <div class="col-lg-6">
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">New Authorizations <i class="fa fa-plus-square-o d-none d-lg-block btnExpand"></i></div>
+                    <div class="boxContainer active normalSize">
+                        <div class="clBlockData supervisorNewAuthorizations">
+                        </div>
+                    </div>
+                </div>
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Provider List <i class="fa fa-plus-square-o d-none d-lg-block btnExpand"></i></div>
+                    <div class="boxContainer active normalSize">
+                        <div class="clBlockData supervisorProviders">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Client List <i class="fa fa-plus-square-o d-none d-lg-block btnExpand"></i></div>
+                    <div class="boxContainer active normalSize">
+                        <div class="clBlockData supervisorClients">
+                        </div>
+                    </div>
+                </div>
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Billing Data <i class="fa fa-plus-square-o d-none d-lg-block btnExpand"></i></div>
+                    <div class="boxContainer active halfSize">
+                        <div class="clBlockData supervisorBillingData">
+                        </div>
+                    </div>
+                </div>
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Credentials/Certifications <i class="fa fa-plus-square-o d-none d-lg-block btnExpand"></i></div>
+                    <div class="boxContainer active halfSize">
+                        <div class="clBlockData supervisorCredentials">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <!-- provider view for service coord and above -->
+            <div class="col-lg-6">
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Comment Hisory <i class="fa fa-plus-square-o d-none d-lg-block btnExpand"></i></div>
+                    <div class="boxContainer active normalSize">
+                        <div class="clBlockData providerCommentHistory">
+                        </div>
+                    </div>
+                </div>
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Pending Documentation <i class="fa fa-plus-square-o d-none d-lg-block btnExpand"></i></div>
+                    <div class="boxContainer active halfSize">
+                        <div class="clBlockData providerPendingDocumentation">
+                        </div>
+                    </div>
+                </div>
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Authorizations <i class="fa fa-plus-square-o d-none d-lg-block btnExpand"></i></div>
+                    <div class="boxContainer active halfSize">
+                        <div class="clBlockData providerAuthorizations">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Client List <i class="fa fa-plus-square-o d-none d-lg-block btnExpand"></i></div>
+                    <div class="boxContainer active normalSize">
+                        <div class="clBlockData providerClient">
+                        </div>
+                    </div>
+                </div>
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Billing Data <i class="fa fa-plus-square-o d-none d-lg-block btnExpand"></i></div>
+                    <div class="boxContainer active halfSize">
+                        <div class="clBlockData providerBillingData">
+                        </div>
+                    </div>
+                </div>
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Credentials/Certifications <i class="fa fa-plus-square-o d-none d-lg-block btnExpand"></i></div>
+                    <div class="boxContainer active halfSize">
+                        <div class="clBlockData providerCredentials">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <!-- client view for supervisor and above -->
+            <div class="col-lg-6">
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Comment Hisory <i class="fa fa-plus-square-o d-none d-lg-block boxView"></i></div>
+                    <div class="boxContainer active normalSize">
+                        <div class="clBlockData clientCommentHistory">
+                        </div>
+                    </div>
+                </div>
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Authorizations <i class="fa fa-plus-square-o d-none d-lg-block boxView"></i></div>
+                    <div class="boxContainer active halfSize">
+                        <div class="clBlockData clientAuthorizations">
+                        </div>
+                    </div>
+                </div>
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Documentation History <i class="fa fa-plus-square-o d-none d-lg-block boxView"></i></div>
+                    <div class="boxContainer active halfSize">
+                        <div class="clBlockData clientDocumentationHistory">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Client Chart <i class="fa fa-plus-square-o d-none d-lg-block boxView"></i></div>
+                    <div class="boxContainer active normalSize">
+                        <div class="clBlockData clientCharts">
+                        </div>
+                    </div>
+                </div>
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">ClientProfile <i class="fa fa-plus-square-o d-none d-lg-block boxView"></i></div>
+                    <div class="boxContainer active halfSize">
+                        <div class="clBlockData clientProfile">
+                        </div>
+                    </div>
+                </div>
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Billing Data <i class="fa fa-plus-square-o d-none d-lg-block boxView"></i></div>
+                    <div class="boxContainer active halfSize">
+                        <div class="clBlockData clientBillingData">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- provider view for provider only -->
+            <div class="col-lg-6">
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Pending Documentation <i class="fa fa-plus-square-o d-none d-lg-block btnExpand"></i></div>
+                    <div class="boxContainer active normalSize">
+                        <input type="hidden" id="prdeptId" />
+                        <div class="clBlockData staffDetails">
+                            <div>
+                                <button type="button" class="btn btn-sm btn-primary" onclick="openStaffPersonalModal();">Edit Personal Data</button>
+                                <button id="btnInvite" type="button" class="btn btn-sm btn-danger" onclick="inviteStaff();">Re-Invite</button>
+                            </div>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <div class="title">Cell Phone</div>
+                                        <div class="data" id="stCl"></div>
+                                    </td>
+                                    <td>
+                                        <div class="title">Home Phone</div>
+                                        <div class="data" id="stPh"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="title">Email</div>
+                                        <div class="data" id="stEm"></div>
+                                    </td>
+                                    <td>
+                                        <div class="title">Address</div>
+                                        <div class="data"><span id="stAd1"></span> <span id="stAd2"></span>,<br /><span id="stCty"></span> <span id="stSt"></span> <span id="stZ"></span></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="title">Date of Birth</div>
+                                        <div class="data" id="dobf"></div>
+                                    </td>
+                                    <td>
+                                        <div class="title">Gender</div>
+                                        <div class="data" id="stSex"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="title">SSN</div>
+                                        <div class="data" id="ssnf"></div>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="clBlockData staffDetails">
+                            <button type="button" class="btn btn-sm btn-primary" onclick="openStaffEmploymentModal();">Edit Employment Data</button>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <div class="title">Immediate Supervisor</div>
+                                        <div class="data" id="supName"></div>
+                                        <input type="hidden" id="supId" />
+                                    </td>
+                                    <td>
+                                        <div class="title">Central Registry Date</div>
+                                        <div class="data" id="CRverf"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="title">Hire Date</div>
+                                        <div class="data" id="hiredtf"></div>
+                                    </td>
+                                    <td>
+                                        <div class="title">Termination Date</div>
+                                        <div class="data" id="termdt"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="title">NPI</div>
+                                        <div class="data" id="npi"></div>
+                                    </td>
+                                    <td>
+                                        <div class="title">AHCCCS Id</div>
+                                        <div class="data" id="ahcccsId"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="title">Requires Prof. License</div>
+                                        <div class="data" id="profLicReq"></div>
+                                    </td>
+                                    <td>
+                                        <div class="title">Requires Prof. Insurance</div>
+                                        <div class="data" id="profLiabilityReq"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="title">Provides Transportation</div>
+                                        <div class="data" id="providesTransport"></div>
+                                    </td>
+                                    <td>
+                                        <div class="title">Uses Own Car</div>
+                                        <div class="data" id="ownVehicle"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="title">Uses Home For Services</div>
+                                        <div class="data" id="providerHome"></div>
+                                    </td>
+                                    <td>
+                                        <div class="title">Ref Office Id</div>
+                                        <div class="data" id="refOfficeId"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="title">Employee Type</div>
+                                        <div class="data" id="employeeType"></div>
+                                    </td>
+                                    <td>
+                                        <div class="title">Employee Roles</div>
+                                        <div class="data" id="roles">
+                                        </div>
+                                        <input type="checkbox" id="isSuperAdmin" style="display:none" />
+                                        <input type="checkbox" id="isAdmin" style="display:none" />
+                                        <input type="checkbox" id="isSupervisor" style="display:none" />
+                                        <input type="checkbox" id="isProvider" style="display:none" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="title">Employee Classification</div>
+                                        <div class="data" id="classification"></div>
+                                    </td>
+                                    <td>
+                                        <div class="title">Employee Payroll Id</div>
+                                        <div class="data" id="eId"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="title">Employee Dept</div>
+                                        <div class="data" id="prdept"></div>
+                                        <input type="hidden" id="prdeptId" />
+                                    </td>
+                                    <td>
+                                        <div class="title">Pay Type</div>
+                                        <div class="data" id="payType"></div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">New Authorizations <i class="fa fa-plus-square-o d-none d-lg-block btnExpand"></i></div>
+                    <div class="boxContainer active normalSize">
+                        <div class="clBlockData newAuthorizations">
+                            <table>
+                                <tr>
+                                    <th>Client</th>
+                                    <th>Svc</th>
+                                    <th>Starts</th>
+                                    <th>Ends</th>
+                                    <th>Units</th>
+                                </tr>
+                                <tr class="template">
+                                    <td class="name">Arnold Arnshaw</td>
+                                    <td class="service">HAH</td>
+                                    <td class="stDate">9/25/2019</td>
+                                    <td class="edDate">9/25/2020</td>
+                                    <td class="units">2500.00</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Client List <i class="fa fa-plus-square-o d-none d-lg-block btnExpand"></i></div>
+                    <div class="boxContainer active normalSize">
+                        <div class="clBlockData staffServices">
+                            <table>
+                                <tr class="template">
+                                    <td><i class="fa fa-times"></i></td>
+                                    <td class="name">Joe Bloggs</td>
+                                    <td class="service">HAH</td>
+                                    <td class="relationship">Household Family Member</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Billing Data <i class="fa fa-plus-square-o d-none d-lg-block btnExpand"></i></div>
+                    <div class="boxContainer active halfSize">
+                        <div class="clBlockData providerHomeBillingData">
+                        </div>
+                    </div>
+                </div>
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Credentials/Certifications <i class="fa fa-plus-square-o d-none d-lg-block btnExpand"></i></div>
+                    <div class="boxContainer active halfSize">
+                        <div class="clBlockData staffCredentials">
+                            <table>
+                                <tr class="template">
+                                    <td>
+                                        <a target="_Chart" href="/Staff/GetCredential?id=1"><i class="fa fa-search"></i></a>
+                                        <i class="fa fa-edit" onclick="openCredentialEditModal(1,4);"></i>
+                                        <i class="fa fa-check" onclick="openCredentialVerifyModal(1);"></i>
+                                    </td>
+                                    <td><span class="validFrom">8/5/2019</span><br /><span class="validTo">8/5/2022</span></td>
+                                    <td class="credName"><span>A9 Certification</span><br /></td>
+                                    <td><span class="credStatus red">MISSING</span><span class="verifier">Donald Guitterez</span><br /><span class="verifiedDate">9/6/2019</span></td>
+                                </tr>
+                            </table>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <!-- client view for provider only -->
+            <div class="col-lg-6">
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Authorizations <i class="fa fa-plus-square-o d-none d-lg-block btnExpand"></i></div>
+                    <div class="boxContainer active normalSize clientAuths">
+                        <div class="hdr"><i class="fa fa-plus-square faBtn faBtnNew" onclick="openEditClientService();"></i> Client Services</div>
+                        <div class="clBlockData template">
+                            <div><span class="deptCode">HCBS</span> <span class="svc">ATC</span> <i class="fa fa-edit faBtn faBtnEdit"></i><i class="fa fa-toggle-on faBtn faBtnOnOff"></i><span class="status">INACTIVE</span></div>
+                            <input type="hidden" class="hasMaxHours" value="1" />
+
+                            <input type="hidden" class="selectRate" value="1" />
+                            <input type="hidden" class="allowSpecialRates" value="1" />
+                            <input type="hidden" class="hasWeeklySchedule" value="1" />
+                            <table class="authTbl">
+                                <tr><th>Start</th><th>End</th><th>Auth</th><th>Paid</th><th>Open</th><th>Rem</th></tr>
+                                <tr class="authtemplate"><td class="stdt">12/12/2019</td><td class="eddt">12/12/2020</td><td class="au">2026.00</td><td class="uu">1000.25</td><td class="ou">25.75</td><td class="ru">1000.00</td></tr>
+                            </table>
+                            <table class="avgHrsTbl">
+                                <tr><th>Weekly Hours:</th><td class="avgHrs">40.00</td></tr>
+                            </table>
+                            <table class="maxHrsTbl">
+                                <tr><th>Max Hours Per Day:</th><td class="maxHours">8.0</td></tr>
+                            </table>
+                            <table class="wkSchedTbl">
+                                <tr><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th></tr>
+                                <tr><td>4.00</td><td>4.00</td><td>4.00</td><td>4.00</td><td>4.00</td></tr>
+                            </table>
+                            <input class="rid" type="hidden" value="24" />
+                            <table class="rtTbl">
+                                <tr><th>Rate:</th><td class="rateName">$12.23 / 2.5-4.5</td></tr>
+                            </table>
+                            <input class="spRateId" type="hidden" value="24" />
+                            <table class="spRtTbl">
+                                <tr><th>Special Rate</th><th>Rate</th><th>Ratio</th></tr>
+                                <tr><td><i class="fa fa-plus-square-o faBtn faSpRtAddBtn"></i><i class="fa fa-edit faBtn faSpRtEditBtn"></i><i class="fa fa-times faBtn faSpRtDelBtn"></i></td><td>$<span class="rate">12.23</span></td><td class="ratio">1:3</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Documentation History <i class="fa fa-plus-square-o d-none d-lg-block btnExpand"></i></div>
+                    <div class="boxContainer active normalSize">
+                        <div class="clBlockData">
+                            <table class="clientNotes">
+                                <tr>
+                                    <td><i class="fa fa-search blue"></i></td>
+                                    <td><i class="fa fa-check green"></i></td>
+                                    <td><i class="fa fa-edit blue"></i></td>
+                                    <td class="clientName">Arnold ArnShaw</td>
+                                    <td class="svc">HAH</td>
+                                    <td class="date">20/20/2019</td>
+
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Client Chart <i class="fa fa-plus-square-o d-none d-lg-block btnExpand"></i></div>
+                    <div class="boxContainer active normalSize">
+                        <div class="form-group clBlockData chartUploader">
+                            <input id="chartFileName" class="form-control form-control-sm fileName" disabled />
+                            <label class="btn btn-sm btn-secondary">
+                                Select <input id="chartFileNameX" type="file" style="display:none" onchange="getChartFileName();" />
+                            </label>
+                            <button type="button" class="btn btn-sm btn-primary" onclick="return uploadChart();">Upload File</button>
+                        </div>
+                        <div class="clBlockData clientCharts">
+                            <div class="chartItem template"><i class="fa fa-times faBtn" onclick="return openDeleteChartItem(1);"></i> <a class="chartLink" target="_Chart" href="/Clients/GetChart?id=1"><span class="chart">Chart A</span></a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">ClientProfile <i class="fa fa-plus-square-o d-none d-lg-block btnExpand"></i></div>
+                    <div class="boxContainer active halfSize">
+                        <div class="clBlockData">
+                            <table class="clientProfile">
+                                <tr>
+                                    <td class="hdr"><i class="fa fa-edit faBtn" onclick="openClientEditModal();"></i> Client Info</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:80%">
+                                        <div>Client ID: <span class="clId"></span></div>
+                                        <div>Coordinator: <span class="clwNm"></span></div>
+                                        <div>Telephone: <span class="clwPh"></span></div>
+                                        <div>Email: <a class="clwEma" href="#"><span class="clwEm"></span></a></div>
+                                        <div>Regional Rates: <span class="billReg"></span><input class="billRegId" type="hidden" /></div>
+                                        <div>Client Payroll Id: <span class="clEId"></span></div>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="clBlockData">
+                            <div class="clientGeoLocations">
+                                <div class="hdr"><i class="fa fa-plus-square faBtn" onclick="openGeoLocationAdd();"></i> Client Locations</div>
+                                <table class="clBlockData template" id="geoId0">
+                                    <tr>
+                                        <td>
+                                            <i class="fa fa-edit faBtn"></i>
+                                            <i class="fa fa-eye"></i>
+                                            <i class="fa fa-times faBtn"></i>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="ad1">42910 N Outer Bank Ct</span> <span class="ad2">#102</span>
+                                            <br /><span class="cty">Phoenix</span>, <span class="st">AZ</span> <span class="zip">85086</span>
+                                            <br />Radius: <span class="radius">50</span> feet
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Billing Data <i class="fa fa-plus-square-o d-none d-lg-block btnExpand"></i></div>
+                    <div class="boxContainer active halfSize">
+                        <div class="clBlockData clientBillingData">
+                            <div style="font-size:14px;font-weight:bold"><span class="ppStart">25/10/2019</span> - <span class="ppEnd">10/11/2019</span></div>
+                            <table>
+
+                                <tr>
+                                    <td class="hdr">Ratio</td>
+                                    <td class="hdr">1:1</td>
+                                    <td class="hdr">1:2</td>
+                                    <td class="hdr">1:3</td>
+                                    <td class="hdr">Totals</td>
+                                </tr>
+                                <tr>
+                                    <td class="hdr svc">ATC</td>
+                                    <td class="svc11">1.00</td>
+                                    <td class="svc12">2.00</td>
+                                    <td class="svc13">3.00</td>
+                                    <td class="hdr svcTot">6.00</td>
+                                </tr>
+
+
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script src="~/Scripts/moment.min.js"></script>
+    <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
+    @if (HttpContext.Current.IsDebuggingEnabled)
+    {
+        <script type="text/javascript" src="~/Scripts/DCC/providerhome.js?v=0.0a"></script>
+    }
+    else
+    {
+        <script type="text/javascript" src="~/Scripts/DCC/providerhome.js?v=0.0a"></script>
+    }
+}
+

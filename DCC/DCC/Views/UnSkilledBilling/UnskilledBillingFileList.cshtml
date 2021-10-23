@@ -1,0 +1,8 @@
+﻿@model  DCC.Models.UnSkilledBillingFileList
+
+    <div>
+        <div><a href="#" onclick="getBillingFile('@Model.billingFile.fileName'); return false;">@Model.billingFile.fileName</a></div>
+        <div>@Model.billingFile.lastModified</div>
+        <div><a href="#" onclick="getBillingFile('@Model.coverDocument.fileName'); return false;">@Model.coverDocument.fileName</a></div>
+        <div>@Model.coverDocument.lastModified</div>
+    </div>

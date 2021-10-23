@@ -1,0 +1,52 @@
+﻿@model DCC.Models.ClientPageData
+
+@foreach (var service in Model.serviceObjectives)
+{
+    <div style="margin:10px;padding: 5px;background-color:aliceblue; border: 1px solid #c0c0c0">
+        <div class="hdr">
+
+
+            @if ((!service.isTherapy && Model.userLevel != "Provider" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor") ||
+            (service.isTherapy && Model.userLevel != "Provider" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "Supervisor") ||
+            (service.serviceId == 10))
+            {
+                <i class="fa fa-edit faBtn" onclick="openEditObjectivesModal(@service.serviceId, @(service.isTherapy ? 1: 0));"></i>
+            }
+            @service.svcName Objectives
+            <i class="fa fa-plus-square-o faBtn" id="@("serviceObjectiveBtn" + service.serviceId)" onclick="expandServiceObjectives(@service.serviceId)" style="float:right"></i>
+        </div>
+        <div id="@("serviceObjectiveBlock" + service.serviceId)" style="display:none">
+            @foreach (var longTermObjective in service.longTermObjectives)
+            {
+                <div style="margin-left:20px;margin-bottom:10px;background-color:white;padding: 5px; border: 1px solid #c0c0c0">
+                    <div style="font-size:16px;font-weight:bold">Long Term Goal Area: <span>@longTermObjective.goalAreaName</span></div>
+                    <b>Long Term Vision</b>
+                    <p>@Html.Raw(longTermObjective.longTermVision)</p>
+                    <b>Long Term Objective</b>
+                    <p>@Html.Raw(longTermObjective.longTermGoal)</p>
+                    <div>
+                        <span style="font-weight:bold">Status:</span> <span>@longTermObjective.objectiveStatus</span> &nbsp; &nbsp;
+                        <span style="font-weight:bold">Completed/Removed Date:</span> <span>@longTermObjective.completedDt</span>
+                    </div>
+                    @foreach (var shortTermGoal in longTermObjective.shortTermGoals)
+                    {
+                        <div style="margin-left:20px;margin-bottom:10px;background-color:aliceblue;padding: 5px; border: 1px solid #c0c0c0">
+                            <b>Action Step / Short Term Goal</b>
+                            <p>@Html.Raw(shortTermGoal.shortTermGoal)</p>
+                            <b>Activities/ Strategies</b>
+                            <p>@Html.Raw(shortTermGoal.teachingMethod)</p>
+                            <div style="font-weight:bold">
+                                <span style="font-weight:bold">Frequency:</span> <span>@shortTermGoal.frequency</span> &nbsp; &nbsp;
+                                <span style="font-weight:bold">Status:</span> <span>@shortTermGoal.goalStatus</span> &nbsp; &nbsp;
+                                <span style="font-weight:bold">Completed/Removed Date:</span> <span>@shortTermGoal.completedDt</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+  
+        </div>
+        }
+
+

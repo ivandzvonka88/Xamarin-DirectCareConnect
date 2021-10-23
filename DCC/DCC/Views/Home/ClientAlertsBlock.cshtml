@@ -1,0 +1,21 @@
+﻿@model List<DCC.Models.ClientAlert>
+@for (var i = 0; i < Model.Count; i++)
+{
+    <tr class="clientAlertItem @(Model[i].priority == 1 ? "redAlert" :Model[i].priority == 2 ? "amberAlert" : "greenAlert")">
+        <td><i class="fa fa-exclamation-circle"></i></td>
+        <td class="alertLink" onclick="getTaskClientPage('@Model[i].id')"><span class="alertName">@Model[i].name</span> <span class="msg">@Model[i].alert</span></td>
+        <td>
+            @if (Model[i].clwEm != "")
+            {
+                <a id="@("em" + Model[i].id)" href="mailto:@Model[i].clwEm"><i class="fa fa-envelope-o faBtn" omouseover="iconShow($this, 'ClientWorker: ' + @Model[i].clwNm + '<br />Phone: ' + s.clwPh + '<br />Email: ' + @Model[i].clwEm)" onmouseout="iconHide();"></i></a>
+            }
+        </td>
+        <td>
+            @if (Model[i].clwPh != "")
+            {
+                <a id="@("ph" + Model[i].id)" href="tel:+@Model[i].clwPh"><i class="fa fa-phone faBtn" omouseover="iconShow(event.data.el, event.data.m)" onmouseout="iconHide()"></i></a>
+            }
+        </td>
+    </tr>
+}
+

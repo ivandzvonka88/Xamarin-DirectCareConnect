@@ -1,0 +1,166 @@
+﻿@model DCC.Models.NonSkilledRebillPage
+@Html.Partial("MenuHeader", @Model)
+@Html.AntiForgeryToken()
+
+<h1>Non Skilled Rebills</h1>
+
+<button class="btn btn-default" onclick="saveRebills();">Save</button>
+<div id="rebillList">
+    @Html.Partial("RebillPage", @Model)
+</div>
+
+
+<script>
+    var srvcUrl = '';
+    var srvcUrl1 = '';
+    var i = 0;
+    var pathname = window.location.pathname;
+    var t = document.location.hostname;
+    var VirtualDir = pathname.split('/');
+    VirtualDir.forEach(function (item) {
+        if (t != 'localhost') {
+            if (i == 1) {
+                srvcUrl1 = item;
+                if (srvcUrl1 != '')
+                    srvcUrl1 = '/' + item
+            }
+        }
+        i = i + 1;
+        if (item != '') {
+            srvcUrl += '/' + item;
+        }
+        else {
+            srvcUrl += '';
+        }
+    });
+</script>
+
+@section Scripts {
+    <script>
+        var token;
+        var headers;
+        $(document).ready(function () {
+            token = $('input[name="__RequestVerificationToken"]').val();
+            headers = {};
+            headers['__RequestVerificationToken'] = token;
+        });
+
+        function getRebills(i) {
+            waitOn();
+            $.ajax({
+                type: 'GET',
+                url: srvcUrl + '/GetRebills?page=' + i,
+                contentType: 'application/json; charset=utf-8',
+                headers: headers,
+                dataType: 'html',
+                success: function (data) {
+                    waitOff();
+                    $('#rebillList').html(data);
+                },
+                error: ajaxError,
+                timeout: 10000
+            });
+        }
+
+
+        function ajun(i) {
+            setChgOn();
+            $('#chg' + i).val(1);
+            var ajun = parseFloat($('#a' + i).val());
+            var un = parseFloat($('#u' + i).text());
+            if (ajun > 0)
+                ajun = -ajun;
+            if (un + ajun < 0)
+                ajun = -un;
+            if (un + ajun == 0)
+                chgItem(i)
+            else {
+                $('#a' + i).val(ajun.toFixed(2));
+                $('#tb' + i).text((un + ajun).toFixed(2));
+            }
+        }
+
+        function setChgOn() {
+            ChangesMade = true;
+            $(window).on("beforeunload", function () {
+                return 'You have Changed Data on this Page if you leave you will lose it!';
+            });
+        }
+        function setChgOff() {
+            $(window).off('beforeunload');
+            ChangesMade = false;
+            for (var i = 0; i < maxN; i++) {
+                if ($('#chg' + i).length != 0)
+                    $('#chg' + i).val(0);
+                else
+                    break;
+            }
+        }
+        function chgItem(i) {
+            setChgOn();
+            $('#chg' + i).val(1);
+            if ($('#bu' + i).hasClass('btn-danger')) {
+                $('#a' + i).val('-' + $('#u' + i).text());
+                $('#tb' + i).text('0.00');
+                $('#bu' + i).text('Open');
+                $('#st' + i).text('CLOSE');
+                $('#st' + i).removeClass('y').addClass('n');
+                $('#bu' + i).removeClass('btn-danger').addClass('btn-success');
+                $('#a' + i).prop('disabled', true);
+            }
+            else {
+                $('#a' + i).val('0.00');
+                $('#tb' + i).text($('#u' + i).text());
+                $('#bu' + i).text('Close');
+                $('#st' + i).text('REBILL');
+                $('#st' + i).removeClass('n').addClass('y');
+                $('#bu' + i).removeClass('btn-success').addClass('btn-danger');
+                $('#a' + i).prop('disabled', false);
+            }
+        }
+        function cmd() {
+            this.pg;
+            this.b;
+        }
+        function billItem() {
+            this.tbl;
+            this.id;
+            this.un;
+            this.ajun;
+            this.chg;
+        }
+        function saveRebills() {
+            var c = new cmd;
+            c.pg = $('#pageNumber').val();
+            c.b = [];
+            i = 0;
+            while ($('#rw' + i).length == 1) {
+                c.b[i] = new billItem();
+                c.b[i].tbl = $('#tp' + i).val();
+                c.b[i].id = $('#id' + i).val();
+                c.b[i].un = $('#u' + i).text();
+                c.b[i].ajun = $('#a' + i).val();
+                c.b[i].chg = $('#chg' + i).val();
+                i++;
+            }
+            waitOn();
+            $.ajax({
+                type: 'POST',
+                url: srvcUrl + '/SetRebills',
+                data: JSON.stringify(c),
+                contentType: 'application/json; charset=utf-8',
+                headers: headers,
+                dataType: 'html',
+                success: function (data) {
+                    waitOff();
+                    $('#rebillList').html(data);
+                },
+                error: ajaxError,
+                timeout: 10000
+            });
+            return false;
+        }
+
+
+    </script>
+}

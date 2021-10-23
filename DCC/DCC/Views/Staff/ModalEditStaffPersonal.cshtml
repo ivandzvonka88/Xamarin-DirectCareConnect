@@ -1,0 +1,88 @@
+﻿@model DCC.Models.Staff.StaffData
+<div id="actionModal" class="modal fade" tabindex="-1" ole="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-edit"></i> Update Staff Personal Data</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="fnx">First Name</label>
+                                <input id="fnx" class="form-control form-control-sm name" type="text" value="@Model.fn" autocomplete = "off"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="lnx">Last Name</label>
+                                <input id="lnx" class="form-control form-control-sm name" type="text" value="@Model.ln" autocomplete = "off"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="ad1x">Address</label>
+                                <input id="ad1x" class="form-control form-control-sm address" type="text" value="@Model.ad1" autocomplete = "off"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="ad2x">Apartment#</label>
+                                <input id="ad2x" class="form-control form-control-sm address" type="text"  value="@Model.ad2" autocomplete = "off"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="ctyx">City</label>
+                                <input id="ctyx" class="form-control form-control-sm address" type="text"  value="@Model.cty" autocomplete = "off"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="stx">State/ Zip</label>
+                                <div>
+                                    <select id="stx" class="form-control form-control-sm state" style="display:inline">
+                                        <option @("AZ" == Model.st ? "selected" : "")>AZ</option>
+                                        <option @("NM" == Model.st ? "selected" : "")>NM</option>
+
+                                    </select> <input id="zx" class="form-control form-control-sm zip" style="display:inline" type="text" value="@Model.z" autocomplete = "off"/></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="emx">Email</label>
+                                <input id="emx" class="form-control form-control-sm" type="text" value="@Model.em" autocomplete = "off" readonly="readonly"/>
+                            </div>
+                            <input type="hidden" id="oldEmail" value="@Model.em" />
+                            <input type="hidden" id="userId" value="@Model.userId" />
+
+                            <div class="form-group">
+                                <label for="clx">Cell Phone</label>
+                                <input id="clx" class="form-control form-control-sm" type="text" value="@Model.cl" autocomplete = "off"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="phx">Secondary Phone</label>
+                                <input id="phx" class="form-control form-control-sm" type="text" value="@Model.ph" autocomplete = "off"/>
+                            </div>
+                            <label for="dobfx">Date of Birth</label>
+                            <div class="input-group date">
+                                <input id="dobfx" type="date" class="form-control form-control-sm" value="@Model.dobfISO" />
+                            </div>
+                            <div class="form-group">
+                                <label for="sexx">Gender</label>
+                                <select id="sexx" class="form-control form-control-sm">
+                                    <option value=""></option>
+                                    <option value="Female" @("Female" == Model.sex ? "selected" : "")>Female</option>
+                                    <option value="Male" @("Male" == Model.sex ? "selected" : "")>Male</option>
+                                    <option value="Other" @("Other" == Model.sex ? "selected" : "")>Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="ssnfx">SSN</label>
+                                <input id="ssnfx" class="form-control form-control-sm phone" type="text" value="@Model.ssnf" autocomplete = "off"/>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="guBtn" type="button" class="btn btn-primary" onclick="updateStaffPersonal();">Update</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#actionModal').modal('show');
+</script>

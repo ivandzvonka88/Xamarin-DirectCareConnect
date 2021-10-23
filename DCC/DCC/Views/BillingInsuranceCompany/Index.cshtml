@@ -1,0 +1,140 @@
+﻿
+
+@model DCC.EmptyView
+@{
+
+}
+@Html.AntiForgeryToken()
+@Html.Partial("MenuHeader", @Model)
+@Html.Partial("SettingsHeader", @Model)
+<div id="BillingInsuranceCompany">
+    <div class="hdr"><i class="fa fa-plus-square faBtn" onclick="openAddBillingCompanyModal(0);"></i> Add Company</div>
+    <table data-order='[0,"desc"]' data-checkit="test" class="table-bordered" id="BillingInsuranceCompanyTable">
+        <thead>
+            <tr>
+                <th>
+                    Actions
+                </th>
+                <th>
+                    Company
+                </th>
+                <th>
+                    PatientCount
+                </th>
+            </tr>
+        </thead>
+    </table>
+
+    @*Edit*@
+    <div id="editBillingInsCompany" class="modal fade" role="dialog">
+    </div>
+
+</div>
+
+
+<style>
+    table td {
+        padding: 4px;
+        background-color: white;
+    }
+
+    table th {
+        padding: 4px;
+        color: white;
+        background-color: #36A3BC;
+        /*font-size: 14px;
+            border: 1px solid #a0a0a0;*/
+    }
+</style>
+
+@section Scripts
+    {
+
+
+    <script>
+        var token;
+        var headers;
+        $(document).ready(function () {
+            token = $('input[name="__RequestVerificationToken"]').val();
+            headers = {};
+            headers['__RequestVerificationToken'] = token;
+            headers['__CompanyId'] = $('#CurrentCompanyId').val();
+            $(function () {
+                var columns = [
+                    {
+                        data: "InsuranceCompanyId", sWidth: '34px', orderable: false, mRender: function (data, type, full) {
+                            var toReturn = '';
+                            toReturn = '<i class="fa fa-edit faBtn" onclick="openAddBillingCompanyModal(' + data + ')"></i>';
+                            toReturn += '<i class="fa fa-trash faBtn" style="color:red" onclick="deleteBillingInsuranceCompany(' + data + ')"></i>';
+                            return toReturn;
+                        }
+                    },
+                    {
+                        data: "Name"
+                    },
+                    {
+                        data: "PatientCount"
+                    }
+                ];
+                createGridForAjax('#BillingInsuranceCompanyTable', 'BillingInsuranceCompany/GetAllBillingInsuranceCompanies', columns, null);
+            });
+
+        });
+
+        function setVisibility(i) {
+            if (i > 0) {
+                $('#headingAdd').hide();
+                $('#headingEdit').show();
+                $("#btnsave").attr('Value', 'Update');
+                $("#selector").hide();
+                $("#divInsCompany").hide();
+            }
+            else {
+                $('#headingEdit').hide();
+                $('#headingAdd').show();
+                $("#btnsave").attr('Value', 'Save');
+            }
+        }
+
+        function openAddBillingCompanyModal(i) {
+            $.ajax({
+                type: 'POST',
+                url: srvcUrl + '/EditBillingCompany?insuranceCompanyId=' + i,
+                dataType: 'html',
+                headers: headers,
+                success: function (res) {
+                    $("#editBillingInsCompany").html(res);
+                    setVisibility(i)
+                    $('#editBillingInsCompany').modal('show');
+                    //$('#editHeading').text('Edit new Company');
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log('error');
+                }
+            });
+        }
+
+        function deleteBillingInsuranceCompany(id) {
+            $.ajax({
+                type: 'GET',
+                url: srvcUrl + '/DeleteBillingInsuranceCompany?insuranceCompanyID=' + id,
+                contentType: 'application/json; charset=utf-8',
+                headers: headers,
+                dataType: 'json',
+                success: function (data) {
+                    if (data == true) {
+                        $('#BillingInsuranceCompanyTable').DataTable().ajax.reload();
+                    }
+                    else {
+                        Alert("Cannot be deleted as one or more paitents are availing it.");
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log('error', textStatus);
+                }
+            });
+        }
+
+    </script>
+}

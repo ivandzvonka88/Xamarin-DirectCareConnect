@@ -1,0 +1,55 @@
+﻿@model DCC.Models.GuardianPageData
+@if (Model.guardianProfile.deleted)
+{
+<span>INACTIVE</span>
+}
+
+
+else if (!Model.guardianProfile.registered)
+{
+<button type="button" class="btn btn-sm btn-danger" onclick="inviteGuardian();">Re-Invite</button>
+}
+else
+{
+<span>ACTIVE</span>
+}
+
+<div class="hdr">
+    @if (Model.userLevel == "SuperAdmin" || Model.userLevel == "HumanResources")
+    {
+    <i class="fa fa-edit faBtn btnEditPersDet" onclick="openGuardianEditModal();"></i>
+    }
+    Personal Data
+</div>
+<table class="staffData">
+    @if (Model.userLevel == "SuperAdmin" || Model.userLevel == "HumanResources")
+    {
+        <tr>
+            <td colspan="2">
+                <i id="btnStaffMFA" class="faBtn fa @(Model.guardianProfile.mfaEnabled == true ? "fa-toggle-on" : "fa-toggle-off")" onclick="toggleGuardianMFA(@Model.guardianProfile.guardianUId);"></i>
+                <span id="staffMFAText">
+                    @(Model.guardianProfile.mfaEnabled ? "MFA Enabled" : "MFA Disabled")
+                </span>
+            </td>
+        </tr>
+    }
+
+        <tr>
+            <td>
+                Cell Phone:  @Model.guardianProfile.phone
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Email: @Model.guardianProfile.email
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Address:<br />
+                <span>@Model.guardianProfile.addressLine1</span>
+                <span id="stAd2">@Model.guardianProfile.addressLine2</span>,
+                <br /><span>@Model.guardianProfile.city</span> <span>@Model.guardianProfile.state</span> <span>@Model.guardianProfile.postalCode</span>
+            </td>
+        </tr>
+    </table>

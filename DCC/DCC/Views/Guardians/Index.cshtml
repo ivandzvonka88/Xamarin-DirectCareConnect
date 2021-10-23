@@ -1,0 +1,99 @@
+﻿@model DCC.Models.GuardianList
+@Html.Partial("MenuHeader", @Model)
+@Html.AntiForgeryToken()
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "";
+}
+
+<style>
+    .map {
+        height: 50vh;
+        width: 100%;
+    }
+
+    #waiver {
+        /*background-color: lightgrey;*/
+        width: 500px;
+        /*border: 15px solid green;*/
+        padding: 50px;
+        margin: 20px;
+    }
+
+    .dispone {
+        display: none
+    }
+</style>
+
+<h1>Guardians</h1>
+<div class="form-group">
+    <select class="form-control form-control-sm" style="width:200px" id="guardianSearchOption" onchange="search();">
+        <option value="0"></option>
+        <option value="1">Active</option>
+        <option value="2">InActive</option>
+        <option value="5">Registered/No Clients</option>
+        <option value="3">Registered</option>
+        <option value="4">Not Registered</option>
+    </select>
+</div>
+<div id="sMarker">
+</div>
+<div class="row">
+    <div class="col-md-4 col-lg-2">
+        <div class="input-group searchNames">
+            <div class="input-group-append">
+                <input class="form-control form-control-sm" id="nm" type="text" autocomplete="off" placeholder="search by name" onkeyup="search();" />
+                <span class="input-group-text"><i class="fa fa-times" onclick="clearSearch();"></i></span>
+                <span class="input-group-text" onclick="openNewGuardianModal();"><i class="fa fa-user-plus"></i></span>
+
+            </div>
+        </div>
+        <div class="nameList">
+            @Html.Partial("GuardianList", @Model)
+
+        </div>
+    </div>
+    <div class="col-md-8 col-lg-10" id="guardianPage">
+        <!-- place holder partial view guardian page -->
+    </div>
+</div>
+
+
+<!-- Start Modals-->
+
+
+
+<div id="modals">
+</div>
+<!--End Modals-->
+
+@section scripts {
+
+
+
+
+
+    <script>
+        var srvcUrl = '';
+        var pathname = window.location.pathname;
+        var VirtualDir = pathname.split('/');
+        VirtualDir.forEach(function (item) {
+            if (item != '') {
+                srvcUrl += '/' + item;
+            }
+            else {
+                srvcUrl += '';
+            }
+        });
+
+
+    </script>
+
+        <script type="text/javascript" src="~/Scripts/DCC/Guardians.js?v=0.04"></script>
+
+
+
+
+
+}

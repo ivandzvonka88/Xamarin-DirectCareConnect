@@ -1,0 +1,69 @@
+﻿@model DCC.Models.Providers.AccountsReceivable
+@{
+    var clients = Model.ClaimList.GroupBy(x => x.ClientId).ToList();
+    var insuranceCompanies = Model.ClaimList.GroupBy(x => x.InsuranceCompanyId).ToList();
+}
+<div class="display-grid">
+    <div><span><strong>Total Count:</strong> @(Model.ClaimList.Count)</span></div>
+    <div><span><strong>Total Amount:</strong>@(String.Format("{0:C}", Model.ClaimList.Sum(x => x.AmountDue)))</span></div>
+</div>
+
+<table class="table table-bordered text-center" style="margin-top: 2%;">
+    <thead>
+        <tr>
+            <th scope="col">Claim ID</th>
+            <th scope="col">Claim Date</th>
+            <th scope="col">Age</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Claim Status</th>
+            <th scope="col">Client Name</th>
+            <th scope="col">Insurance Company</th>
+            <th scope="col">Insurance Tier</th>
+            <th scope="col">Service</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var claim in Model.ClaimList)
+        {
+            <tr>
+                <th scope="row"><a href="/SkilledBilling" target="_blank" style="color: #36a3bc !important;">@claim.ClaimId</a></th>
+                <td>@claim.ClaimDate.ToString("MM/dd/yyyy")</td>
+                <td>@claim.ClaimAge</td>
+                <td>@(String.Format("{0:C}", claim.AmountDue))</td>
+                <td>@claim.ClaimStatus.name</td>
+                <td>@claim.ClientName</td>
+                <td>@claim.InsuranceCompanyName</td>
+                <td>@(claim.InsurancePriorityId == 1 ? "Primary" : claim.InsurancePriorityId == 2 ? "Secondary" : "Tertiary")</td>
+                <td>@claim.ServiceName</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="display-grid">
+    <div><span><strong>Total Count:</strong> @(Model.ClaimList.Count)</span></div>
+    <div><span><strong>Total Amount:</strong>@(String.Format("{0:C}", Model.ClaimList.Sum(x => x.AmountDue)))</span></div>
+</div>
+
+
+<script type="text/javascript">
+    claimsInsuranceCompanyFilterOption = []
+    claimsClientFilterOption = []
+
+    @foreach(var insuranceCompany in insuranceCompanies)
+    {
+        @:claimsInsuranceCompanyFilterOption.push(['@insuranceCompany.FirstOrDefault().InsuranceCompanyName', @insuranceCompany.FirstOrDefault().InsuranceCompanyId]);
+    }
+    @foreach (var client in clients)
+    {
+        @:claimsClientFilterOption.push(['@client.FirstOrDefault().ClientName', @client.FirstOrDefault().ClientId]);
+    }
+
+    if ($('#insuranceCompanyFilter').length > 0) {
+        $('#insuranceCompanyFilter').autoComplete('destroy')
+        renderAutoComplete('insuranceCompany', claimsInsuranceCompanyFilterOption)
+        $('#clientFilter').autoComplete('destroy')
+        renderAutoComplete('client', claimsClientFilterOption)
+    }
+
+</script>

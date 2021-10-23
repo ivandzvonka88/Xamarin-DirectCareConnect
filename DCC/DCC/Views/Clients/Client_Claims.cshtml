@@ -1,0 +1,104 @@
+﻿@model DCC.Models.ClientPageData
+@{
+    var grid = new WebGrid(canPage: false, canSort: false);
+    grid.Bind(source: Model.clientClaims, autoSortAndPage: false);
+}
+    <div class="hdr">
+        <label for="ddlClaimStatus">Filter By Status:</label>
+        <select id="ddlClaimStatus" class="form-group-sm" onchange="claimStatusChange(this);">
+            <option value="" selected="selected">- Select -</option>
+            @foreach (var clm in Model.clientClaims.Select(c => c.ClaimStatus).Distinct())
+            {
+                <option>@clm</option>
+            }
+        </select>
+    </div>
+
+
+
+<!--<div class="row" style="margin-left:0!important; margin-right:0 !important;margin-bottom:3px;">
+    <div class="col-sm-4" style="text-align:right">
+        <label>Filter By Status:</label>
+        </div>
+        <div class="col-sm-8" style="margin-left:0!important; margin-right:0 !important;">
+            <select id="ddlClaimStatus" class="form-group-sm" onchange="claimStatusChange(this);">
+                <option value="" selected="selected">- Select -</option>
+                @foreach (var clm in Model.clientClaims.Select(c => c.ClaimStatus).Distinct())
+                {
+                    <option>@clm</option>
+                }
+            </select>
+        </div>
+    </div>-->
+
+@*<div class="row">
+    <div class="col-sm-12">*@
+@grid.GetHtml(
+            tableStyle: "table table-striped table-bordered",
+            //tableStyle: "uk-table uk-table-hover uk-table-striped",
+            //tableStyle: "table table-striped table-bordered compact",
+            htmlAttributes: new { @id = "claimTable" },
+            columns: grid.Columns(
+                grid.Column(columnName: "claimId", header: "Claim#"),
+                grid.Column(columnName: "DateOfService", header: "DOS", format: @<text>@item.DateOfService.ToString("MM/dd/yy")</text>),
+grid.Column(columnName: "billedAmount", header: "Billed", format:@<text>@string.Format("${0}", item.billedAmount)</text>),
+grid.Column(columnName: "paidAmount", header: "Paid", format:@<text>@string.Format("${0}", item.paidAmount)</text>),
+grid.Column(columnName: "ClaimStatus", header: "Status"),
+grid.Column(columnName: "cptCode", header: "CPTCode"),
+grid.Column(columnName: "provider", header: "Provider")
+)
+)
+        <script>
+            $(document).ready(function () {
+                $('#claimTable').DataTable(
+                    {
+                        "lengthMenu": [[10, 20, 30, 50, -1], [10, 20, 30, 50, "All"]],
+                        //"language": { "info": "Showing page _PAGE_ of _PAGES_" },
+                        "language": { "info": "Showing records _START_ to _END_ of _TOTAL_" }
+                    });
+                $('#claimTable tbody').on('click', 'tr', function () {
+                    $(this).toggleClass('selected');
+                });
+            });
+        </script>
+
+        @*</div>
+        </div>*@
+        @*<div class="row">
+            <div class="col-sm-6">
+                @grid.Pager(mode: WebGridPagerModes.All)
+            </div>
+        </div>*@
+        @*, sty: "pagination pagination-small pagination-right"*@
+
+
+        @*<script type="text/javascript">
+            $(document).ready(function () {
+                $(".claimTable")
+                    .tablesorter({ widthFixed: true })
+                    .tablesorterPager({ container: $("#pager") });
+                $(".claimTable").bind("sortStart", function () {
+                    $("#sortMsg").html('Sorting');
+                }).bind("sortEnd", function () {
+                    $("#sortMsg").html('');
+                });
+
+            });
+        </script>*@
+
+
+        @*<br />
+        <div id="pager" class="pager">
+            <br />
+            <img src="../../Content/first.png" class="first" />
+            <img src="../../Content/prev.png" class="prev" />
+            <input type="text" class="pagedisplay" />
+            <img src="../../Content/next.png" class="next" />
+            <img src="../../Content/last.png" class="last" />
+            <select class="pagesize">
+                <option selected="selected" value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+            </select>
+        </div>*@

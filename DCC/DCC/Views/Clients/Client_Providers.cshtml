@@ -1,0 +1,21 @@
+﻿@model DCC.Models.ClientPageData
+
+@if (Model.userLevel != "Provider" && Model.userLevel != "Supervisor" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+{
+    <div class="hdr"><i class="fa fa-plus-square faBtn" onclick="openAddClientStaffRelationshipModal();"></i>Add New Service</div>
+}  
+<table>
+    @foreach (var item in Model.providerServices)
+    {
+    <tr id="@("relId" + @item.relId)">
+        @if (Model.userLevel != "Provider" && Model.userLevel != "Supervisor" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+        {
+            <td><i class="fa fa-trash faBtn red" onclick="openDeleteClientStaffRelationshipModal(@item.relId)"></i></td>
+        }
+        <td class="name">@item.providerName</td>
+        <td class="service" style="padding-left:5px; padding-right:5px">@item.service</td>
+        <td class="relationship">@item.relationship</td>
+    </tr>
+    }
+</table>
+

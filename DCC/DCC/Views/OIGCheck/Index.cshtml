@@ -1,0 +1,69 @@
+﻿@model DCC.Models.OIGPageData
+@Html.Partial("MenuHeader", @Model)
+@Html.AntiForgeryToken()
+<button class="btn btn-default" onclick="getFileAndRerunDataCheck();">Get latest file and recheck</button>
+
+
+<div id="OIGResults">
+    @Html.Partial("OIGResults", @Model)
+</div>
+
+
+
+
+
+
+<script>
+    var srvcUrl = '';
+    var srvcUrl1 = '';
+    var i = 0;
+    var pathname = window.location.pathname;
+    var t = document.location.hostname;
+    var VirtualDir = pathname.split('/');
+    VirtualDir.forEach(function (item) {
+        if (t != 'localhost') {
+            if (i == 1) {
+                srvcUrl1 = item;
+                if (srvcUrl1 != '')
+                    srvcUrl1 = '/' + item
+            }
+        }
+        i = i + 1;
+        if (item != '') {
+            srvcUrl += '/' + item;
+        }
+        else {
+            srvcUrl += '';
+        }
+    });
+</script>
+@section Scripts {
+    <script>
+         var token;
+        var headers;
+        $(document).ready(function () {
+            token = $('input[name="__RequestVerificationToken"]').val();
+            headers = {};
+            headers['__RequestVerificationToken'] = token;
+
+        });
+        function getFileAndRerunDataCheck() {
+            waitOn();
+            $.ajax({
+                type: 'POST',
+                url: srvcUrl + '/GetFileAndRerunDataCheck',
+                contentType: 'application/json; charset=utf-8',
+                headers: headers,
+                dataType: 'html',
+                success: function (data) {
+                    waitOff();
+                    $('#OIGResults').html(data);
+                },
+                error: ajaxError,
+                timeout: 100000
+            });
+        }
+
+
+    </script>
+}

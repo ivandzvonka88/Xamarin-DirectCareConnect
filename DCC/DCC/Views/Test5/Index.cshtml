@@ -1,0 +1,46 @@
+﻿
+<div class="row">
+
+    <div class="col-md-4">
+        <div class="form-group">
+            <button type="button" class="btn btn-primary"  href="/Test5/CreateReportsATC"> <!--onclick="createATCReports();"-->Get Schedule</button>
+        </div>
+    </div>
+
+</div>
+
+
+
+<script>
+
+    function createATCReports() {
+        var Data = {
+        }
+        $.ajax({
+            type: 'GET',
+            url: '/Test5/CreateReportsATC',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: SuccessR,
+            error: ajaxError,
+            timeout: 100000
+        });
+    }
+
+
+    function SuccessR(r) {
+        waitOff();
+        if (r.code === 1) Alert('System Error - ' + r.msg);
+        else if (r.code === 2) Alert('Error - ' + r.msg);
+        else {
+            Alert('Success');
+        }
+    }
+
+
+
+
+
+
+
+</script>

@@ -1,0 +1,19 @@
+﻿@model DCC.Models.Providers.ClaimComments
+
+@{ 
+    if(Model.comments.Count > 0)
+    {
+        foreach (var comment in Model.comments)
+        {
+            <div>
+                <strong>@comment.staffName</strong>&nbsp;@comment.MadeAt.Value.ToString("g")
+            </div>
+            <div style="margin-bottom:10px;">
+                @comment.Comments
+            </div>
+        }
+    } else
+    {
+    <h4>No comments have been made on this claim</h4>
+    }
+}

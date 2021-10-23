@@ -1,0 +1,298 @@
+﻿@model DCC.Models.ClientPageData
+<div class="clientAuths">
+    @if (Model.userLevel != "Provider" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+    {
+        <div class="hdr"><i class="fa fa-plus-square faBtn faBtnNew" onclick="openNewClientService();"></i> Client Services</div>
+    }
+
+    @foreach (var item in Model.services)
+    {
+
+        if (Model.userLevel == "Provider" && (item.isTherapy || item.isEvaluation))
+        {
+
+        }
+        else
+        {
+
+            var active = item.deleted ? 0 : 1;
+            var toggleBtn = item.deleted ? "fa-toggle-off" : "fa-toggle-on";
+            var activeClass = item.deleted ? "inactive" : "active";
+            var AllowManualInput = !item.allowManualInOut ? "true" : "false";
+            var AllowManualInputBtn = !item.allowManualInOut ? "fa-toggle-off" : "fa-toggle-on";
+            var AllowManualInputStatus = !item.allowManualInOut ? "Manual In/Out Times Disabled" : "Manual In/Out Times Enabled";
+
+<div class="clBlockData" style="height:auto" id="@("svc" + @item.clsvidId)">
+    <input type="hidden" class="hasMaxHours" value="1" />
+    <input type="hidden" class="selectRate" value="1" />
+    <input type="hidden" class="allowSpecialRates" value="1" />
+    <input type="hidden" class="hasWeeklySchedule" value="1" />
+    <div>
+        <span id="@("svcName" + @item.clsvidId)">@item.svcLong</span> &nbsp; &nbsp;
+        @if (Model.userLevel != "Provider" && Model.userLevel != "Supervisor" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+        {
+            <i class="fa faBtn @toggleBtn" onclick="openToggleClientSvcActive(@item.clsvidId,@active)"></i>
+        }
+        <span class="status">@item.status</span>
+
+    </div>
+    <div style="border:1px solid #c0c0c0;margin-top:5px;margin-bottom:5px;">
+        @if (Model.userLevel != "Provider" && Model.userLevel != "Supervisor" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+        {
+            <i class="fa fa-edit faBtn faBtnEdit" onclick="openEditService(@item.clsvidId);"></i>
+        }
+
+        <div style="margin-left:5px">
+            DDD Pay: <i class="fa @(item.dddPay ? "fa-check" : "fa-times" )"></i>
+            Insurance Pay: <i class="fa @(item.pInsPay ? "fa-check" : "fa-times" )"></i>
+            Cash Pay: <i class="fa @(item.ppPay ? "fa-check" : "fa-times" )"></i>
+        </div>
+        <div style="margin-left:5px">
+            Service Contingency Plan: <span style="color:orangered">@item.contingencyPlan</span>
+        </div>
+        <div style="margin-left:5px" id="@("manualinput" + item.clsvidId)">
+            @if (Model.userLevel != "Provider" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+            {
+                <i class="fa faBtn @AllowManualInputBtn" onclick="toggleClientSvcManualInOut(@item.clsvidId)"></i>
+            }
+            <span class="manualInputStatus">@AllowManualInputStatus</span>
+        </div>
+
+    </div>
+
+    @if (item.dddPay)
+    {
+
+        <table class="authTbl">
+            <tr>
+                @if (Model.userLevel != "Provider" && Model.userLevel != "Supervisor" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+                {
+                    <th colspan="8">DDD Authorizations</th>
+                }
+                else
+                {
+                    <th colspan="7">DDD Authorizations</th>
+                }
+            </tr>
+
+            <tr>
+                <th>Start</th>
+                <th>End</th>
+                <th>DDD Auth</th>
+                <th>Add. Auths</th>
+                <th>Paid</th>
+                <th>Open</th>
+                <th>Rem</th>
+                @if (Model.userLevel != "Provider" && Model.userLevel != "Supervisor" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+                {
+                    <th></th>
+                }
+
+            </tr>
+            @foreach (var auth in item.auths)
+            {
+                <tr>
+                    <td class="stdt">@auth.stdt</td>
+                    <td class="eddt">@auth.eddt</td>
+                    <td class="au">@auth.au</td>
+                    <td style="color:orangered">@auth.tempAddedUnits</td>
+                    <td class="uu">@auth.uu</td>
+                    <td class="ou">@auth.ou</td>
+                    <td class="ru">@auth.ru</td>
+                    @if (Model.userLevel != "Provider" && Model.userLevel != "Supervisor" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+                    {
+                        <td>
+                            <i class="fa fa-edit faBtn" onclick="openEditAuth(@auth.auId)"></i>
+                            <i class="fa fa-trash faBtn red" onclick="openDeleteAuth(@auth.auId)"></i>
+                        </td>
+                    }
+                </tr>
+                <tr>
+                    <th colspan="2">Computed Weekly Hours:</th>
+                    <td colspan="1">@string.Format("{0:0.0}", auth.wk)</td>
+                    <th colspan="2">Weekly Hours Overrride:</th>
+                    <td colspan="1">@(auth.weeklyHourOverride !=  -1  ?  string.Format("{0:0.0}", auth.weeklyHourOverride) : "OFF")</td>
+                </tr>
+            }
+            @if (Model.userLevel != "Provider" && Model.userLevel != "Supervisor" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+            {
+                <tr>
+                    <td colspan="6">
+                        <div class="hdr"><i class="fa fa-plus-square faBtn faBtnNew" onclick="openNewAuthModal(@item.clsvidId)"></i> Add New Authorization</div>
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+    @if (item.billingType == 3)
+    {
+        <div>
+            <label for="assignedRates" class="hdr">Assigned Rate</label>
+            <select id="assignedRate" class="form-control form-control-sm" style="width:200px" onchange="updateAssignedRate(@item.clsvidId);">
+                @if (item.assignedRateId == 0)
+                {
+                    <option value="0"></option>
+                }
+
+                @foreach (var rate in item.assignableRates)
+                {
+                    <option value="@rate.value" @(item.assignedRateId == Convert.ToInt32(rate.value) ? "selected" : "")>@rate.name</option>
+                }
+            </select>
+        </div>
+    }
+    @if (item.allowSpecialRates && Model.userLevel != "Provider" && Model.userLevel != "Supervisor" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+    {
+        if (item.specialRates != null && item.specialRates.Count == 0)
+        {
+            <div class="hdr specialratehdr"><i class="fa fa-plus-square faBtn faSpRtAddBtn" onclick="openAddSpecialRateModal(@item.clsvidId, '@item.svcLong' )"></i> Special Rate</div>
+        }
+        else
+        {
+            <input id="@("ratio" + item.specialRates[0].spRtId)" type="hidden" value="@item.specialRates[0].ratio" />
+            <table class="spRtTbl" style="width:280px">
+                <tr><th colspan="3">Special Rate Active</th></tr>
+                <tr>
+                    <td>$<span id="@("rate" + item.specialRates[0].spRtId)">@item.specialRates[0].rate</span></td>
+                    <td>@(item.specialRates[0].ratio == 1 ? "Provider : Client 1 : 1" : "Provider : Client 2 : 1")</td>
+                    <td>
+                        <i class="fa fa-edit faBtn faSpRtEditBtn" onclick="openEditSpecialRateModal(@item.specialRates[0].spRtId)"></i>
+                        <i class="fa fa-trash faBtn faSpRtDelBtn" onclick="openSpecialRateDelete(@item.clsvidId, @item.specialRates[0].spRtId,'@item.svcLong')"></i>
+                    </td>
+                </tr>
+            </table>
+        }
+    }
+
+    @if (Model.userLevel != "Provider")
+    {
+
+        foreach (var insPolicy in item.insurancePreAuths)
+        {
+
+            <table class="authTbl">
+                <tr>
+                    <th colspan="5">@insPolicy.InsuranceCompany</th>
+                </tr>
+                <tr>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Auth</th>
+                    <th>Used</th>
+                    <th>Rem</th>
+                </tr>
+                @foreach (var preAuth in insPolicy.preAuths)
+                {
+                    if (preAuth.isApplicable == null)
+                    {
+                        <tr>
+                            <td colspan="5">
+                                No Current Pre Auth Info Exists
+                            </td>
+                        </tr>
+                    }
+                    else if (preAuth.isApplicable == false)
+                    {
+                        <tr>
+                            <td colspan="5">
+                                Pre Auth InApplicable
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>
+                                @preAuth.start
+                            </td>
+                            <td>
+                                @preAuth.end
+                            </td>
+                            <td>
+                                @preAuth.authUnits
+                            </td>
+                            <td>
+                                @preAuth.usedUnits
+                            </td>
+                            <td>
+                                @preAuth.remUnits
+                            </td>
+                        </tr>
+                    }
+
+                }
+            </table>
+        }
+
+
+        if (item.hasProgressReport)
+        {
+            <div>
+                Report Period End Date: <b>@item.nextReportDueDate</b>
+                @if (Model.userLevel != "Provider" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+                {
+                    <i class="fa fa-edit faBtn faBtnEdit" onclick="openEditProgressReportDateModal(@item.clsvidId);"></i>
+                }
+            </div>
+        }
+
+        if (item.hasCareAreas)
+        {
+            <div>
+                Next ATC MontitorVisit:  <b>@item.nextATCMonitoringVisit</b>
+                @if (Model.userLevel != "Provider" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+                {
+                    <i class="fa fa-edit faBtn faBtnEdit" onclick="openEditNextVistDateModal(@item.clsvidId);"></i>
+                }
+            </div>
+        }
+
+        if (!item.isEvaluation)
+        {
+            <table style="width:280px">
+                <tr><th></th><th>Start</th><th>End</th><th></th></tr>
+                <tr>
+                    <td>ISP Dates</td>
+                    <td>@item.ISPStart</td>
+                    <td>@item.ISPEnd</td>
+                    <td>
+                        @if (Model.userLevel != "Provider" && Model.userLevel != "Supervisor" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+                        {
+                            <i class="fa fa-edit faBtn faSpRtEditBtn" onclick="openEditISPDatesModal(@item.clsvidId)"></i>
+                        }
+                    </td>
+                </tr>
+                @if (item.isTherapy)
+                {
+                    <tr>
+                        <td>Plan Of Care Dates</td>
+                        <td>@item.POCStart</td>
+                        <td>@item.POCEnd</td>
+                        <td>
+                            @if (Model.userLevel != "Provider" && Model.userLevel != "Supervisor" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+                            {
+                                <i class="fa fa-edit faBtn faSpRtEditBtn" onclick="openEditPOCDatesModal(@item.clsvidId)"></i>
+                            }
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+
+    }
+
+    @if (Model.userLevel != "Provider" && Model.userLevel != "Supervisor" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+    {
+        if (item.isTherapy)
+        {
+            <button class="btn btn-sm btn-primary" style="margin:10px 5px 10px 5px" onclick="openPlanOfCareModal(@item.clsvidId);">Create Plan Of Care</button>
+        }
+    }
+
+   
+</div>
+
+        }
+    }
+
+</div>

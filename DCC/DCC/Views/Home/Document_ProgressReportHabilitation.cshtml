@@ -1,0 +1,167 @@
+﻿@model DCC.Models.Home.HabProgressReport
+
+
+
+
+<html>
+<head>
+<style>
+    body{
+        font-size:14px;
+    }
+    table {
+     
+        border-collapse: collapse;
+        margin-top: 0;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+  
+    .lgbd{
+        font-size:14px;
+        font-weight:bold;
+    }
+    .xlgbd {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom:5px;
+    }
+
+    td{
+        border:0.5px solid #c0c0c0;
+        margin:0;
+        padding:2px
+    }
+    .scoreItem{
+        text-align:center;
+        padding:1px;
+        width:12px;
+ 
+    }
+    .infoItem {
+        vertical-align:top;
+    }
+
+</style>
+</head>
+<body>
+    <div style="width:100%;text-align:center" class="xlgbd">@Model.service Progress Report  </div>
+
+    <table>
+        <tr>
+            <td colspan="3" style="text-align:center" class="xlgbd">
+                @Model.companyName
+
+            </td>
+        </tr>
+        <tr>
+            <td class="infoItem">
+                <span class="lgbd">Client:</span><br /><span class="lg">@Model.client</span>
+            </td>
+
+            <td class="infoItem">
+                <span class="lgbd">Provider:</span><br /><span class="lg">@Model.provider</span>
+            </td>
+
+            <td class="infoItem">
+                <span class="lgbd">Start:</span><span class="lg">@Model.startDate</span><br />
+                <span class="lgbd">End:</span><span class="lg">@Model.endDate</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="infoItem">
+                <span class="lgbd">DDD Support Coordinator:</span><br /><span class="lg">@Model.clientWorker</span>
+            </td>
+            <td class="infoItem">
+                <span class="lgbd"> DOB:</span><br /><span class="lg">@Model.dob</span>
+            </td>
+            <td class="infoItem">
+                <span class="lgbd">AssistID:</span><br /><span class="lg">@Model.assistId</span>
+            </td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <td class="lgbd">Scoring Keys</td>
+        </tr>
+        <tr>
+            @for (int i = 0; i < Model.scoringKeys.Count && i < 5; i++)
+            {
+                <td>@(Model.scoringKeys[i].key + "-" + Model.scoringKeys[i].name)</td>
+            }
+
+        </tr>
+        <tr>
+            @for (int i = 5; i < Model.scoringKeys.Count && i < 10; i++)
+            {
+                <td>@(Model.scoringKeys[i].key + "-" + Model.scoringKeys[i].name)</td>
+            }
+
+        </tr>
+    </table>
+
+
+    @foreach (var goal in Model.progressReportGoals)
+    {
+        <table style="margin-bottom:0">
+            <tr>
+                <td>
+                    <span class="lgbd">Objective: </span>
+                    @Html.Raw(goal.shortTermGoal)
+                </td>
+            </tr>
+        </table>
+
+        foreach (var month in goal.monthlyScores)
+        {
+
+            <table style="margin-bottom:0">
+                <tr>
+                    <td class="lgbd">
+                        @month.month
+                    </td>
+                </tr>
+            </table>
+        
+
+                <table style="margin-bottom:0">
+                    <tr>
+                        @for (var i = 1; i < 32; i++)
+                        {
+                            <td>@i</td>
+                        }
+                    </tr>
+
+                    <tr>
+                        @foreach (var score in month.score)
+                        {
+                            <td>@score</td>
+                        }
+                    </tr>
+
+                </table>
+
+           
+
+        }
+
+        <table>
+            <tr>
+                <td>
+                    <span class="lgbd">Progress Note: </span>
+                    @Html.Raw(goal.note)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="lgbd">Teaching Srategy: </span>
+                    @Html.Raw(goal.teachingMethod)
+                </td>
+            </tr>
+            <tr>
+                <td style="background-color:#000000;height:5px;padding:0"></td>
+            </tr>
+        </table>
+    }
+</body>
+</html>

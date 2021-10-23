@@ -1,0 +1,43 @@
+﻿@model DCC.Models.Staff.StaffMessagingInit
+
+@{
+    ViewBag.Title = "TC Messaging";
+}
+<link href="~/Content/gcchat.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+<link href="~/Content/lightbox.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/css/bootstrap-select.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+@Html.Partial("MenuHeader", @Model)
+<div class="container chat-wrapper">
+    <div class="row">
+        <div class="col-3 nopadding">
+            <div id="buttonsWrapper"></div>
+            <div id="channelsWrapper"></div>
+        </div>
+        <div class="col-9 nopadding">
+            <div id="chatWrapper">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 nopadding">
+            <div id="messageComposerWrapper"></div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="userPrId" value="@Model.userPrid" />
+<input type="hidden" id="sendbirdId" value="@Model.sendbirdId" />
+<input type="hidden" id="staffName" value="@Model.staffname" />
+<input type="hidden" id="staffList" value="@Model.staffListJson" />
+
+<script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
+<script src="~/Scripts/lightbox.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="~/Scripts/jquery.nicescroll.min.js"></script>
+<script src="~/Scripts/DCC/chatUtils.js"></script>
+<script src="~/Scripts/SendBird.min.js"></script>
+<script src="~/Scripts/GCMessaging/Channel.js"></script>
+<script src="~/Scripts/GCMessaging/index.js"></script>

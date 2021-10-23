@@ -1,0 +1,48 @@
+﻿@model DCC.Models.ClientService
+<div class="modal fade" id="actionModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Edit @Model.svcLong  ISP Dates</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="clientServiceId" value="@Model.clsvidId" />
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div>
+                            *This should only be set once for initialization. The date will be set automatically in the future when a new ISP is uploaded to charts
+                        </div>
+                        <table>
+                            <tr>
+                                <th>
+                                    <div class="form-group">
+                                        <label for="ISPtart">ISP Start</label>
+                                        <div class="input-group date">
+                                            <input id="ISPStart" value="@Model.ISPStart" type="date" class="form-control form-control-sm" />
+                                        </div>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="form-group">
+                                        <label for="ISPEnd">ISP End</label>
+                                        <div class="input-group date">
+                                            <input id="ISPEnd" value="@Model.ISPEnd" type="date" class="form-control form-control-sm" />
+                                        </div>
+                                    </div>
+                                </th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="updateISPDates();">Update ISP Dates</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#actionModal').modal('show');
+</script>

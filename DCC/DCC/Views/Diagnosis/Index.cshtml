@@ -1,0 +1,119 @@
+﻿@model DCC.EmptyView
+@Html.AntiForgeryToken()
+@Html.Partial("MenuHeader", @Model)
+
+@Html.Partial("SettingsHeader", @Model)
+
+<div id="DiagnosisInfo">
+
+    <div class="hdr"><i class="fa fa-plus-square faBtn" onclick="openAddDiagnosisModal(0);"></i> Add Diagnosis</div>
+    <table data-order='[0,"desc"]' id="DiagnosisTable" class="table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    Actions
+                </th>
+                <th>
+                    Diagnosis Code
+                </th>
+                <th>
+                    Description
+                </th>
+            </tr>
+        </thead>
+    </table>
+    <div id="editDiagnosis" class="modal fade" role="dialog">
+    </div>
+</div>
+<style>
+    table td {
+        padding: 4px;
+        background-color: white;
+    }
+
+    table th {
+        padding: 4px;
+        color: white;
+        background-color: #5e7fb1;
+        /*font-size: 14px;
+            border: 1px solid #a0a0a0;*/
+    }
+</style>
+
+
+@section Scripts
+    {
+
+    <script type="text/javascript">
+        var token;
+        var headers;
+        $(document).ready(function () {
+            token = $('input[name="__RequestVerificationToken"]').val();
+            headers = {};
+            headers['__RequestVerificationToken'] = token;
+            headers['__CompanyId'] = $('#CurrentCompanyId').val();  
+            $(function () {
+                var columns = [
+                    {
+                        data: "ID", sWidth: '34px', orderable: false, mRender: function (data, type, full) {
+                            var toReturn = '';
+                            toReturn = '<i class="fa fa-edit faBtn" onclick="openAddDiagnosisModal(' + data + ')"></i>';
+                            toReturn += '<i class="fa fa-trash faBtn" style="color:red" onclick="deleteDiagnosis(' + data + ')"></i>';
+                            return toReturn;
+                        }
+                    },
+                    {
+                        data: "DiagnosisCode"
+                    },
+                    {
+                        data: "Description"
+                    }
+                ];
+                createGridForAjax('#DiagnosisTable', 'Diagnosis/GetDiagnosis', columns, null);
+            });
+
+        });
+
+        function openAddDiagnosisModal(id) {
+            $.ajax({
+                type: 'POST',
+                url: 'Diagnosis/EditDiagnosis?id=' + id,
+                dataType: 'html',
+                headers: headers,
+                success: function (data) {
+                    $("#editDiagnosis").html(data);
+                    $('#editDiagnosis').modal('show');
+                    if (id > 0) {
+                        $('#btnsave').attr('Value', 'Update');
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log('openAddDiagnosisModal error');
+                }
+            });
+        }
+
+        function deleteDiagnosis(id) {
+            $.ajax({
+                type: 'GET',
+                url: srvcUrl + '/DeleteDiagnosis?id=' + id,
+                contentType: 'application/json; charset=utf-8',
+                headers: headers,
+                dataType: 'json',
+                success: function (data) {
+                    if (data == true) {
+                        $('#DiagnosisTable').DataTable().ajax.reload();
+                    }
+                    else {
+                        Alert("Something went wrong !");
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log('deleteDiagnosis error', textStatus);
+                }
+            });
+        }
+    </script>
+}
+
+

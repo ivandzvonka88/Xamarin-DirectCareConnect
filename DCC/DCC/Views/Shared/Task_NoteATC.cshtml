@@ -1,0 +1,24 @@
+﻿@model DCC.Models.Home.AtcNoteFull
+
+    <div style="margin-left:20px;margin-bottom:10px" id="@("infoAtc" + @Model.noteId)">
+        @if (@Model.noShow)
+        {
+            <div class="red">**** No Show ***</div>
+        }
+        @if (@Model.supervisorPresent)
+        {
+            <div class="red">**** Supervisor Present ***</div>
+        }
+        <div>Note:@Model.note</div>
+        <table>
+            <tr><th>Care Area</th><th>Score</th></tr>
+            @foreach (var item in Model.careAreas)
+            {
+                <tr><td>@item.careArea</td><td style="text-align:right">@item.score</td></tr>
+            }
+        </table>
+        @if (@Model.hasAttachment)
+        {
+            <div><a style="font-weight:bold" href="~/Home/GetAttachment?filename=@Model.attachmentName@Model.extension"><i class="fa fa-paperclip"></i> Attachment</a></div>
+        }
+    </div>

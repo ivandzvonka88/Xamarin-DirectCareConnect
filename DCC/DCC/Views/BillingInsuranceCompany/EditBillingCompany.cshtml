@@ -1,0 +1,172 @@
+﻿@model DCC.Models.BillingInsuranceCompany
+@{
+    Layout = null;
+}
+
+<div class="modal-dialog  modal-lg" role="document">
+    <div class="modal-content" style="width: 946px">
+        <div class="modal-header">
+            <div id="headingAdd">
+                <h4><i class="fa fa-add"></i> Add Insurance Company</h4>
+            </div>
+            <div id="headingEdit" style="display:none">
+                <h4 id="editHeading"><i class="fa fa-edit"></i> Edit - @Model.Name </h4>
+            </div>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <div id="divPolicyInfo">
+                <div class="row" id="divInsCompany">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="company">Company</label>
+                            <div>
+                                <input type="hidden" id="hdnInsCompany" value="@Model.InsuranceCompanyId" />
+                                <input type="text" id="txtInsCompany" style="width:900px" class="form-control form-control-sm" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="StatusDelay">Status Delay</label>
+                            <div>
+                                <input type="text" id="statusDelay" class="form-control form-control-sm" value="@Model.StatusDelay" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="StatusFreq">Status Freq</label>
+                            <div>
+                                <input type="text" id="statusFreq" class="form-control form-control-sm" value="@Model.StatusFreq" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="checkbox" id="allowEligibility" checked="@Model.EnableEligibility"> Allow Eligibility<br>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="checkbox" id="excludeRenderer" checked="@Model.ExcludeRenderer"> Exclude Renderer<br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        @*static*@
+        <div class="row">
+            <section>
+                <h3 style="margin-left:40px;">Enrollment Set-up Steps</h3>
+                @*<p>@ch.Instructions</p>*@
+                <p style="margin-left:47px; width:900px;">Make sure you complete any EDI enrollment forms found at <a href="https://cms.officeally.com/Pages/ResourceCenter/PayerEDIEnrollmentForms.aspx" target="_blank">https://cms.officeally.com/Pages/ResourceCenter/PayerEDIEnrollmentForms.aspx</a> for this company before adding this company for claims processing.</p>
+                <p style="margin-left:47px; width:900px;">Make sure you complete any ERA enrollment forms found at <a href="https://cms.officeally.com/Pages/ResourceCenter/PayerERAEnrollmentForms.aspx" target="_blank">https://cms.officeally.com/Pages/ResourceCenter/PayerERAEnrollmentForms.aspx</a> for this company.</p>
+                <h3 style="margin-left:40px;">Fees </h3>
+                <p style="margin-left:47px; width:900px;">This is a non-participating payer with Office Ally. If more than 50% of your claims for the month are with non-participating payers, you may be billed an extra surcharge.</p>
+            </section>
+        </div>
+
+        <div class="modal-footer">
+            <input type="button" id="btnsave" class="btn btn-success" onclick="manageBillingInsuranceCompany(@Model.InsuranceCompanyId);" value="Save" />
+        </div>
+    </div>
+</div>
+
+@Session Scripts
+    {
+<script>
+    var data = getOptions();
+    var insuranceCompanyId;
+    $('#txtInsCompany').autoComplete({
+        minChars: 2,
+        source: function (term, suggest) {
+            term = term.toLowerCase();
+            var choices = data;//[['Australia', 'au'], ['Austria', 'at'], ['Brasil', 'br']];//data;
+            var suggestions = [];
+            for (i = 0; i < choices.length; i++)
+                if (~(choices[i][0] + ' ' + choices[i][1]).toLowerCase().indexOf(term)) suggestions.push(choices[i]);
+            suggest(suggestions);
+        },
+        renderItem: function (item, search) {
+            search = search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+            var re = new RegExp("(" + search.split(' ').join('|') + ")", "gi");
+            return '<div class="autocomplete-suggestion" data-insurance-company-name="' + item[0] + '" data-insurance-company-id="' + item[1] + '" data-val="' + search + '">' + item[0].replace(re, "<b>$1</b>") + '</div>';
+        },
+        onSelect: function (e, term, item) {
+            //console.log('Item "' + item.data('langname') + ' (' + item.data('insuranceCompanyId') + ')" selected by ' + (e.type == 'keydown' ? 'pressing enter' : 'mouse click') + '.');
+            insuranceCompanyId = item.data('insurance-company-id');
+            $('#txtInsCompany').val(item.data('insurance-company-name'))
+        }
+    });
+
+    function getOptions() {
+        var result = [];
+        var finalResponse = [];
+        $.ajax({
+            type: 'POST',
+            url: srvcUrl + '/GetAllInsuranceCompanies',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                $.each(data, function (index, item) {
+                    result.push(item.Name, item.InsuranceCompanyId);
+                    finalResponse.push(result.splice("]"));
+                });
+                return finalResponse;
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log('error');
+            }
+        });
+        return finalResponse;
+    }
+
+
+    function manageBillingInsuranceCompany(i) {
+        var url;
+        if (i == 0) {
+            url = '/AddBillingInsuranceCompany';
+        }
+        else {
+            url = '/UpdateBillingInsuranceCompany';
+            insuranceCompanyId = $('#hdnInsCompany').val()
+        }
+        var data = {
+            'StatusDelay': $('#statusDelay').val(),
+            'StatusFreq': $('#statusFreq').val(),
+            'EnableEligibility': $('#allowEligibility').is(':checked'),
+            'ExcludeRenderer': $('#excludeRenderer').is(':checked'),
+            'InsuranceCompanyId': insuranceCompanyId
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: srvcUrl + url,
+            data: JSON.stringify(data),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (data) {
+                if (data == true) {
+                    $('#BillingInsuranceCompanyTable').DataTable().ajax.reload();
+                    $('#editBillingInsCompany').modal('hide');
+                }
+                else {
+                    Alert("Company already added");
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log('error');
+            }
+        });
+    }
+</script>
+
+    }

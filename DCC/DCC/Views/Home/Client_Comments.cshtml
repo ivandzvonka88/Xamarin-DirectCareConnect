@@ -1,0 +1,16 @@
+﻿@model DCC.Models.ClientPageData
+@if (Model.userLevel != "Provider" && Model.userLevel != "Supervisor")
+{
+    <div class="hdr"><i class="fa fa-plus-square faBtn faBtnNew" onclick="openAddClientCommentModal();"></i> Add Comment</div>
+}
+<table>
+    @foreach (var item in Model.commentHistory)
+    {
+        <tr id="@("commentId" + @item.commentId)">
+            <td><b class="subjType">Subj:</b> <span class="subject">@item.subject<br /></span><br /><b>Comment:</b> <span class="comment">@item.comment</span></td>
+            <td><span class="cmdDt">@item.cmtDt</span><br /><span class="commentator">@item.commentator</span></td>
+        </tr>
+    
+
+    }
+</table>

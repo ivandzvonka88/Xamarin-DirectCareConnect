@@ -1,0 +1,70 @@
+﻿@model DCC.Models.Staff.StaffData
+
+<div class="hdr">
+    @if (Model.userLevel != "Provider" && Model.userLevel != "Supervisor" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+    {
+        <i class="fa fa-edit faBtn btnEditPersDet" onclick="openStaffPersonalModal();"></i>
+    }
+    Personal Data
+</div>
+<table class="staffData">
+    @if (Model.userLevel == "SuperAdmin" || Model.userLevel == "HumanResources")
+    {
+        <tr>
+            <td colspan="2">
+                <i id="btnStaffMFA" class="faBtn fa @(Model.mfaEnabled == true ? "fa-toggle-on" : "fa-toggle-off")" onclick="toggleMFA(@Model.userId);"></i>
+                <span id="staffMFAText">
+                    @(Model.mfaEnabled ? "MFA Enabled" : "MFA Disabled")
+                </span>
+
+            </td>
+        </tr>
+    }
+        <tr>
+            <td>
+                <div class="title">Cell Phone</div>
+                <div class="data" id="stCl">@Model.cl</div>
+            </td>
+            <td>
+                <div class="title">Home Phone</div>
+                <div class="data" id="stPh">@Model.ph</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="title">Email</div>
+                <div class="data" id="stEm">@Model.em</div>
+            </td>
+            <td>
+                @if (Model.userLevel == "SuperAdmin" || Model.userLevel == "HumanResources")
+                {
+                    <div class="title">Address</div>
+                    <div class="data"><span id="stAd1">@Model.ad1</span> <span id="stAd2">@Model.ad2</span>,<br /><span id="stCty">@Model.cty</span> <span id="stSt">@Model.st</span> <span id="stZ">@Model.z</span></div>
+
+                }
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @if (Model.userLevel == "SuperAdmin" || Model.userLevel == "HumanResources")
+                {
+                    <div class="title">Date of Birth</div>
+                    <div class="data" id="dobf">@Model.dobf</div>
+                }
+            </td>
+            <td>
+                <div class="title">Gender</div>
+                <div class="data" id="stSex">@Model.sex</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @if (Model.userLevel == "SuperAdmin" || Model.userLevel == "HumanResources")
+                {
+                    <div class="title">SSN</div>
+                    <div class="data" id="ssnf">@Model.ssnf</div>
+                }
+            </td>
+            <td></td>
+        </tr>
+    </table>

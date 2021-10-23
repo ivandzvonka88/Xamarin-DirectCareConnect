@@ -1,0 +1,21 @@
+﻿@model DCC.Models.Home.HahNoteFull
+
+    <div style="margin-left:20px;margin-bottom:10px" id="@("infoHah" + @Model.noteId)">
+        @if (@Model.noShow)
+        {
+            <div class="red">**** No Show ***</div>
+        }
+        <div>Note:@Model.note</div>
+        <table>
+            <tr><th>Goal/Action Step</th><th>Score</th></tr>
+            @foreach (var item in Model.goals)
+            {
+                <tr class="HAHGoalItem"><td>@item.goal</td><td style="text-align:right">@item.score</td></tr>
+            }
+
+        </table>
+        @if (@Model.hasAttachment)
+        {
+            <div><a style="font-weight:bold" href="~/Home/GetAttachment?filename=@Model.attachmentName@Model.extension"><i class="fa fa-paperclip"></i> Attachment</a></div>
+        }
+    </div>

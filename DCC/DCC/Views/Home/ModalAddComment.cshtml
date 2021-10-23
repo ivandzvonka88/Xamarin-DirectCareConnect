@@ -1,0 +1,48 @@
+﻿@model DCC.Models.ClientProfile
+<div id="actionModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-edit"></i> Add Comment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="clientComment">Comment on <span>@Model.fn</span> <span>@Model.ln</span></label>
+                    <textarea class="form-control rounded-0" id="clientComment" rows="6"></textarea>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="addClientComment();">Add Comment</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#actionModal').modal('show');
+
+    function addClientComment() {
+        $('#actionModal').modal('hide');
+        waitOn();
+        var Data = {
+            'clsvId': $('#TCLSVID').val(),
+            'comment': $('#clientComment').val()
+        };
+        $.ajax({
+            type: 'POST',
+            url: srvcUrl + '/Home/AddComment',
+            data: JSON.stringify(Data),
+            contentType: 'application/json; charset=utf-8',
+            headers: headers,
+            dataType: 'html',
+            success: function (data) {
+                waitOff();
+                $('#commentHistory').html(data);
+            },
+            error: ajaxError,
+            timeout: 10000
+        });
+    }
+</script>

@@ -1,0 +1,60 @@
+﻿@model  DCC.Models.Providers.ProviderInit
+@Html.Partial("MenuHeader", @Model)
+@Html.AntiForgeryToken()
+@Html.Partial("BillingHeader", @Model)
+@Html.Partial("SettingsHeader", @Model)
+
+
+
+
+
+<div>
+    <p>
+        <button type="submit" class="btn btn-default" onclick="createBillingFiles();" />
+    </p>
+</div>
+
+<div id="fileList">
+
+</div>
+
+
+<script type="text/javascript">
+    var token;
+    var headers;
+    $(document).ready(function () {
+        token = $('input[name="__RequestVerificationToken"]').val();
+        headers = {};
+        headers['__RequestVerificationToken'] = token;
+        getQuestions();
+    });
+
+
+
+    function createBillingFiles() {
+        $.ajax({
+            type: 'GET',
+            url: srvcUrl + '/CreateBillingFiles' + qId,
+            headers: headers,
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'html',
+            success: function (data) {
+                waitOff();
+                $('#questionId').val(data[0].questionId);
+                $('#title').val(data[0].title);
+                $('#valueTypeId').val(data[0].valueTypeId);
+                $('#minValue').val(data[0].minValue);
+                $('#maxValue').val(data[0].maxValue);
+                $('#isActive').prop('checked', data[0].isActive);
+                $('#editQHdr').text('Update Question');
+                $('#QBtn').text('Update Question');
+            },
+            error: ajaxError,
+            timeout: 10000
+        });
+
+
+
+
+    }
+</script>

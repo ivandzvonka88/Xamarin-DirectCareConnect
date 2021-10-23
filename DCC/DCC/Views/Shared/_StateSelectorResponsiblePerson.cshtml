@@ -1,0 +1,74 @@
+﻿
+
+
+
+@model string
+
+@{
+    var values = new List<SelectListItem>();
+    values.Add(new SelectListItem() { Value = "AK", Text = "Alaska", Selected = Model == "AK" });
+    values.Add(new SelectListItem() { Value = "AL", Text = "Alabama", Selected = Model == "AL" });
+    values.Add(new SelectListItem() { Value = "AR", Text = "Arkansas", Selected = Model == "AR" });
+    values.Add(new SelectListItem() { Value = "AS", Text = "American Samoa", Selected = Model == "AS" });
+    values.Add(new SelectListItem() { Value = "AZ", Text = "Arizona", Selected = Model == "AZ" });
+    values.Add(new SelectListItem() { Value = "CA", Text = "California", Selected = Model == "CA" });
+    values.Add(new SelectListItem() { Value = "CO", Text = "Colorado", Selected = Model == "CO" });
+    values.Add(new SelectListItem() { Value = "CT", Text = "Connecticut", Selected = Model == "CT" });
+    values.Add(new SelectListItem() { Value = "DC", Text = "District of Columbia", Selected = Model == "DC" });
+    values.Add(new SelectListItem() { Value = "DE", Text = "Delaware", Selected = Model == "DE" });
+    values.Add(new SelectListItem() { Value = "FL", Text = "Florida", Selected = Model == "FL" });
+    values.Add(new SelectListItem() { Value = "FM", Text = "Federated States of Micronesia", Selected = Model == "FM" });
+    values.Add(new SelectListItem() { Value = "GA", Text = "Georgia", Selected = Model == "GA" });
+    values.Add(new SelectListItem() { Value = "GU", Text = "Guam", Selected = Model == "GU" });
+    values.Add(new SelectListItem() { Value = "HI", Text = "Hawaii", Selected = Model == "HI" });
+    values.Add(new SelectListItem() { Value = "IA", Text = "Iowa", Selected = Model == "IA" });
+    values.Add(new SelectListItem() { Value = "ID", Text = "Idaho", Selected = Model == "ID" });
+    values.Add(new SelectListItem() { Value = "IL", Text = "Illinois", Selected = Model == "IL" });
+    values.Add(new SelectListItem() { Value = "IN", Text = "Indiana", Selected = Model == "IN" });
+    values.Add(new SelectListItem() { Value = "KS", Text = "Kansas", Selected = Model == "KS" });
+    values.Add(new SelectListItem() { Value = "KY", Text = "Kentucky", Selected = Model == "KY" });
+    values.Add(new SelectListItem() { Value = "LA", Text = "Louisiana", Selected = Model == "LA" });
+    values.Add(new SelectListItem() { Value = "MA", Text = "Massachusetts", Selected = Model == "MA" });
+    values.Add(new SelectListItem() { Value = "MD", Text = "Maryland", Selected = Model == "MD" });
+    values.Add(new SelectListItem() { Value = "ME", Text = "Maine", Selected = Model == "ME" });
+    values.Add(new SelectListItem() { Value = "MH", Text = "Marshal Islands", Selected = Model == "MH" });
+    values.Add(new SelectListItem() { Value = "MI", Text = "Michigan", Selected = Model == "MI" });
+    values.Add(new SelectListItem() { Value = "MN", Text = "Minnesota", Selected = Model == "MN" });
+    values.Add(new SelectListItem() { Value = "MO", Text = "Missouri", Selected = Model == "MO" });
+    values.Add(new SelectListItem() { Value = "MP", Text = "Northern Mariana Islands", Selected = Model == "MP" });
+    values.Add(new SelectListItem() { Value = "MS", Text = "Mississippi", Selected = Model == "MS" });
+    values.Add(new SelectListItem() { Value = "MT", Text = "Montana", Selected = Model == "MT" });
+    values.Add(new SelectListItem() { Value = "NC", Text = "North Carolina", Selected = Model == "NC" });
+    values.Add(new SelectListItem() { Value = "ND", Text = "North Dakota", Selected = Model == "ND" });
+    values.Add(new SelectListItem() { Value = "NE", Text = "Nebraska", Selected = Model == "NE" });
+    values.Add(new SelectListItem() { Value = "NH", Text = "New Hampshire", Selected = Model == "NH" });
+    values.Add(new SelectListItem() { Value = "NJ", Text = "New Jersey", Selected = Model == "NJ" });
+    values.Add(new SelectListItem() { Value = "NM", Text = "New Mexico", Selected = Model == "NM" });
+    values.Add(new SelectListItem() { Value = "NV", Text = "Nevada", Selected = Model == "NV" });
+    values.Add(new SelectListItem() { Value = "NY", Text = "New York", Selected = Model == "NY" });
+    values.Add(new SelectListItem() { Value = "OH", Text = "Ohio", Selected = Model == "OH" });
+    values.Add(new SelectListItem() { Value = "OK", Text = "Oklahoma", Selected = Model == "OK" });
+    values.Add(new SelectListItem() { Value = "OR", Text = "Oregon", Selected = Model == "OR" });
+    values.Add(new SelectListItem() { Value = "PA", Text = "Pennsylvania", Selected = Model == "PA" });
+    values.Add(new SelectListItem() { Value = "PR", Text = "Puerto Rico", Selected = Model == "PR" });
+    values.Add(new SelectListItem() { Value = "PW", Text = "Palau", Selected = Model == "PW" });
+    values.Add(new SelectListItem() { Value = "RI", Text = "Rhode Island", Selected = Model == "RI" });
+    values.Add(new SelectListItem() { Value = "SC", Text = "South Carolina", Selected = Model == "SC" });
+    values.Add(new SelectListItem() { Value = "SD", Text = "South Dakota", Selected = Model == "SD" });
+    values.Add(new SelectListItem() { Value = "TN", Text = "Tennessee", Selected = Model == "TN" });
+    values.Add(new SelectListItem() { Value = "TX", Text = "Texas", Selected = Model == "TX" });
+    values.Add(new SelectListItem() { Value = "UT", Text = "Utah", Selected = Model == "UT" });
+    values.Add(new SelectListItem() { Value = "VA", Text = "Virginia", Selected = Model == "VA" });
+    values.Add(new SelectListItem() { Value = "VI", Text = "Vergin Islands", Selected = Model == "VI" });
+    values.Add(new SelectListItem() { Value = "VT", Text = "Vermont", Selected = Model == "VT" });
+    values.Add(new SelectListItem() { Value = "WA", Text = "Washington", Selected = Model == "WA" });
+    values.Add(new SelectListItem() { Value = "WI", Text = "Wisconsin", Selected = Model == "WI" });
+    values.Add(new SelectListItem() { Value = "WV", Text = "West Virginia", Selected = Model == "WV" });
+    values.Add(new SelectListItem() { Value = "WY", Text = "Wyoming", Selected = Model == "WY" });
+    string prefix = ViewBag.StatePrefix;
+    string nme = string.IsNullOrWhiteSpace(prefix) ? "Address.State" : prefix;
+}
+
+@Html.DropDownList(nme, values, new { @class = "form-control", @id = "responsiblePersonState" })
+
+

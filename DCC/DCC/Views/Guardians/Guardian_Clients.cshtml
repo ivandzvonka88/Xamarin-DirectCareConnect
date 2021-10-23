@@ -1,0 +1,23 @@
+﻿@model DCC.Models.GuardianPageData
+@if (Model.userLevel != "Provider" && Model.userLevel != "TherapyAssistant")
+{
+    <div class="hdr"><i class="fa fa-plus-square faBtn" onclick="openAddClientModal();"></i>Add New Client</div>
+}
+<table>
+    @foreach (var item in Model.guardianClients)
+    {
+    <tr>
+        @if (Model.userLevel != "Provider" && Model.userLevel != "TherapyAssistant")
+        {
+            <td>
+                <i class="fa fa-trash faBtn red" onclick="openDeleteClientModal(@item.clientId,'@item.clientName')"></i>
+            </td>
+        }
+
+
+        <td class="name">@item.clientName</td>
+        <td style="padding-left:5px; padding-right:5px">@item.relationship</td>
+    </tr>
+    }
+</table>
+

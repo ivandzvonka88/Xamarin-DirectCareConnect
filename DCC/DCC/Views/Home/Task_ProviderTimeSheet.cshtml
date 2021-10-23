@@ -1,0 +1,227 @@
+﻿@model DCC.Models.ProviderTimeSheetData
+
+<style>
+    .TimeSheet .TimeUsed{
+        color:green;
+        font-weight:bold
+    }
+    .TimeSheet td{
+        vertical-align:top;
+    }
+    .TimeSheet .day {
+        width: 145px
+    }
+
+    .TimeSheet .inTime {
+        width: 70px
+    }
+
+    .TimeSheet .outTime {
+        width: 70px
+    }
+
+    .TimeSheet .service {
+        width: 50px
+    }
+
+    .TimeSheet .location {
+        width: 200px
+    }
+    .TimeSheet {
+        margin-bottom:20px
+    }
+</style>
+
+
+<input type="hidden" id="providerId" value="@Model.providerId" />
+<div style="margin:5px"><i class="fa fa-print faBtn" onclick="getPrintableTimeSheet();"></i></div>
+<table class="TimeSheet">
+    <tr>
+        <th>Date</th>
+        <th>In Time</th>
+        <th>Out Time</th>
+        <th>Service</th>
+        <th>ClientLocation</th>
+
+        <th colspan="5"></th>
+    </tr>
+    <tr id="cSTId0">
+
+        <td>
+            <!--oldway
+                <input type="text" class="day" onblur="dateChanged(0);" />
+    -->
+            <input type="date" class="day"  placeholder="yyyy-mm-dd"/>
+
+        </td>
+
+        <td><input type="text" class="inTime" onblur="inputChanged(0);" /></td>
+        <td><input type="text" class="outTime" onblur="inputChanged(0);" /></td>
+        <td>
+            <select class="service" id="inputService" onchange="inputServiceChange()">
+                @foreach (var service in Model.services)
+                {
+                    <option value="@service.value">@service.name</option>
+                }
+            </select>
+        </td>
+        <td>
+            <select class="location">
+                @foreach (var location in Model.locations)
+                {
+                    <option value="@location.value">@location.name</option>
+                }
+            </select>
+        </td>
+        <td colspan="2"></td>
+        <td>
+            <i class="fa fa-plus-square faBtn faBtnNew" id="insertButton" onclick="insertRecord(0);"> </i>
+            <i class="fa fa-plus-square faBtn faBtnNew" style="color:red" id="insertButtonDisabled" onclick="Alert('Manual In/Out for this client service is disabled'); return false;"></i>
+        </td>
+        <td>
+        </td>
+    </tr>
+</table>
+
+<table class="TimeSheet">
+    <tr>
+
+        <th>In Time</th>
+        <th>Out Time</th>
+        <th>Hours</th>
+        <th>Service</th>
+        <th>Location</th>
+        <th>Note</th>
+        <th>Designee<br />Signed</th>
+    </tr>
+    @foreach (var session in Model.sessions)
+    {
+<tr id="@("cSTId" + session.clientSessionTherapyId)">
+
+    <td>
+        @if (session.inTimeAdj != null)
+        {
+            <span class="TimeUsed">@session.inDateAdj</span><br />
+            <span class="TimeUsed">@session.inTimeAdj Adj</span><br />
+            @session.inDate<br />@session.inTime
+        }
+        else
+        {
+            <span class="TimeUsed">@session.inDate<br />@session.inTime</span>
+        }
+    </td>
+    <td>
+        @if (session.outTimeAdj != null)
+        {
+            <span class="TimeUsed">@session.outDateAdj<br />@session.outTimeAdj Adj</span><br />
+            @session.outDate<br />@session.outTime<br />
+        }
+        else
+        {
+            <span class="TimeUsed">@session.outDate<br />@session.outTime</span>
+        }
+    </td>
+    <td>
+        @String.Format("{0:0.00}", session.units)
+    </td>
+    <td>@session.serviceName <input type="hidden" class="serviceId" value="@session.serviceId" /></td>
+    <td>
+        <select class="location" id="@("sessionLocation" + session.clientSessionTherapyId )" @(session.designeeApproved ? "disabled" : "") onchange="updateProviderLocation(@session.clientSessionTherapyId, $(this).val(), '@session.noteType')">
+            <option value="0|0||">NOT VERIFIED</option>
+            @foreach (var location in Model.locations)
+            {
+                <option value="@location.value" @(location.value == session.locationId ? "selected=selected" : "" )>@location.name</option>
+            }
+        </select>
+    </td>
+    <td>
+        @if (!session.completedNote)
+        {
+            <i class="fa fa-edit faBtn edBtn" onclick="openSessionNote(@session.clientSessionTherapyId, '@session.noteType');"></i>
+        }
+        else if (!session.approvedNote && Model.userLevel != "TherapyAssistant")
+        {
+            <i class="fa fa-check faBtn verBtn green" onclick="openTherapyNoteEditModal(@session.clientSessionTherapyId)" , false);"></i>
+        }
+    </td>
+    <td style="text-align:center">
+        @if (!session.designeeApproved)
+        {
+            <i class="fa fa-times red"></i>
+        }
+        else
+        {
+            <i class="fa fa-check green"></i>
+        }
+    </td>
+    <td>
+        @if ((session.svcType == "Therapy" && (!session.approvedNote || !session.completedNote)) || (session.svcType == "HCBS" && !session.designeeApproved))
+        {
+
+            <i class="fa fa-trash faBtn red" onclick="deleteRecord(@session.clientSessionTherapyId, '@session.svcDate', '@session.svcType');"></i>
+        }
+    </td>
+    <td>
+        <i class="fa fa-map-marker faBtn" onclick="viewSessionLocationsRaw('@session.svcType', @session.clientSessionTherapyId)" />
+    </td>
+    @if (session.isEVV)
+    {
+        <td>
+
+            EVV
+        </td>
+    }
+    else
+    {
+        <td>
+            MAN
+        </td>
+    }
+</tr>
+    }
+</table>
+<script>
+    inputServiceChange();
+    @*
+    var periodStartDate = new Date('@Model.periodStartDate');
+    var periodEndDate = new Date('@Model.periodEndDate');
+    *@
+
+
+    var validDates = [];
+    function vDt() {
+    this.yr;
+    this.mn;
+    this.sdy;
+    this.edy;
+    }
+    var periodStartDate = new Date('@Model.periodStartDateISO');
+    var periodEndDate = new Date('@Model.periodEndDateISO');
+
+
+    @for (var i = 0; i < Model.validDates.Count; i++)
+    {
+   <text>
+    validDates[@i] = new vDt();
+    validDates[@i].yr = @Model.validDates[i].yr;
+    validDates[@i].mn = @Model.validDates[i].mn;
+    validDates[@i].sdy = @Model.validDates[i].sdy;
+    validDates[@i].edy = @Model.validDates[i].edy;
+    </text>
+    }
+    function openSessionNote(id, noteType) {
+        if (noteType === 'TherapyEvalNote')
+            openEvalNoteEditModal(id);
+        else if (noteType === 'TherapyNote')
+                openTherapyNoteEditModal(id);
+        else if (noteType === 'ATCNote')
+            openATCNoteEditModal(id);
+        else if (noteType === 'HAHNote')
+            openHAHNoteEditModal(id);
+        else if (noteType === 'RSPNote')
+            openRSPNoteEditModal(id);
+    }
+    
+</script>
+
+

@@ -1,0 +1,219 @@
+﻿@model DCC.Models.Alerts.AlertList
+<style>
+    .regTable {
+        display: block;
+    }
+
+    th {
+        text-align: center;
+        font-weight: normal;
+    }
+
+    .alertRow th {
+        font-size: 14px;
+        text-align: center
+    }
+
+    .colorRow th {
+        font-size: 14px;
+        text-align: center
+    }
+
+    .reqRow th {
+        font-size: 12px;
+        text-align: center
+    }
+
+    input[type=text] {
+        width: 40px;
+        font-size: 14px;
+        height: 20px;
+    }
+
+    input[type=checkbox] {
+        width: 16px;
+        height: 16px;
+    }
+
+    td {
+        text-align: center;
+    }
+
+    .alerts-listing {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .alert-box {
+        display: none;
+    }
+
+    table.table-vertical {
+        margin-bottom: 30px;
+        font-weight: bold;
+        width: auto;
+    }
+
+    h3 {
+        color: #D84765;
+    }
+
+    table.table-vertical em {
+        font-weight: normal;
+    }
+
+    table.table-vertical th {
+        font-weight: 700;
+    }
+
+    table.table-vertical th,
+    table.table-vertical td {
+        text-align: left;
+        padding: 5px;
+    }
+
+    input[type=checkbox] {
+        width: 18px;
+        height: 18px;
+        float: left;
+        margin-right: 8px;
+    }
+
+    input[type=text] {
+        width: 50px;
+        font-size: 16px;
+        height: 21px;
+        float: left;
+    }
+</style>
+
+<div class="form-row">
+    <div class="col-2">
+        <label class="sr-only" for="inlineFormInput">Select a role</label>
+        <select id="AlertRoleSelector" class="form-control mb-3 pl-0">
+            @foreach (var r in Model.roles)
+            {
+
+                <option value="@r.roleId">@r.roleName</option>
+
+            }
+        </select>
+    </div>
+    <div class="col-2">
+        <button class="btn btn-primary" onclick="saveAlertSettings()"> Save Alert Settings</button>
+
+    </div>
+</div>
+<div class="alerts-listing">
+    @{
+        var y = 0;
+
+        foreach (var r in Model.roles)
+        {
+            <div class="alertbox alertbox-@r.roleId">
+                <h3>
+                    @r.roleName
+                    <input class="roleId" type="hidden" value="@r.roleId" />
+                </h3>
+                <table class="table-vertical">
+                    <thead><tr><th style="width: 300px;">Type</th><th style="width: 100px;">Red</th><th style="width: 100px;">Amber</th></tr></thead>
+                    <tbody>
+                        @foreach (var a in Model.alertTypes)
+                        {
+
+                            <tr>
+                                <td>@a.alertName<br /><em>@a.alertType</em><input class="alertType" type="hidden" value="@a.alertTypeId" /></td>
+
+                                <td>
+
+                                    <input id="@("RC" + r.roleId + '-' +  a.alertTypeId)" type="checkbox" @(@a.alertSettings[y].redEnabled ? "checked" : "") />
+
+                                    <input id="@("RV" + r.roleId + '-' +  a.alertTypeId)" type="text" value="@a.alertSettings[y].redValue" />
+                                </td>
+                                <td>
+                                    <input id="@("AC" + r.roleId + '-' +  a.alertTypeId)" type="checkbox" @(@a.alertSettings[y].amberEnabled ? "checked" : "") />
+
+                                    <input id="@("AV" + r.roleId + '-' +  a.alertTypeId)" type="text" value="@a.alertSettings[y].amberValue" />
+                                </td>
+                            </tr>
+                        }
+                        @{y++;}
+                    </tbody>
+                </table>
+            </div>
+        }
+    }
+</div>
+
+@*
+
+    <table class="regTable">
+        <thead>
+            <tr>
+                <th></th>
+                @foreach (var a in Model.alertTypes)
+                {
+                    <th colspan="4">
+                        @a.alertName<br />@a.alertType
+                    </th>
+                }
+            </tr>
+            <tr>
+                <th></th>
+                @foreach (var a in Model.alertTypes)
+                {
+                    <th colspan="2">Red</th>
+                    <th colspan="2">Amber</th>
+                }
+            </tr>
+            <tr>
+                <th></th>
+                @foreach (var a in Model.alertTypes)
+                {
+                    <th>On</th>
+                    <th>Value</th>
+                    <th>On</th>
+                    <th>Value</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                var i = 0;
+
+                foreach (var r in Model.roles)
+                {
+                    <tr>
+                        <td style="text-align:left">
+                            @r.roleName
+                            <input class="roleId" type="hidden" value="@r.roleId" />
+                        </td>
+                        @foreach (var a in Model.alertTypes)
+                        {
+                            <td>
+                                <input class="alertType" type="hidden" value="@a.alertTypeId" />
+                                <input id="@("RC" + r.roleId + '-' + a.alertTypeId)" type="checkbox" @(@a.alertSettings[i].redEnabled ? "checked" : "") />
+                            </td>
+                            <td>
+                                <input id="@("RV" + r.roleId + '-' +  a.alertTypeId)" type="text" value="@a.alertSettings[i].redValue" />
+                            </td>
+                            <td>
+                                <input id="@("AC" + r.roleId + '-' +  a.alertTypeId)" type="checkbox" @(@a.alertSettings[i].amberEnabled ? "checked" : "") />
+                            </td>
+                            <td>
+                                <input id="@("AV" + r.roleId + '-' +  a.alertTypeId)" type="text" value="@a.alertSettings[i].amberValue" />
+                            </td>
+                        }
+                        @{i++;}
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+
+
+*@
+
+
+

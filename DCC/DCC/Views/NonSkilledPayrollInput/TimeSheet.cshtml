@@ -1,0 +1,113 @@
+﻿@model DCC.Models.ProviderPayrollTimesheet
+
+@{
+    Layout = null;
+}
+<style>
+    .TimeSheet .day {
+        width: 100px
+    }
+
+    .TimeSheet .code {
+        width: 100px
+    }
+
+    .TimeSheet .inTime {
+        width: 100px
+    }
+
+    .TimeSheet .outTime {
+        width: 100px
+    }
+
+    .TimeSheet .units {
+        width: 100px
+    }
+</style>
+
+
+
+<table class="TimeSheet">
+    <thead>
+        <tr>
+            <th>Staff Member</th>
+            <th class="day">Session Date</th>
+            <th>Note Completed</th>
+            <th>Designee Approved</th>
+            <th class="service">Code</th>
+            <th>In Time</th>
+            <th>Out Time</th>
+            <th>Units</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        <tr id="cSTId0">
+            <td>@Model.ProviderName<input type="hidden" id="providerId" value="@Model.ProviderId" /></td>
+            <td><input type="text" class="day" onblur="dateChanged(0);" /></td>
+            <td colspan="2"></td>
+            <td>
+                <select class="code" onchange="codeChanged(0);">
+                    <option></option>
+                    @foreach (var item in Model.PayrollCodes)
+                    {
+                        <option value="@(item.Code + "-" + item.RequiresHours )">@item.Code</option>
+                    }
+                </select>
+            </td>
+            <td><input type="text" class="inTime" onblur="inputChanged(0);" /></td>
+            <td><input type="text" class="outTime" onblur="inputChanged(0);" /></td>
+
+            <td><input type="text" class="units" onblur="inputChanged(0);" readonly="readonly" /></td>
+            <td>
+                <i class="fa fa-plus-square faBtn faBtnNew" onclick="insertPayrollRecord(0);"></i>
+            </td>
+        </tr>
+        @foreach (var item in Model.TimeSheetEntries)
+        {
+    <tr id="@("cSTId" + item.id)">
+        <td>@Model.ProviderName</td>
+        <td>@item.SessionDate</td>
+        <td>@item.NoteDate</td>
+        <td>@item.ApprovedDate</td>
+        <td>@item.Code</td>
+        <td>@item.Start</td>
+        <td>@item.End</td>
+        <td>@item.Units</td>
+
+        <td>
+            @if (item.IsEditable)
+            {
+                <i class="fa fa-trash faBtn red" onclick="openDeletePayrollRecord(@item.id,'@item.SessionDate','@item.Code','@item.Start','@item.End');"></i>
+            }
+            else
+            {
+                <i class="fa fa-lock faSym red"></i>
+
+            }
+    </tr>
+        }
+    </tbody>
+</table>
+<script>
+        var validDates = [];
+        function vDt() {
+        this.yr;
+        this.mn;
+        this.sdy;
+        this.edy;
+        }
+
+        @for (var i = 0; i < Model.validDates.Count; i++)
+        {
+       <text>
+        validDates[@i] = new vDt();
+        validDates[@i].yr = @Model.validDates[i].yr;
+        validDates[@i].mn = @Model.validDates[i].mn;
+        validDates[@i].sdy = @Model.validDates[i].sdy;
+        validDates[@i].edy = @Model.validDates[i].edy;
+        </text>
+        }
+</script>
+

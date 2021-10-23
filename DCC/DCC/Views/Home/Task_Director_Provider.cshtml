@@ -1,0 +1,79 @@
+﻿@model DCC.Models.Home.HomeStaffPage
+@Html.Partial("Task_Staff_Header", @Model)
+<div class="row">
+    <div class="col-md-6 col-lg-4">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="clientAlertView contentBox">
+                    <div class="boxContainerTitle">Client Alerts</div>
+                    <div id="clientAlerts" class="boxContainer active normalSize">
+                        @Html.Partial("ClientAlerts", @Model.clientAlerts)
+                    </div>
+                </div>
+                <div class="staffAlertView">
+                    <div class="boxContainerTitle">Staff Alerts</div>
+                    <div id="staffAlerts" class="boxContainer active normalSize">
+                        @Html.Partial("StaffAlerts", @Model.staffAlerts)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-8">
+
+            <div class="row">
+                <!-- provider view for service coord and above -->
+                <div class="col-lg-6">
+                    <div class="boxView contentBox">
+                        <div class="boxContainerTitle">Comment History <i class="fa fa-plus-square-o btnExpand"></i></div>
+                        <div class="boxContainer active normalSize">
+                            @Html.Partial("Task_CommentHistory", @Model.commentHistory)
+                        </div>
+                    </div>
+                    <div class="boxView contentBox">
+                        <div class="boxContainerTitle">Pending Documentation <i class="fa fa-plus-square-o btnExpand"></i></div>
+                        <div class="boxContainer active halfSize">
+                            <div id="pendingDocumentation" class="clBlockData">
+                                    @Html.Partial("PendingDocumentation", @Model)
+                            </div>
+                           
+                        </div>
+                    </div>
+                    <div class="boxView contentBox">
+                        <div class="boxContainerTitle">Authorizations <i class="fa fa-plus-square-o btnExpand"></i></div>
+                        <div class="boxContainer active halfSize">
+                            <div class="clBlockData providerAuthorizations">
+                                @Html.Partial("Task_NewAuths", @Model)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="boxView contentBox">
+                        <div class="boxContainerTitle">Client List <i class="fa fa-plus-square-o btnExpand"></i></div>
+                        <div class="boxContainer active normalSize">
+                            @Html.Partial("Task_ClientList", @Model)
+                        </div>
+                    </div>
+                    <div class="boxView contentBox">
+                        <div class="boxContainerTitle">Staff Hours <i class="fa fa-plus-square-o btnExpand"></i></div>
+                        <div class="boxContainer active halfSize">
+                            <div id="staffHours">
+                                @Html.Partial("Staff_Hours", @Model.providerHours)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="boxView contentBox">
+                        <div class="boxContainerTitle">Credentials/Certifications <i class="fa fa-plus-square-o btnExpand"></i></div>
+                        <div class="boxContainer active halfSize">
+                            <div id="credentials">
+
+                                @Html.Partial("Staff_Credentials", @Model)
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>

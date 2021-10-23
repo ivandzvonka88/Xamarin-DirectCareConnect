@@ -1,0 +1,61 @@
+﻿@model  DCC.Models.Providers.ReconcileResponse
+@*@Html.Partial("MenuHeader", @Model)
+    @Html.AntiForgeryToken()
+    @Html.Partial("BillingHeader", @Model)
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">*@
+
+@*<div id="apploader" class="apploader disp-none">
+        <div class="apploader-inner">
+            <img src="~/Images/ajax-loader.gif" alt="Loading" />
+        </div>
+    </div>*@
+<h3>@*@string.Format(ClaimsPages.Issues, "")*@</h3>
+
+@if (Model.ErrorMessages.Any())
+{
+    var err = Model.ErrorMessages.Aggregate((a, b) => string.Format("{0}\n{1}", a, b));
+    <script type="text/javascript">
+       showError('@err');
+    </script>
+}
+else
+{
+    <table class="sortable">
+        <thead>
+            <tr>
+                <th style="text-align:left" class="IdText"><a href="#">LineNumber</a></th>
+                <th style="text-align:left"><a href="#">Issue</a></th>
+                @*<th class="IdText"></th>*@
+                <th style="text-align:left">Claim</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.EntityList.Count > 0)
+            {
+                foreach (var p in Model.EntityList)
+                {
+
+                    <tr>
+
+                        <td style="text-align:left">
+                            @p.UniqueId
+                        </td>
+                        <td style="text-align:left">
+                            @p.Name
+                        </td>
+                        @*<td>
+                                @if (!string.IsNullOrWhiteSpace(p.AlternateId))
+                                {
+                                    @Html.ActionLink(ClaimsPages.Details, "details", new { id = p.AlternateId })
+                                }
+                            </td>*@
+                        <td style="text-align:left">@p.AlternateId</td>
+
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+}
+

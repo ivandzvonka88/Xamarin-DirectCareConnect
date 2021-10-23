@@ -1,0 +1,14 @@
+﻿@model DCC.Models.Home.HomeStaffPage
+    <table>
+    @foreach (var item in Model.scheduleChangeRequests)
+    {
+        <tr>
+            <td>
+                Requested By:  @item.requestor on @item.requestedTime<br />
+                Provider:  @item.provider<br />
+                Client:  @item.client Service:  @item.svc<br />
+                Message: @Html.Raw(item.changeRequest)
+            </td>
+        </tr>
+    }
+    </table>

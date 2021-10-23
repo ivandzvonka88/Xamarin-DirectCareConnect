@@ -1,0 +1,91 @@
+﻿@model DCC.Models.Staff.StaffData
+<div class="row">
+    <div class="col-lg-12">
+        <div style="height: 30px;background-color: #d84765;color: white;font-size: 20px;font-weight: bold;margin-bottom: 10px;padding-left: 10px">
+            @Html.Partial("Staff_Header", @Model)
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="staffView  contentBox">
+            <div class="boxContainerTitle">Profile <i class="fa fa-plus-square-o btnStaffExpand"></i></div>
+            <div class="boxContainer active normalSize">
+                <input type="hidden" id="prdeptId" />
+
+                @if (!Model.registered)
+                {
+                <button id="btnInvite" type="button" class="btn btn-sm btn-danger" onclick="reInviteStaff();">Re-Invite</button>
+                }
+                <div class="clBlockData">
+                    <div id="staffPersonal">
+                        @Html.Partial("Staff_Personal", @Model)
+                    </div>
+                </div>
+                <div class="clBlockData">
+                    <div id="staffEmployment">
+                        @Html.Partial("Staff_Employment", @Model)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="staffView contentBox">
+            <div class="boxContainerTitle">Credentials <i class="fa fa-plus-square-o btnStaffExpand"></i></div>
+            <div class="boxContainer active normalSize">
+                <div class="clBlockData">
+                    <div id="credentials">
+                        @Html.Partial("Staff_Credentials", @Model)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="staffView contentBox">
+            <div class="boxContainerTitle">Services <i class="fa fa-plus-square-o btnStaffExpand"></i></div>
+            <div class="boxContainer active normalSize">
+                <div class="clBlockData">                 
+                    <div id="staffServices">
+                        @Html.Partial("Staff_Services", @Model)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="staffView contentBox">
+            <div class="boxContainerTitle">Staff Hours <i class="fa fa-plus-square-o btnStaffExpand"></i></div>
+            <div class="boxContainer active normalSize">
+                <div id="staffHours">
+                    @Html.Partial("Staff_Hours", @Model.providerHours)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6" id="commentWindow">
+        <div class="staffView contentBox">
+            <div class="boxContainerTitle">Comments <i class="fa fa-plus-square-o btnStaffExpand"></i></div>
+            <div class="boxContainer active normalSize">
+                <div class="clBlockData">
+                    <div id="staffComments">
+                        @Html.Partial("Staff_Comments", @Model)
+                    </div>                  
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    window.location.hash = '@("PRID" + @Model.prId)';
+    @if (Model.deleted)
+    {
+           @:$('.boxContainer').removeClass('active').addClass('inactive');
+    }
+    else
+    {
+        @:$('.boxContainer').removeClass('inactive').addClass('active');
+    }
+</script>

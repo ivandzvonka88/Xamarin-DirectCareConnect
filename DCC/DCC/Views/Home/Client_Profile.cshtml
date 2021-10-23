@@ -1,0 +1,51 @@
+﻿@model DCC.Models.ClientPageData
+<style>
+    .clientProfile span {
+        font-weight: bold
+    }
+</style>
+<table class="clientProfile">
+    @if (Model.userLevel != "Provider" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+    {
+        <tr>
+            <td class="hdr" colspan="3"><i class="fa fa-edit faBtn" onclick="openClientEditModal();"></i> Client Info</td>
+        </tr>
+    }
+    <tr>
+        <td>
+            <div>Date Of Birth: <span>@Model.clientProfile.dob</span></div>
+            <div>Sex: <span>@Model.clientProfile.sex</span></div>
+            <div>Client ID: <span>@Model.clientProfile.clId</span><input type="hidden" id="clidCheckForAuth" value="@Model.clientProfile.clId" /></div>
+            <div>Medicaid ID: <span>@Model.clientProfile.medicaidId</span></div>
+            <div>Coordinator: <span>@Model.clientProfile.clwNm</span></div>
+            <div>Telephone: <span>@Model.clientProfile.clwPh</span></div>
+            <div>Email: <a href="mailto:@Model.clientProfile.clwEm"><span>@Model.clientProfile.clwEm</span></a></div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div>Physician: <span>@Model.clientProfile.physicianTitle</span> <span>@Model.clientProfile.physicianFirstName</span>  <span>@Model.clientProfile.physicianMI</span> <span>@Model.clientProfile.physicianLastName</span> <span>@Model.clientProfile.physicianSuffix</span></div>
+            <div>Physician Office: <span>@Model.clientProfile.physicianAgency</span></div>
+            <div>Address: <span>@Model.clientProfile.physicianAddress</span></div>
+            <div>City: <span>@Model.clientProfile.physicianCity</span></div>
+            <div>State/Zip: <span>@Model.clientProfile.physicianState</span> <span>@Model.clientProfile.physicianZip</span></div>
+            <div>Phone: <span>@Model.clientProfile.physicianPhone</span></div>
+            <div>Fax: <span>@Model.clientProfile.physicianFax</span></div>
+            <div>Email: <span>@Model.clientProfile.physicianEmail</span></div>
+            <div>NPI: <span>@Model.clientProfile.physicianNPI</span></div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div>Responsible Person: <span>@Model.clientProfile.responsiblePersonFn</span> <span>@Model.clientProfile.responsiblePersonLn</span></div>
+            <div>Address: <span>@Model.clientProfile.responsiblePersonAddress @Model.clientProfile.responsiblePersonAddress2</span></div>
+            <div>City: <span>@Model.clientProfile.responsiblePersonCity</span></div>
+            <div>State/Zip: <span>@Model.clientProfile.responsiblePersonState</span> <span>@Model.clientProfile.responsiblePersonZip</span></div>
+            <div>Phone: <span>@Model.clientProfile.responsiblePersonPhone</span></div>
+            <div>Email: <span>@Model.clientProfile.responsiblePersonEmail</span></div>
+            <div>Relationship: <span>@Model.clientProfile.responsiblePersonRelationship</span></div>
+        </td>
+
+    </tr>
+
+</table>

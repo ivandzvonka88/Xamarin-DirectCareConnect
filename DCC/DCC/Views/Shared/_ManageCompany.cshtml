@@ -1,0 +1,161 @@
+﻿@model DCC.ModelsLegacy.InsuranceCompanyInit
+
+<style>
+    h5 {
+        color: #0081c9;
+    }
+   .tabl, th ,td {
+        border: 1px solid black;
+    }
+</style>
+    <div class="modal companyModal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog  modal-lg" role="document">
+            <div class="modal-content" style="width: 946px">
+                <div class="modal-header">
+                    <div id="headingAdd">
+                        <h4><i class="fa fa-add"></i> Add Insurance Company</h4>
+                    </div>
+                    <div id="headingEdit" style="display:none">
+                        <h4><i class="fa fa-edit"></i> Edit Insurance Company</h4>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="insuranceCompanyId">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <div>
+                                    <input type="text" id="name" class="form-control form-control-sm" required="required">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="line1">Line 1</label>
+                                <div>
+                                    <input type="text" id="line1" class="form-control form-control-sm">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="line2">Line 2</label>
+                                <div>
+                                    <input type="text" id="line2" class="form-control form-control-sm">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <div>
+                                    <input type="text" id="city" class="form-control form-control-sm">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="postalCode">Postal Code</label>
+                                <div>
+                                    <input type="text" id="postalCode" class="form-control form-control-sm">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="stateSelect">State</label>
+                                @Html.Partial("_StateSelector", Model?.InsuranceCompany?.State ?? "")
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Payer ID">Payer ID</label>
+                                <div>
+                                    <input type="text" id="insPayerId" class="form-control form-control-sm">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="MCID">MCID</label>
+                                <div>
+                                    <input type="text" id="mcid" class="form-control form-control-sm">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="row">
+                        <div class="col-md-5">
+                            <h5>Government Program Links</h5>
+                            <table border="1" class="tabl" id="tblGovtProgLinks">
+                                <thead>
+                                    <tr>
+                                        <th>Program</th>
+                                        <th>Code</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.GovtProgramLinks)
+                                    {
+                                        <tr id=@item.Id>
+                                            <td>@item.Name <span hidden>@item.Id</span></td>
+
+                                            <td>
+                                                <input class="form-control" id="govtProgAlternateId" maxlength="50" name="govtProgAlternateId" type="text" value="">
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="form-group">
+                                <h5>Office Ally Clearing House</h5>
+                                <table border="1" class="tabl">
+                                    <thead>
+                                        <tr>
+                                            <th>Payer Id</th>
+                                            <th>Eligibility Check Id</th>
+                                            <th>Status Check Id</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                @*<input id="clearingHouses_Index" name="ClearingHouses.Index" type="hidden" value="0">*@
+                                                <input id="clearingHouseId" name="clearingHouseId" type="hidden">
+                                                <input class="form-control" id="payerId" maxlength="50" name="payerId" required="required" type="text">
+                                            </td>
+                                            <td>
+                                                <input class="form-control" id="clearingHousesEligibilityId" maxlength="50" name="clearingHousesEligibilityId" type="text">
+                                            </td>
+                                            <td>
+                                                <input class="form-control" id="clearingHousesStatusCheckId" maxlength="50" name="clearingHousesStatusCheckId" type="text">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <input type="button" id="btnSave" class="btn btn-success" onclick="ManageCompany();" value="Add Company" />
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>

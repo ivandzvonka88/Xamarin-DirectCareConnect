@@ -1,0 +1,8 @@
+F:\Projects\DCC\Source\Direct-Care-Connect\DCC\ClassLibrary1\bin\Release\netstandard2.0\DCC.SQLHelper.deps.json
+F:\Projects\DCC\Source\Direct-Care-Connect\DCC\ClassLibrary1\bin\Release\netstandard2.0\DCC.SQLHelper.dll
+F:\Projects\DCC\Source\Direct-Care-Connect\DCC\ClassLibrary1\bin\Release\netstandard2.0\DCC.SQLHelper.pdb
+F:\Projects\DCC\Source\Direct-Care-Connect\DCC\ClassLibrary1\obj\Release\netstandard2.0\DCC.SQLHelper.AssemblyInfoInputs.cache
+F:\Projects\DCC\Source\Direct-Care-Connect\DCC\ClassLibrary1\obj\Release\netstandard2.0\DCC.SQLHelper.AssemblyInfo.cs
+F:\Projects\DCC\Source\Direct-Care-Connect\DCC\ClassLibrary1\obj\Release\netstandard2.0\DCC.SQLHelper.dll
+F:\Projects\DCC\Source\Direct-Care-Connect\DCC\ClassLibrary1\obj\Release\netstandard2.0\DCC.SQLHelper.pdb
+F:\Projects\DCC\Source\Direct-Care-Connect\DCC\ClassLibrary1\obj\Release\netstandard2.0\DCC.SQLHelper.csprojAssemblyReference.cache

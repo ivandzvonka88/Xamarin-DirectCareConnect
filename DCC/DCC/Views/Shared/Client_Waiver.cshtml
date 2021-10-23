@@ -1,0 +1,41 @@
+﻿@model DCC.Models.Clients.ClientInit
+
+@*@model DCC.Models.ClientPageData*@
+<input type="hidden" id="PolicyWaiverId">
+
+<table id="waivers" border="1">
+    <thead>
+        <tr>
+            <th></th>
+            <th>From</th>
+            <th>To</th>
+            <th>Service</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        <tr>
+            <td>
+                <i class="fa fa-plus faBtn" style="color:green" onclick="addDynamicRows()"></i>
+            </td>
+            <td colspan="3">
+                <select id="atcServiceId" class="form-control form-control-sm">
+                    @foreach (var item in Model.serviceList)
+                    {
+                        <option value="@item.value">@item.name</option>
+                    }
+                </select>
+                <input id="clientId" name="clientId" type="hidden" />
+                @*<input id="requestVerificationToken" name="requestVerificationToken" type="hidden" />*@
+            </td>
+        </tr>
+    </tbody>
+</table>
+@*<script>
+    alert("dfdf");
+</script>*@
+
+
+
+
+

@@ -1,0 +1,60 @@
+﻿@model DCC.Models.Staff.StaffMessage
+<div id="actionModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-edit"></i> Send Message</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="cred">Recipient: @Model.fn @Model.ln</div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea class="form-control rounded-0" id="message" rows="6"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="sendStaffMessage();">Send Message</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+     $('#actionModal').modal('show');
+
+    function sendStaffMessage() {
+        if ($('#message').val().length < 5)
+            Alert('Please enter a meaningful message');
+        else {
+            $('#actionModal').modal('hide');
+            waitOn();
+            var Data = {
+                'prId': $('#PRID').val(),
+                'fn': $('#stFn').text(),
+                'ln': $('#stLn').text(),
+                'message': $('#message').val()
+            };
+            $.ajax({
+                type: 'POST',
+                url: srvcUrl + '/SendStaffMessage',
+                data: JSON.stringify(Data),
+                contentType: 'application/json',
+                headers: headers,
+                dataType: 'json',
+               success: function (r) {
+                waitOff();
+                if (r.code === 0)
+                    SuccessAlert('Your message has been sent');
+                else
+                    Alert(r.msg);
+            },
+                error: ajaxError,
+                timeout: 10000
+            });
+        }
+        return false;
+    }
+
+
+</script>

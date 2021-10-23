@@ -1,0 +1,99 @@
+﻿@model DCC.Models.ClientPageData
+@if (Model.assignedProviders.Count == 0)
+{
+    <div style="color:red">This client has no providers assigned</div>
+}
+
+
+<select id="providerSelect" onchange="selectionChanged();">
+    <option value="0"></option>
+    @foreach (var p in Model.assignedProviders)
+    {
+        <option value="@p.providerId">@p.providerName</option>
+    }
+</select>
+
+<select id="weekSelect" onchange="selectionChanged()">
+    <option value="0"></option>
+    @foreach (var p in Model.periods)
+    {
+        <option value="@p.startDate-@p.endDate">@p.startDate-@p.endDate</option>
+    }
+</select>
+
+<div id="providerTimeSheet">
+</div>
+
+<script>
+    function selectionChanged() {
+        if ($('#providerSelect').val() != 0 && $('#weekSelect').val() != 0) {
+                 var Data = {
+              
+                'providerId': $('#providerSelect').val(),
+                'clientId': $('#TCLSVID').val(),
+                'startEndDates': $('#weekSelect').val()
+            };
+            waitOn();
+            $.ajax({
+                type: 'POST',
+                url: srvcUrl + '/Home/GetProviderTimeSheet',
+                data: JSON.stringify(Data),
+                contentType: 'application/json; charset=utf-8',
+                headers: headers,
+                dataType: 'html',
+                success: function (data) {
+                    waitOff();
+                    $('#providerTimeSheet').html(data);
+                },
+                error: ajaxError,
+                timeout: 10000
+            });
+        }
+    }
+    function getPrintableTimeSheet() {
+        window.location = '/Home/GetProviderTimeSheetPDF?providerId=' + $('#providerSelect').val() + "&clientId=" + $('#TCLSVID').val() + "&startEndDates=" + $('#weekSelect').val();
+      /*  var Data = {
+
+            'providerId': $('#providerSelect').val(),
+            'clientId': $('#TCLSVID').val(),
+            'startEndDates': $('#weekSelect').val()
+        }
+            waitOn();
+            $.ajax({
+                type: 'POST',
+                url: srvcUrl + '/Home/GetProviderTimeSheetPDF',
+                data: JSON.stringify(Data),
+                contentType: 'application/json; charset=utf-8',
+                headers: headers,
+                dataType: 'json',
+                success: function (data) {
+                    waitOff();
+                    $('#providerTimeSheet').html(data);
+                },
+                error: ajaxError,
+                timeout: 10000
+            });
+            */
+    }
+
+    function inputServiceChange() {
+        var sp = $('#inputService').val().split('-');
+
+        if (sp[3] === '1') {
+            $('#insertButtonDisabled').hide();
+            $('#insertButton').show();
+        }
+            
+        else {
+
+            $('#insertButton').hide();
+            $('#insertButtonDisabled').show();
+        }
+           
+    }
+
+
+
+
+
+</script>

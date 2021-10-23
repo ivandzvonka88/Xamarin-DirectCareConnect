@@ -1,0 +1,70 @@
+﻿
+
+
+
+
+
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" onclick="sendSandataData();">Transmit Sandata Data</button>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" onclick="getSandataDataStatus();">Get Sandata Data Status</button>
+        </div>
+    </div>
+
+</div>
+
+
+
+<script>
+
+    function sendSandataData() {
+        var Data = {
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/Test3/SendSandataData',
+            data: JSON.stringify(Data),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: SuccessR,
+            error: ajaxError,
+            timeout: 100000
+        });
+    }
+
+    function getSandataDataStatus() {
+        var Data = {
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/Test3/GetSandataDataStatus',
+            data: JSON.stringify(Data),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: SuccessR,
+            error: ajaxError,
+            timeout: 100000
+        });
+    }
+    function SuccessR(r) {
+        waitOff();
+        if (r.code === 1) Alert('System Error - ' + r.msg);
+        else if (r.code === 2) Alert('Error - ' + r.msg);
+        else {
+            Alert('Success');
+        }
+    }
+
+
+
+
+
+
+
+</script>

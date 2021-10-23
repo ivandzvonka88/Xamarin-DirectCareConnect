@@ -1,0 +1,1332 @@
+﻿.form-group {
+    margin-bottom: 8px;
+}
+
+label {
+    margin-bottom: 0px;
+}
+
+.login-panel  .form-control {
+    width: auto;
+    margin: 0 auto;
+}
+
+.active {
+    background-color: #ffffff;
+}
+
+.inactive {
+    background-color: #e0e0e0;
+}
+
+table tr:nth-child(even) {
+    background: #FFF;
+}
+
+table tr:nth-child(odd) {
+    background: #F1F1F1;
+}
+
+.grid-divider {
+    overflow-x: hidden;
+}
+
+    .grid-divider > [class*="col-"]:nth-child(n + 2):after {
+        content: "";
+        background-color: #36A3bc;
+        position: absolute;
+        top: 20%;
+        bottom: 10%;
+    }
+
+@media (max-width: 767px) {
+    .grid-divider > [class*="col-"]:nth-child(n + 2):after {
+        width: 100%;
+        height: 1px;
+        left: 0;
+        top: -4px;
+    }
+}
+
+@media (min-width: 768px) {
+    .grid-divider > [class*="col-"]:nth-child(n + 2):after {
+        width: 1px;
+        height: auto;
+        left: -1px;
+    }
+}
+
+
+
+body {
+    font-family: 'Montserrat','Helvetica Neue', Helvetica, Arial, sans-serif;
+    /*background-color: #f1f1f1;*/
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#e1eaef+0,97b2c2+100 */
+    background: rgb(225,234,239);
+    background: -moz-linear-gradient(top, rgba(225,234,239,1) 0%, rgba(54, 163, 188,.6) 100%);
+    background: -webkit-linear-gradient(top, rgba(225,234,239,1) 0%,rgba(54, 163, 188,.6) 100%);
+    background: linear-gradient(to bottom, rgba(225,234,239,1) 0%,rgba(54, 163, 188,.6) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e1eaef', endColorstr='#8ec8d8',GradientType=0 );
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    position: relative;
+}
+
+
+
+.row.no-gutters, .no-gutter {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+    .row.no-gutters > [class^="col-"], .row.no-gutters > [class*=" col-"] {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+
+a, a:link, a:hover, a:active, a:visited {
+    color: #d84765;
+}
+
+
+main {
+    flex: 1;
+    /*background-color: #ffffff;*/
+    /*overflow: scroll;*/
+    /*overflow-x: hidden;*/
+}
+
+.header {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.site-logo {
+    max-height: 90px;
+    margin: 0 auto;
+}
+
+.menu {
+    margin-left: auto;
+}
+
+    .menu a {
+        float: right;
+        padding-right: 25px;
+        font-size: 16px;
+    }
+
+
+
+li.nav-item {
+    display: flex;
+}
+
+    li.nav-item::after {
+        content: "|";
+        color: #537680;
+        line-height: 45px;
+    }
+
+    li.nav-item:last-child::after {
+        content: ""
+    }
+
+.navbar-nav a.nav-link {
+    font-size: 24px;
+    line-height: 1;
+    color: #36a3bc;
+}
+
+.navbar-nav .dropdown-menu a.dropdown-item {
+    color: #36a3bc;
+}
+
+@media (min-width: 576px) {
+    .navbar-expand-sm .navbar-nav .nav-link {
+        padding-right: 0.8rem;
+        padding-left: 0.8rem;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.navbar-nav a.nav-link.nav-link-highlight {
+    font-size: 18px;
+    line-height: 1;
+}
+
+.nav-link:focus, .nav-link:hover {
+    color: #212529;
+}
+
+.menu > ul {
+    float: right;
+    padding-right: 25px;
+    font-size: 16px;
+}
+
+.submn-item {
+    white-space: nowrap;
+}
+
+.submn-shadow {
+    -webkit-box-shadow: 0 8px 6px -6px #999;
+    -moz-box-shadow: 0 8px 6px -6px #999;
+    box-shadow: 0 8px 6px -6px #999;
+}
+
+    .submn-shadow .dropdown-item:hover, .submn-shadow .dropdown-item:active {
+        background-color: #add8e6 !important;
+        color: #212529;
+    }
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    display: none; /*for now*/
+}
+
+
+    /*** Elipses Dropdown****/
+    a.alink, a.alink:link, a.alink:hover, a.alink:active, a.alink:visited {
+        color: #ffffff;
+        padding: 4px 7px;
+        /*border: solid 1px #febb41;*/
+        font-size: 20px;
+    }
+
+.alink a.dropdown-item {
+    font-size: 12px;
+}
+
+/** _forms ***/
+.panel-body label {
+    font-family: 'Montserrat';
+    margin-bottom: .5rem;
+    color: #36a3bc;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.h1, h1 {
+    font-size: 1.5rem;
+    color: #36a3bc;
+    text-align: center;
+}
+
+.forgot-password {
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+/* generic Modals*/
+.modal-header {
+    font-size: 18px;
+    color: #ffffff;
+    font-weight: bold;
+    background-color: #6495ED;
+}
+
+    .modal-header .fa {
+        font-size: 18px;
+        color: #ffffff;
+        font-weight: bold;
+    }
+
+.alert-modal-header {
+    background-color: red;
+}
+
+.warning-modal-header {
+    background-color: #ffbf00;
+}
+
+.modal-body .date {
+    width: 150px;
+}
+
+.modal-body .name {
+    width: 200px;
+}
+
+.modal-body .address {
+    width: 200px;
+}
+
+.modal-body .state {
+    width: 60px;
+}
+
+.modal-body .zip {
+    width: 90px;
+}
+
+.modal-body .phone {
+    width: 160px;
+}
+
+.modal-body .payroll {
+    width: 90px;
+}
+
+.modal-body .doc {
+    width: 200px;
+}
+
+.modal-body .cred {
+    font-weight: bold;
+}
+
+    .modal-body .cred span {
+        font-weight: normal;
+    }
+
+/* End Modals */
+#overlayImage {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+    z-index: 2003
+}
+
+.modal-full {
+    min-width: 92%;
+    overflow-y: initial;
+    margin: auto
+}
+
+.modal-body-full {
+    height: 75vh;
+    overflow-y: auto;
+}
+
+#modaloverlay {
+    display: none;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    left: 0%;
+    top: 0%;
+    background: #ffffff;
+    opacity: 0.25;
+    filter: alpha(opacity=25);
+    -moz-opacity: 0.25;
+    z-index: 2000
+}
+
+#iconInfo {
+    display: none;
+    border: 1px solid #c0c0c0;
+    border-radius: 5px;
+    padding: 2px;
+    font-size: 14px;
+    z-index: 995;
+    background-color: aliceblue;
+    opacity: 0.9;
+    filter: alpha(opacity=90);
+    max-width: 250px
+}
+
+.hdr {
+    font-weight: bold;
+    font-size: 16px;
+}
+.faSym {
+    font-size: 20px;
+    color: #007d9a;
+    margin-right: 3px;
+    margin-left: 3px;
+}
+.faBtn {
+    font-size: 20px;
+    color: #007d9a;
+    margin-right: 3px;
+    margin-left: 3px;
+}
+
+    .faBtn:hover {
+        opacity: 0.4;
+        filter: alpha(opacity=40);
+        cursor: pointer
+    }
+
+
+/* Search List used for name searches */
+.searchNames {
+    width: 230px;
+    margin-bottom: 3px;
+}
+
+    .searchNames .fa:hover {
+        opacity: 0.4;
+        filter: alpha(opacity=40);
+        cursor: pointer
+    }
+
+.nameList {
+    vertical-align: top;
+}
+
+    .nameList .nameListItem {
+        color: #000000;
+        background-color: #ADD8E6;
+        margin-bottom: 5px;
+        padding: 5px
+    }
+
+    .nameList .inactive {
+        background-color: #D0D0D0;
+    }
+
+.nameListItem:hover {
+    /*opacity: 0.4;
+    filter: alpha(opacity=40);*/
+    cursor: pointer
+}
+
+.nameList .superadmin {
+    color: red;
+}
+
+.nameList .admin {
+    color: green;
+}
+
+.nameList .supervisor {
+    color: blue;
+}
+
+.nameList .provider {
+    color: yellow;
+}
+/* End Search List Section */
+/* File Uploader*/
+.fileName {
+    max-width: 300px;
+    color: blue;
+    display: inline
+}
+/* End File Uploader*/
+
+
+
+
+.clientAlertView, .staffAlertView, .boxView {
+    display: block;
+}
+.contentBox {
+    padding: 0px;
+    margin: 0px 0px 10px 0px;
+    background-color: red;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .3);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid #36a3bc;
+}
+
+.hideMobileBlock {
+    display: none;
+}
+
+.xnormalSize {
+    overflow-y: auto;
+    height: auto;
+}
+
+.xhalfSize {
+    overflow-y: auto;
+    height: auto;
+}
+
+.xdoubleSize {
+    overflow-y: auto;
+    height: auto;
+}
+@media (min-width: 776px) {
+    .hideMobileBlock {
+        display:block;
+    }
+
+    .xnormalSize {
+        overflow-y: scroll;
+        height: 380px;
+    }
+
+    .xhalfSize {
+        overflow-y: scroll;
+        height: 170px;
+    }
+
+    .xdoubleSize {
+        overflow-y: scroll;
+        height: 800px;
+    }
+
+}
+
+
+
+    @media only screen and (max-height: 880px) {
+        .normalSize {
+            overflow-y: scroll;
+            height: 320px;
+        }
+
+        .halfSize {
+            overflow-y: scroll;
+            height: 140px;
+        }
+
+        .doubleSize {
+            overflow-y: scroll;
+            height: 680px;
+        }
+    }
+
+
+    @media only screen and (max-height: 820px) {
+        .normalSize {
+            overflow-y: scroll;
+            height: 320px;
+        }
+
+        .halfSize {
+            overflow-y: scroll;
+            height: 140px;
+        }
+
+        .doubleSize {
+            overflow-y: scroll;
+            height: 680px;
+        }
+    }
+
+    @media only screen and (max-height: 720px) {
+        .normalSize {
+            overflow-y: scroll;
+            height: 268px;
+        }
+
+        .halfSize {
+            overflow-y: scroll;
+            height: 115px;
+        }
+
+        .doubleSize {
+            overflow-y: scroll;
+            height: 580px;
+        }
+    }
+    /* 648px or smaller */
+    @media only screen and (max-height: 648px) {
+        .normalSize {
+            overflow-y: scroll;
+            height: 220px;
+        }
+
+        .halfSize {
+            overflow-y: scroll;
+            height: 90px;
+        }
+
+        .doubleSize {
+            overflow-y: scroll;
+            height: 480px;
+        }
+    }
+
+    .card {
+        background: none;
+        border: 0;
+    }
+
+    .card-body {
+        padding: 0;
+        background-color: white;
+        position: relative;
+    }
+
+    .boxContainerTitle {
+        position: sticky;
+        width: 100%;
+        top: 0;
+    }
+
+    .provider-name {
+        padding-left: 15px;
+    }
+
+    .provider-search {
+        background-color: #d84765;
+        padding: 5px 0;
+    }
+
+    .provider-search {
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+        .provider-search .input-group-text {
+            color: white;
+            border-radius: 0;
+            background-color: #fff;
+            border: 1px solid transparent;
+        }
+
+            .provider-search .input-group-text .fa {
+                background-color: #ffffff;
+                color: #d84765;
+            }
+
+        .provider-search .form-control {
+            margin: 0 auto;
+            border-radius: 0;
+            border: 0 solid transparent;
+        }
+
+    .expanded {
+        overflow-y: auto;
+        height: auto;
+    }
+
+    .boxContainerTitle {
+        font-size: 16px;
+        background-color: #36A3BC;
+        color: #fff;
+        margin: 0px;
+        padding: 1px 0px 1px 5px
+    }
+
+        .boxContainerTitle i {
+            font-size: 24px;
+            padding-right: 5px;
+            float: right;
+        }
+
+            .boxContainerTitle i:hover {
+                opacity: 0.4;
+                filter: alpha(opacity=40);
+                cursor: pointer
+            }
+
+    .alertList table td {
+        border: 0;
+        vertical-align: top;
+        font-size: 14px;
+        padding: 3px 0;
+    }
+
+    .alertList i {
+        padding: 0 5px 0 5px;
+    }
+
+
+    .alertList .span:hover {
+        opacity: 0.5;
+        filter: alpha(opacity=50);
+        cursor: pointer
+    }
+
+    .redAlert {
+        color: #d84765;
+    }
+
+    .amberAlert {
+        color: #ffbf00;
+    }
+
+    .greenAlert {
+        color: #228b22;
+    }
+
+    .clBlockTitle {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .clBlockData {
+        /*float: left;*/ /*see if ramifications */
+        font-size: 14px;
+        margin-top: 10px;
+        margin-bottom: 3px;
+        padding: 3px;
+    }
+
+        .clBlockData .bold {
+            font-weight: bold;
+        }
+
+
+    .normal {
+        overflow-y: scroll;
+        height: 320px;
+    }
+
+    .expanded {
+        overflow-y: auto;
+        height: auto;
+    }
+
+    .rowLink {
+        color: #d84765;
+    }
+
+        .rowLink:hover {
+            opacity: 0.5;
+            filter: alpha(opacity=40);
+            cursor: pointer
+        }
+
+    .alertLink:hover {
+        opacity: 0.5;
+        filter: alpha(opacity=40);
+        cursor: pointer
+    }
+
+    .clBlockTitle {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+
+    .clients.display-grid {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        grid-gap: 5px;
+    }
+
+        .clients.display-grid div {
+            float: none;
+            width: auto;
+            overflow-x: hidden;
+            margin-right: 0;
+            padding: 5px;
+            background-color: #efefef;
+        }
+
+    .red {
+        color: red;
+    }
+
+    .blue {
+        color: blue;
+    }
+
+    .green {
+        color: green;
+    }
+
+    .amber {
+        color: #ffbf00;
+    }
+
+    .orange {
+        color: orange;
+    }
+
+    .yellow {
+        color: yellow;
+    }
+
+    .commentHistory td {
+        padding: 4px;
+        vertical-align: top;
+    }
+
+    .commentHistory .hdr {
+        font-weight: bold;
+        font-size: 16px;
+        width: 100%;
+    }
+
+
+
+
+
+    .staffComments td {
+        padding: 4px;
+        vertical-align: top;
+    }
+
+    .staffComments .hdr {
+        font-weight: bold;
+        font-size: 16px;
+        width: 100%;
+    }
+
+
+    .newAuthorizations td {
+        padding: 4px;
+        vertical-align: top;
+    }
+
+    .supervisors div {
+        float: left;
+        width: 175px;
+        overflow-x: hidden;
+        margin-right: 10px;
+    }
+
+    .supervisors span {
+        float: left;
+        width: 140px;
+    }
+
+    .providers div {
+        float: left;
+        width: 175px;
+        overflow-x: hidden;
+        margin-right: 10px;
+    }
+
+    .providers span {
+        float: left;
+        width: 140px;
+    }
+
+    .clients div {
+        float: left;
+        width: 170px;
+        overflow-x: hidden;
+        margin-right: 10px;
+    }
+
+    .providerBillingData td {
+        width: 60px;
+        border: 1px solid #c0c0c0;
+        text-align: right;
+    }
+
+    .providerBillingData th {
+        width: 60px;
+        border: 1px solid #c0c0c0;
+        text-align: center;
+        background-color: aliceblue;
+    }
+
+    .clientProfile {
+        min-width: 250px;
+    }
+
+        .clientProfile .hdr {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .clientProfile .fa-edit {
+            color: #0066cc;
+            font-size: 22px;
+        }
+
+            .clientProfile .fa-edit:hover {
+                opacity: 0.5;
+                filter: alpha(opacity=50);
+                cursor: pointer
+            }
+
+
+
+
+    .clientGeoLocations table {
+        margin-top: 0;
+    }
+
+    .clientGeoLocations .hdr {
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    .clientGeoLocations .fa-plus-square {
+        color: #0066cc;
+        font-size: 22px;
+    }
+
+    .clientGeoLocations .fa-edit {
+        color: #0066cc;
+        font-size: 22px;
+    }
+
+    .clientGeoLocations .fa-eye {
+        color: #0066cc;
+        font-size: 22px;
+    }
+
+    .clientGeoLocations .fa-times {
+        color: red;
+        font-size: 22px;
+    }
+
+    .clientGeoLocations .fa {
+        margin-right: 5px;
+    }
+
+        .clientGeoLocations .fa:hover {
+            opacity: 0.5;
+            filter: alpha(opacity=50);
+            cursor: pointer
+        }
+
+    .clientAuths .hdr {
+        font-weight: bold;
+        font-size: 16px;
+        width: 100%;
+        margin-left: 5px;
+    }
+
+    .clientAuths .clBlockData {
+        border: 1px solid #a0a0a0;
+        margin-left: 5px;
+        height: 250px;
+    }
+
+    .clientAuths .faBtnOnOff,
+    .clientAuths .faBtnEdit {
+        margin-left: 5px;
+    }
+
+    .clientAuths span {
+        font-weight: bold;
+    }
+
+    .clientAuths .fa-plus-square-o {
+        margin-top: 5px;
+    }
+
+    .clientAuths .deptCode {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .clientAuths .svc {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .clientAuths table {
+        margin-bottom: 6px;
+    }
+
+    .clientAuths td {
+        padding: 3px;
+        background-color: #ffffff;
+        font-weight: normal;
+        border: 1px solid #a0a0a0;
+    }
+
+    .clientAuths th {
+        padding: 3px;
+        background-color: #e0efff;
+        font-weight: bold;
+        font-size: 14px;
+        border: 1px solid #a0a0a0;
+    }
+
+    .clientNotes td {
+        padding: 3px;
+        border: 0;
+        font-size: 16px;
+    }
+
+    .clientNotes .fa {
+        font-size: 20px;
+    }
+
+    .clientBillingData table {
+        width: 100%;
+    }
+
+    .clientBillingData td {
+        border: 1px solid #c0c0c0;
+        text-align: right;
+    }
+
+    .clientBillingData th {
+        border: 1px solid #c0c0c0;
+        text-align: center;
+        background-color: aliceblue;
+    }
+
+
+    .chartItem {
+        font-size: 14px;
+    }
+
+        .chartItem td {
+            padding-right: 10px;
+        }
+
+        .chartItem .fa {
+            font-size: 20px;
+            color: red
+        }
+
+            .chartItem .fa:hover {
+                opacity: 0.5;
+                filter: alpha(opacity=50);
+                cursor: pointer
+            }
+
+
+
+    .clientComments, .staffComments table {
+        width: 100%;
+    }
+
+    .commentItem {
+        vertical-align: top;
+    }
+
+    .comment {
+        width: 65%;
+    }
+
+
+    .guardian {
+        margin-bottom: 5px;
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0px;
+    }
+
+        .guardian th, td {
+            border-spacing: 0px;
+            border-style: none;
+        }
+
+    .spRtTbl .faSpRtDelBtn {
+        color: red;
+    }
+
+
+    /* End Client Page*/
+
+    /* Staff*/
+    .staffDetails {
+        float: left;
+        border-collapse: collapse
+    }
+
+        .staffDetails td, .staffDetails th {
+            border: 0px solid;
+            vertical-align: top;
+        }
+
+        .staffDetails .title {
+            font-weight: bold;
+        }
+
+        .staffDetails .info {
+            text-indent: 10px;
+        }
+
+        .staffDetails .hdr {
+            font-weight: bold;
+            font-size: 16px;
+            width: 100%;
+        }
+
+    .staffCredentials td {
+        border: 1px solid #c0c0c0;
+    }
+
+    .staffCredentials td {
+        border: 0;
+        vertical-align: top;
+    }
+
+    .staffCredentials .large-text {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .staffCredentials .credName {
+        font-weight: bold;
+    }
+
+    .staffCredentials .validFrom {
+        font-weight: bold;
+    }
+
+    .staffCredentials .validTo {
+        font-weight: bold;
+    }
+
+
+    .staffServices td {
+        border: 0;
+        padding: 0;
+    }
+
+    .staffServices .fa {
+        margin-right: 5px;
+        font-size: 20px;
+        color: red
+    }
+
+        .staffServices .fa:hover {
+            opacity: 0.4;
+            filter: alpha(opacity=40);
+            cursor: pointer
+        }
+
+
+
+    .staffHours table {
+        width: 100%;
+    }
+
+    .template, .authtemplate {
+        display: none;
+    }
+
+    /** Seems to be most tables in settings */
+    .regTable {
+        display: none;
+        margin-bottom: 12px;
+        margin-top: 12px;
+        font-size: 16px;
+    }
+
+        .regTable th {
+            padding: 2px;
+            color: #fff;
+            background-color: #36a3bc;
+        }
+
+        .regTable td {
+            padding: 3px;
+            /*background-color: white;*/
+        }
+
+    .disciplineditor {
+        display: none;
+    }
+
+
+
+    .code-multiselect {
+        max-height: 150px;
+        overflow-y: scroll;
+    }
+
+    .waiver-div {
+        max-height: 65px;
+        overflow-y: scroll;
+    }
+
+    .tab {
+        display: none;
+    }
+
+
+    /*.nav-link-highlight {
+    background-color: #36A3BC;
+    border-color: #36A3BC;
+    color: #fff;
+}*/
+
+    /********** _buttons *********/
+    .btn-default {
+        color: #fff;
+        background-color: #36A3BC;
+        border-color: #36A3BC;
+        width: auto;
+        margin: 0 auto;
+        min-width: 224px;
+    }
+
+        .btn-default:hover,
+        .btn-default:focus {
+            opacity: .8;
+        }
+
+        .btn-default.disabled, .btn-default:disabled {
+            color: #333;
+            background-color: #ccc;
+            border-color: #ccc;
+        }
+
+    .btn.focus, .btn:focus {
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(54, 163, 188,.25);
+    }
+
+    .btn.disabled, .btn:disabled {
+        opacity: .65;
+    }
+
+    .btn-primary:hover {
+        color: #fff;
+        background-color: #d84764;
+        border-color: #da647e;
+    }
+
+    .btn:focus, .btn:hover {
+        text-decoration: none;
+    }
+
+    .btn-primary {
+        color: #fff;
+        background-color: #da647e;
+        border-color: #da647e;
+    }
+
+    #prevBtn {
+        background-color: #bbbbbb;
+    }
+
+    /* Make circles that indicate the steps of the form: */
+    .step {
+        height: 15px;
+        width: 15px;
+        margin: 0 2px;
+        background-color: #bbbbbb;
+        border: none;
+        border-radius: 50%;
+        display: inline-block;
+        opacity: 0.5;
+    }
+
+        .step.active {
+            opacity: 1;
+        }
+
+        /* Mark the steps that are finished and valid: */
+        .step.finish {
+            background-color: #4CAF50;
+        }
+
+
+
+
+
+
+    /* Tables
+================================== */
+
+    table {
+        width: 100%;
+    }
+
+    div.table {
+        display: flex;
+        margin: 0 0 1em 0;
+        padding: 0;
+        flex-direction: column;
+        background-color: #ffffff;
+        font-size: .9rem;
+    }
+
+    h2 {
+        display: block;
+        width: 100%;
+        margin: 0;
+        padding: .25rem;
+        font-weight: normal;
+        font-size: 1rem;
+    }
+
+    .alerts h2 {
+        border-bottom: 1px solid #EA5D06;
+        background-color: #EA5D06;
+        color: #fff;
+    }
+
+    .creds h2 {
+        background-color: #07BAC1;
+        border-bottom: 1px solid #07BAC1;
+        color: #fff;
+    }
+
+    .table-row {
+        display: flex;
+        flex-direction: row;
+        border-bottom: 1px solid #5E91B1;
+        padding: .4rem;
+        align-items: center;
+    }
+
+    .table-cell {
+        align-items: center;
+    }
+
+
+
+    /* Customize the label (the container) */
+    .checkbox-container {
+        display: block;
+        position: relative;
+        padding-left: 30px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        font-size: 16px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+        /* Hide the browser's default checkbox */
+        .checkbox-container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+    /* Create a custom checkbox */
+    .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 20px;
+        width: 20px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+    }
+
+    /* On mouse-over, add a grey background color */
+    .checkbox-container:hover input ~ .checkmark {
+        background-color: #fff;
+        border: 1px solid #ccc;
+    }
+
+    /* When the checkbox is checked, add a blue background */
+    .checkbox-container input:checked ~ .checkmark {
+        background-color: #EA5D06;
+        border: 1px solid #EA5D06;
+    }
+
+    /* Create the checkmark/indicator (hidden when not checked) */
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+
+    /* Show the checkmark when checked */
+    .checkbox-container input:checked ~ .checkmark:after {
+        display: block;
+    }
+
+    /* Style the checkmark/indicator */
+    .checkbox-container .checkmark:after {
+        left: 6px;
+        top: 2px;
+        width: 6px;
+        height: 12px;
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }

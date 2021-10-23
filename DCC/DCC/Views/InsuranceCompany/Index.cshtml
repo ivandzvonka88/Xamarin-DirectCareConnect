@@ -1,0 +1,123 @@
+﻿
+@model DCC.EmptyView
+@{
+
+}
+
+@Html.Partial("MenuHeader", @Model)
+
+
+@Html.Partial("SettingsHeader", @Model)
+<script src="~/Scripts/DCC/GridHelper.js"></script>
+<div id="insuranceCompany">
+    <div class="hdr"><i class="fa fa-plus-square faBtn" onclick="openAddCompanyModal(0);"></i> Add Company</div>
+
+    <table id="insuranceCompanyTable" data-order='[2,"asc"]' class="table-bordered">
+        <thead>
+            <tr>
+                <th style="width:44px">
+                </th>
+                <th style="width:67px">
+                    Payer ID
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Line1
+                </th>
+                <th>
+                    Line2
+                </th>
+                <th>
+                    City
+                </th>
+                <th>
+                    State
+                </th>
+                <th style="width:95px">
+                    Postal Code
+                </th>
+            </tr>
+        </thead>
+    </table>
+
+    <div id="divCompanyModal" class="modal companyModal fade" style="display:none">
+        @*@Html.Partial("_ManageCompany", @Model)*@
+    </div>
+</div>
+<style>
+    table td {
+        padding: 3px;
+        background-color: white;
+    }
+
+    table th {
+        padding: 2px;
+        color: white;
+        background-color: #5e7fb1;
+    }
+</style>
+<script src="~/Scripts/DCC/GridHelper.js"></script>
+@section Scripts {
+    <script src="~/Scripts/moment.min.js"></script>
+    <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
+    <script>
+        var srvcUrl = '';
+        var pathname = window.location.pathname;
+        var VirtualDir = pathname.split('/');
+        VirtualDir.forEach(function (item) {
+            if (item != '') {
+                srvcUrl += '/' + item;
+            }
+            else {
+                srvcUrl += '';
+            }
+        });
+
+        var columns = [
+            {
+                data: "InsuranceCompanyId", orderable: false, mRender: function (data, type, full) {
+                    var toReturn = '';
+                    toReturn = ' <i class="fa fa-edit faBtn" onclick="openAddCompanyModal(' + data + ')"></i>';
+                    toReturn += '<i class="fa fa-trash faBtn" style="color:red" onclick="deleteInsuranceCompany(' + data + ')"></i>';
+                    return toReturn;
+                }
+            },
+            {
+                data: "PayerId"
+            },
+            {
+                data: "Name"
+            },
+            {
+                data: "Line1"
+            },
+            {
+                data: "Line2"
+            },
+            {
+                data: "City"
+            },
+            {
+                data: "State"
+            },
+            {
+                data: "PostalCode"
+            }
+        ];
+        createGridForAjax('#insuranceCompanyTable', 'InsuranceCompany/InsuranceCompanies', columns, null);
+
+    </script>
+    @if (HttpContext.Current.IsDebuggingEnabled)
+    {
+        <script type="text/javascript" src="~/Scripts/DCC/ManageCompany.js"></script>
+    }
+    else
+    {
+        // <script type="text/javascript" src="~/Scripts/DCC/clients.min.js?v=0.0f"></script>
+    }
+}
+
+
+

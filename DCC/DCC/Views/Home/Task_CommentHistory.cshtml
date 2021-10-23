@@ -1,0 +1,13 @@
+﻿@model List<DCC.Models.CommentHistory>
+
+<div class="clBlockData commentHistory">
+    <table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><b>@item.cmtType:</b> <span>@item.subject</span><br /><b>Comment:</b> <span>@item.comment</span></td>
+                <td><span>@item.cmtDt</span><br /><span class="commentator">@item.commentator</span></td>
+            </tr>
+        }
+    </table>
+</div>

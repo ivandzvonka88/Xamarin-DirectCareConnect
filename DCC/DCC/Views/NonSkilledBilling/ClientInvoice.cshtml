@@ -1,0 +1,61 @@
+﻿@model DCC.ViewModelBase
+
+@Html.Partial("MenuHeader", @Model)
+
+
+@Html.Partial("BillingHeader", @Model)
+<h3>ClientA Claims</h3>
+
+<div class="row">
+
+    @*<div class="col-md-2 col-lg-1">
+        <div class="nameList">
+            <div class='nameListItem'><a href="#">Back</a></div>
+
+        </div>
+
+    </div>*@
+    <div class="col-md-12 col-lg-12">
+        <div class="row mainPage">
+
+            <div class="col-md-12">
+                <table class="regTable services">
+                    <thead>
+                        <tr>
+                            <th >Date of Service</th>
+                            <th>CPT Codes</th>
+                            <th>Amount Billed</th>
+                            <th>Paid Amount</th>
+                            <th>Allowed Amount</th>
+                            <th>Co Insurance Amount</th>
+                            <th class="text-center" style="width:150px">Voided At</th>
+                            <th class="text-center" style="width:150px">Error</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="name">1/13/2018</td>
+                            <td class="discipline">ACCHS</td>
+                            <td class="text-center serviceModel">$70.99</td>
+                            <td class="locations">50</td>
+                            <td class="locations">30</td>
+                            <td class="locations">30</td>
+                            <td class="text-center isActive"><a href="#">Void Payment</a></td>
+                            <td class="text-center isActive"><a href="#">Denial Error</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+
+    
+        <script type="text/javascript" src="~/Scripts/DCC/Claims.js?v=0.0e"></script>
+   
+}

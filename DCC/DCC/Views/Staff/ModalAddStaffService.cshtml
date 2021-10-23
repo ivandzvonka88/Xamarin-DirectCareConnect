@@ -1,0 +1,41 @@
+﻿@model DCC.Models.Staff.StaffData
+<div id="actionModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-edit"></i> Add Service</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="service">Client/Service</label>
+                    <select id="service" class="form-control form-control-sm" onchange="checkServiceRequirement();">
+                        <option value="0-0-0"></option>
+                        @foreach (var item in Model.allStaffServices)
+                        {
+                            <option value="@item.id">@item.name</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group" id="relationshipX" style="display:none">
+                    <label for="prIdr">Staff/Client Relationship</label>
+                    <select id="prIdr" class="form-control form-control-sm">
+                        <option value="1"></option>
+                        @foreach (var item in Model.relationships)
+                        {
+                            <option value="@item.id">@item.name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="addService();">Add Service</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#actionModal').modal('show');
+</script>

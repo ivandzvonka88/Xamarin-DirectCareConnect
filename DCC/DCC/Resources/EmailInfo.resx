@@ -1,0 +1,305 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CredExpireMsg" xml:space="preserve">
+    <value>Hello,
+    Some of the credentials you have listed Therapy Corner are expiring and have no replacements. 
+Login to Therapy Corner now and review your credentials at {0}.
+
+This is an automatically generated email. Please do not reply to this email. If you have questions or concerns, please contact customer support at {1}.</value>
+  </data>
+  <data name="CredExpireSubject" xml:space="preserve">
+    <value>Therapy Corner Credentials Expiring</value>
+  </data>
+  <data name="EmailChangedFrom" xml:space="preserve">
+    <value>Hello, 
+This is to inform you that your Therapy Corner user account's email address has been changed by a call to our service desk. If you did not make this request, please contact customer support immediately. 
+
+Do not reply to this email.</value>
+  </data>
+  <data name="EmailChangedSubject" xml:space="preserve">
+    <value>Therapy Corner Email Address Changed</value>
+  </data>
+  <data name="EmailChangedTo" xml:space="preserve">
+    <value>Hello, 
+This is to inform you that your Therapy Corner user account's email address  has been changed to this address by a call to our service desk. If you did not make this request, please contact customer support immediately. 
+
+Do not reply to this email.</value>
+  </data>
+  <data name="FileShareMsg" xml:space="preserve">
+    <value>Hello,
+    {0} has created a token to securely share a document with you about client {1}. Please follow the link below to view the document. 
+
+     {2}/fileshare/index/{3}
+
+If you have concerns about the document or feel you have received this token in error please contact {0} at {4} or {5}. 
+
+This token will only be valid until {6}. If you need to access this document after this date please contact the company to have then send you a new one.
+
+This is an automatically generated email. Please do not reply to this email.
+
+ If you have questions or concerns or are unable to access the document in general, please contact customer support at {7}.</value>
+  </data>
+  <data name="FileShareSubject" xml:space="preserve">
+    <value>{0} Document Sharing Token</value>
+  </data>
+  <data name="InviteMessage" xml:space="preserve">
+    <value>Hello there,
+  {0} has invited you to be part of their Therapy Corner team. 
+   
+   If you do not have a Therapy Corner provider profile, follow this link ({1}/profile/register?code={2}) to register your Therapy Corner profile and join their team.
+   
+   If you do have a Therapy Corner provider profile, follow this link ({1}/profile/addcompany?invitecode={2}) or login and use this code, {2}, to join their team.
+
+
+
+    This is an automatically generated email. Do not reply to this email.</value>
+  </data>
+  <data name="InviteSubject" xml:space="preserve">
+    <value>{0}  Therapy Corner Invite</value>
+  </data>
+  <data name="NewCompanyMessage" xml:space="preserve">
+    <value>Hello there,
+  Your new Therapy Corner company registry for {0} has been created! Please login to Therapy Corner at {1} to complete setting up this company for your therapy practice.
+
+    This is an automatically generated email. Do not reply to this email.</value>
+  </data>
+  <data name="NewCompanySubject" xml:space="preserve">
+    <value>Your New Therapy Corner Company </value>
+  </data>
+  <data name="NewMsgBody" xml:space="preserve">
+    <value>Hello,
+    There are new messages from {2} on Therapy Corner. 
+Click here to login to Therapy Corner now and review the list of pending staff invites at {0}/message.
+
+This is an automatically generated email. Please do not reply to this email. If you have questions or concerns, please contact customer support by emailing {1}.</value>
+  </data>
+  <data name="NewMsgSubj" xml:space="preserve">
+    <value>New Messages from {0}  in Therapy Corner</value>
+  </data>
+  <data name="NewUserMessage" xml:space="preserve">
+    <value>Hello there,
+  Your new Therapy Corner user account has been created! Please login to Therapy Corner at {1} to begin using Therapy Corner with your registered practices.
+   
+  Your initial password is: {0}
+
+
+
+    This is an automatically generated email. Do not reply to this email.</value>
+  </data>
+  <data name="NewUserSubject" xml:space="preserve">
+    <value>Your New Therapy Corner User Account</value>
+  </data>
+  <data name="PasswordChangeMsg" xml:space="preserve">
+    <value>Hello,
+    This message is to inform you that your Therapy Hub password has been changed. If you did not take any actions to change your password please contact customer support.
+
+This is an automatically generated email. Please do not reply to this email. If you have questions or concerns, please contact customer support by emailing {0}.</value>
+  </data>
+  <data name="PasswordChangeSubject" xml:space="preserve">
+    <value>Therapy Corner Password Changed</value>
+  </data>
+  <data name="PasswordResetMessage" xml:space="preserve">
+    <value>Hello there,
+  Your new Therapy Corner user password has been reset! Please login to Therapy Corner at {1} to change this password to something you can remember at your earliest convenience.
+   
+  Your new password is: {0}
+
+
+
+    This is an automatically generated email. Do not reply to this email.</value>
+  </data>
+  <data name="PasswordResetSubject" xml:space="preserve">
+    <value>Therapy Corner Password Reset</value>
+  </data>
+  <data name="PendingCredMsg" xml:space="preserve">
+    <value>Hello,
+    There are staff credentials pending validation for {2} on Therapy Corner. 
+Click here to login to Therapy Corner now and review these credentials at {0}.
+
+This is an automatically generated email. Please do not reply to this email. If you have questions or concerns, please contact customer support by emailing {1}.</value>
+  </data>
+  <data name="PendingCredSubject" xml:space="preserve">
+    <value>{0} Credentials Pending Approval in Therapy Corner</value>
+  </data>
+  <data name="PendingInviteMsg" xml:space="preserve">
+    <value>Hello,
+    There are pending staff invites for {2} on Therapy Corner. 
+Click here to login to Therapy Corner now and review the list of pending staff invites at {0}/staff.
+
+This is an automatically generated email. Please do not reply to this email. If you have questions or concerns, please contact customer support by emailing {1}.</value>
+  </data>
+  <data name="PendingInviteSubject" xml:space="preserve">
+    <value>{0} Pending Staff Invites in Therapy Corner</value>
+  </data>
+  <data name="PendingWorkBody" xml:space="preserve">
+    <value>Hello,
+    You have session notes and/or reports pending or requiring your review for {2} on Therapy Corner.
+Click here to login to Therapy Corner now and review your pending work at {0}.
+
+This is an automatically generated email. Please do not reply to this email. If you have questions or concerns, please contact customer support by emailing {1}.</value>
+  </data>
+  <data name="PendingWorkSubj" xml:space="preserve">
+    <value>Work Pending for {0}  in Therapy Corner</value>
+  </data>
+  <data name="QBSyncFail" xml:space="preserve">
+    <value>Hello,
+    The following problems were encountered when attempting to synchronize data between your Therapy Corner account and your QuickBooks account. Please review them and if you have questions feel free to contact customer support.
+
+        •{0}
+
+
+This is an automatically generated email. Please do not reply to this email. If you have questions or concerns, please contact customer support by emailing {1}.</value>
+  </data>
+  <data name="QBSyncFailSubj" xml:space="preserve">
+    <value>Therapy Corner-QuickBooks Sync Error for  {0}</value>
+  </data>
+  <data name="ScheduleChangeBody" xml:space="preserve">
+    <value>Hello,
+    There have been changes made to your schedule for for {2} on Therapy Corner.
+Click here to login to Therapy Corner now and review your schedule at {0}/appointment.
+
+This is an automatically generated email. Please do not reply to this email. If you have questions or concerns, please contact customer support by emailing {1}.</value>
+  </data>
+  <data name="ScheduleChangeSubject" xml:space="preserve">
+    <value>Schedule Change for {0}  in Therapy Corner</value>
+  </data>
+  <data name="SendLoginMessage" xml:space="preserve">
+    <value>Your Therapy Corner login id is {0}</value>
+  </data>
+  <data name="SendLoginSubject" xml:space="preserve">
+    <value>Therapy Corner Login</value>
+  </data>
+  <data name="TCQBLinkRefresh" xml:space="preserve">
+    <value>Hello,
+    The link between Therapy Corner and QuickBooks needs to be refreshed for {0} at your earliest convenience. This is required once a year to ensure the security of your medical records and your financial records.
+Click here to login to Therapy Corner  at {0}.  then go to administration, integrations and  click the Link to QuickBooks button under the accounting section.
+
+This is an automatically generated email. Please do not reply to this email. If you have questions or concerns, please contact customer support by emailing {1}.</value>
+  </data>
+  <data name="TCQBLinkRefreshSubject" xml:space="preserve">
+    <value>Therapy Corner-QuickBooks Link for  {0}  </value>
+  </data>
+  <data name="ValidationMessage" xml:space="preserve">
+    <value>Please use the code {0} to verify your Therapy Corner account</value>
+  </data>
+  <data name="ValidationSubject" xml:space="preserve">
+    <value>Therapy Corner Code</value>
+  </data>
+</root>

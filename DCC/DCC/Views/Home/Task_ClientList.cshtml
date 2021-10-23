@@ -1,0 +1,8 @@
+﻿@model DCC.Models.Home.HomeStaffPage
+<div class="clBlockData clients display-grid">
+
+    @foreach (var item in Model.clients)
+    {
+        <div class="rowLink clientItem" onclick="getTaskClientPage('@item.clsvId')">@item.cNm</div>
+    }
+</div>

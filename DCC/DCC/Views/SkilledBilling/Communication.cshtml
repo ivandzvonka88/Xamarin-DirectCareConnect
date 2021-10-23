@@ -1,0 +1,164 @@
+﻿@model  DCC.Models.Providers.ProviderInit
+@Html.Partial("MenuHeader", @Model)
+@Html.AntiForgeryToken()
+@Html.Partial("BillingHeader", @Model)
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<div>
+
+    <div class="row">
+        <div class="col-md-12 col-md-offset-3">
+            <h2>Contact Us</h2>
+        </div>
+        <div class="col-md-6 col-md-offset-3">
+            <p>
+                Send us email
+            </p>
+            <form method="post" action="SendEmail" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="email">
+                        To:
+                    </label>
+                    <input type="email" class="form-control"
+                           id="email" name="email" required maxlength="50">
+                </div>
+                <div class="form-group">
+                    <label for="subject">
+                        Subject:
+                    </label>
+                    <input type="text" class="form-control"
+                           id="subject" name="subject" required maxlength="50">
+
+                </div>
+                <div class="form-group">
+                    <label for="name">
+                        Message:
+                    </label>
+                    <textarea class="form-control" required type="textarea" name="message"
+                              id="message" placeholder="Your Message Here"
+                              maxlength="6000" rows="7"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="file">
+                        File Upload:
+                    </label>
+                    <input type="file" class="form-control" id="file" name="file" >
+                </div>
+                <button type="submit" class="btn btn-lg btn-success pull-right" id="btnContactUs">Send Email</button>@*onclick="sendEmail();"*@
+            </form>
+            <div id="success_message" style="width:100%; height:100%; display:none; ">
+                <h3>Sent your message successfully!</h3>
+            </div>
+            @*@if (Model.er != null)
+            {
+                <div id="error_message"
+                     style="width:100%; height:100%; ">
+                    <h3>Error</h3>
+                    Sorry there was an error sending your mail.
+
+                </div>
+            }*@
+        </div>
+        <div class="col-md-6 col-md-offset-3">
+            <p>
+                Send us SMS
+            </p>
+            <div class="form-group">
+                <label for="number">
+                    To:
+                </label>
+                <input type="text" class="form-control"
+                       id="number" name="number" required maxlength="20">
+            </div>
+            <div class="form-group">
+                <label for="name">
+                    Message:
+                </label>
+                <textarea class="form-control" required type="textarea" name="message"
+                          id="smsMessage" placeholder="Your Message Here"
+                          maxlength="6000" rows="7"></textarea>
+            </div>
+
+
+            <button type="button" class="btn btn-lg btn-success pull-right" id="btnSMS" onclick="sendSMS();">Send SMS</button>
+
+            <div id="success_message" style="width:100%; height:100%; display:none; ">
+                <h3>Sent your message successfully!</h3>
+            </div>
+            <div id="error_message"
+                 style="width:100%; height:100%; display:none; ">
+                <h3>Error</h3>
+                Sorry there was an error sending your form.
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    @*<script type="text/javascript" src="~/Scripts/DCC/SkilledBilling3.js"></script>*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            token = $('input[name="__RequestVerificationToken"]').val();
+            headers = {};
+            headers['__RequestVerificationToken'] = token;
+        });
+        // Email //
+        //function sendEmail() {
+        //    var email = $('#email').val();// 'lekshminair1116@gmail.com';
+        //    var subject = $('#subject').val();// 'This is a test mail';
+        //    var message = $('#message').val();// 'testing mail from DCC';
+        //    var phone = '4053158437';
+        //    var isEmail = true;
+        //    //var path = 'D:/testingattachment.txt';
+        //    var path = "";
+        //    var path = $('#file').val();//"C:/Users/Public/Documents/testingdocument.txt";
+        //    var data = {
+        //        'email': email,
+        //        'subject': subject,
+        //        'message': message,
+        //        'phone': phone,
+        //        'ismail': isEmail,
+        //        'filepath': path
+        //    };
+        //    communicate(data);
+        //}
+        // SMS //
+        function sendSMS() {
+            var email = "";// 'lekshminair1116@gmail.com';
+            var subject = ""// 'This is a test mail';
+            var message = $('#smsMessage').val();// 'testing mail from DCC';
+            var phone = $('#number').val();//'4053158437';
+            var isEmail = false;
+            //var path = 'D:/testingattachment.txt';
+            var path = "";
+            //var path = $('#file').val();//"C:/Users/Public/Documents/testingdocument.txt";
+            var data = {
+                //'email': email,
+                //'subject': subject,
+                'message': message,
+                'phone': phone
+                //'ismail': isEmail,
+                //'filepath': path
+            };
+            communicate(data);
+        }
+        function communicate(data) {
+            $.ajax({
+                type: 'POST',
+                url: srvcUrl1 + '/SendSMS',
+                data: JSON.stringify(data),
+                headers: headers,
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    console.log(data);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert('error');
+                }
+            });
+        }
+    </script>
+}

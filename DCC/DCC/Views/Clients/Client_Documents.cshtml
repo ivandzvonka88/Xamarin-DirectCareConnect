@@ -1,0 +1,127 @@
+﻿@model  DCC.Models.ClientPageData
+<style>
+    .docTable td {
+        border: 1px solid #c0c0c0;
+        padding: 5px;
+        vertical-align: top;
+    }
+</style>
+
+
+    <table class="docTable">
+        @foreach (var item in Model.documentation)
+        {
+        <tr id="@(item.noteType + item.noteId)">
+            @if (item.noteType == "TherapyProgressReport")
+            {
+                <td>
+                    <i class="fa fa-file-o faBtn" onclick="getProgressReportDoc('@item.fileName')"></i>
+                    @if (item.hasAttachment)
+                    {
+                        <i class="fa fa-paperclip faBtn" onclick="getAttachment('@item.attachment')"></i>
+                    }
+                    @if (Model.userLevel == "AssistantDirector" || Model.userLevel == "Director" || Model.userLevel == "SuperAdmin" || Model.userLevel == "OfficeMan")
+                    {
+                        <i class="fa fa-recycle faBtn green" onclick="getRecycleModal('@item.noteType',@item.noteId)"></i>
+                    }
+
+                </td>
+                <td>@item.dt</td>
+                <td>Progress Report</td>
+                <td>@item.serviceType</td>
+                <td>@item.staffName</td>
+            }
+            else if (item.noteType == "HABProgressReport")
+            {
+                <td>
+                    <i class="fa fa-file-o faBtn" onclick="getProgressReportDoc('@item.fileName')"></i>
+                    @if (item.hasAttachment)
+                    {
+                        <i class="fa fa-paperclip faBtn" onclick="getAttachment('@item.attachment')"></i>
+                    }
+                </td>
+                <td>@item.dt</td>
+                <td>Progress Report</td>
+                <td>@item.serviceType</td>
+                <td>@item.staffName</td>
+            }
+            else if (item.noteType == "TherapyPlanOfCare")
+            {
+                <td>
+                    <i class="fa fa-file-o fa-file-o faBtn" onclick="getPlanOfCareDoc('@item.fileName')"></i>
+                    @if (Model.userLevel == "AssistantDirector" || Model.userLevel == "Director" || Model.userLevel == "SuperAdmin" || Model.userLevel == "OfficeMan")
+                    {
+                        <i class="fa fa-recycle faBtn green" onclick="getRecycleModal('@item.noteType',@item.noteId)"></i>
+                    }
+                </td>
+                <td>@item.dt</td>
+                <td>Plan Of Care</td>
+                <td>@item.serviceType</td>
+                <td>@item.staffName</td>
+            }
+            else if (item.noteType == "ATCMonitoringReport")
+            {
+                <td><i class="fa fa-eye fa-file-o faBtn" onclick="getATCMonitoringReportPdf(@item.noteId)"></i></td>
+                <td>@item.dt</td>
+                <td>Monitoring Report</td>
+                <td>@item.serviceType</td>
+                <td>@item.staffName</td>
+            }
+            else if (item.noteType == "TherapyEvaluation")
+            {
+                <td>
+                    <i class="fa fa-file-o faBtn" onclick="getEvaluationDoc('@item.fileName')"></i>
+                    @if (item.hasAttachment)
+                    {
+                        <i class="fa fa-paperclip faBtn" onclick="getAttachment('@item.attachment')"></i>
+                    }
+                    @if (Model.userLevel == "AssistantDirector" || Model.userLevel == "Director" || Model.userLevel == "SuperAdmin" || Model.userLevel == "OfficeMan")
+                    {
+                        <i class="fa fa-recycle faBtn green" onclick="getRecycleModal('@item.noteType',@item.noteId)"></i>
+                    }
+
+                </td>
+                <td>@item.dt</td>
+                <td>Evaluation</td>
+                <td>@item.serviceType</td>
+                <td>@item.staffName</td>
+            }
+            else if (item.noteType == "TherapyNote")
+            {
+                <td>
+                    <i class="fa fa-file-o faBtn" onclick="getSessionNote('@item.fileName')"></i>
+                    @if (item.hasAttachment)
+                    {
+                        <i class="fa fa-paperclip faBtn" onclick="getAttachment('@item.attachment')"></i>
+                    }
+                    @if (Model.userLevel == "AssistantDirector" || Model.userLevel == "Director" || Model.userLevel == "SuperAdmin" || Model.userLevel == "OfficeMan")
+                    {
+                        <i class="fa fa-recycle faBtn green" onclick="getRecycleModal('@item.noteType',@item.noteId)"></i>
+                    }
+
+                </td>
+                <td>@item.dt</td>
+                <td>Session Note</td>
+                <td>@item.serviceType</td>
+                <td>@item.staffName</td>
+            }
+
+
+            else
+            {
+                <td>
+                    <i class="fa fa-file-o faBtn" onclick="getSessionNote('@item.fileName')"></i>
+                    @if (item.hasAttachment)
+                    {
+                        <i class="fa fa-paperclip faBtn" onclick="getAttachment('@item.attachment')"></i>
+                    }
+                </td>
+                <td>@item.dt</td>
+                <td>Session Note</td>
+                <td>@item.serviceType</td>
+                <td>@item.staffName</td>
+            }
+        </tr>
+        }
+    </table>
+

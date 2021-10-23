@@ -1,0 +1,578 @@
+﻿@model DCC.Models.Home.ProgressReport
+<style>
+    .forAssistant {
+        background-color: #ffffe0;
+    }
+
+    @(Model.svc=="ABAE" ? "style=\"display:none\"" : "" )
+</style>
+<!--Start Modals-->
+<div class="modal fade" id="actionModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-full" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>@Model.clientName  @Model.dt  @Model.serviceName Plan Of Care</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body modal-body-full">
+                <input type="hidden" id="docId" value="@Model.docId" />
+                <input type="hidden" id="serviceId" value="@Model.serviceId" />
+                <input type="hidden" id="clientId" value="@Model.clientId" />
+                <div class="row">
+                    @foreach (var q in Model.questions)
+                    {
+                        <div class="col-sm-12">
+                            <div class="questionItem">
+                                <input type="hidden" class="questionId" value="@q.questionId" />
+                                <input type="hidden" class="answerRequired" value="@(q.isRequired ? 1 :0)" />
+                                <div class="question" style="font-weight:bold">@q.title</div>
+                                <textarea class="answer" style="width:100%">@q.answer</textarea>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="row" style="margin-bottom:10px">
+                    <div class="col-sm-5">
+                        <div class="form-group">
+                            <div style="float:left">
+                                <b><label for="treatmentStart">Treatment Start</label></b>
+                                <div class="input-group date">
+                                    <input id="treatmentStart" type="date" class="form-control form-control-sm" value="@Model.treatmentStart" />
+                                </div>
+                            </div>
+                            <div style="float:left;margin-left:10px">
+                                <b><label for="treatmentEnd">Treatment End</label></b>
+                                <div class="input-group date">
+                                    <input id="treatmentEnd" type="date" class="form-control form-control-sm" value="@Model.treatmentEnd" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3" @Html.Raw(Model.svc=="ABAE" || Model.svc=="ABA" ? "style=\"display:none\"" : "" )>
+                        <div><b>Number Of Visits Req.</b></div>
+                        <input type="text" id="numberOfVisits" value="@Model.numberOfVisits" />
+                    </div>
+                    <div class="col-sm-2" @Html.Raw(Model.svc=="ABAE"|| Model.svc=="ABA" ? "style=\"display:none\"" : "" )>
+                        <div><b>Treatment Frequency</b></div>
+                        <select id="treatmentFrequencyId">
+                            @foreach (var freq in Model.frequencies)
+                            {
+                                <option value="@freq.value" @(freq.value == Model.treatmentFrequencyId ? "selected" : "")>@freq.name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-sm-2" @Html.Raw(Model.svc=="ABAE"|| Model.svc=="ABA" ? "style=\"display:none\"" : "" )>
+                        <div><b>Visit Duration (Minutes)</b></div>
+                        <select id="duration" value="@Model.treatmentDurationId">
+                            <option value="30" @(Model.treatmentDurationId == "30" ? "selected" : "")>30</option>
+                            <option value="60" @(Model.treatmentDurationId == "60" ? "selected" : "")>60</option>
+                            <option value="90" @(Model.treatmentDurationId == "90" ? "selected" : "")>90</option>
+                            <option value="120" @(Model.treatmentDurationId == "120" ? "selected" : "")>120</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row" id="objectiveWrapper">
+                    @foreach (var o in Model.longTermObjectives)
+                    {
+                        <div class="col-sm-12 objectiveItem" id="objectiveId@(o.objectiveId)">
+                            <input type="hidden" class="objectiveId" value="@o.objectiveId" />
+                            <div style="margin-bottom:20px; border:3px solid #c0c0c0; padding:5px">
+                                <div style="margin-bottom:20px">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div><b>Long Term Goal Area:</b></div>
+                                            <select class="oGA">
+                                                @foreach (var gA in Model.goalAreas)
+                                                {
+                                                    <option value="@gA.value" @(gA.value == Convert.ToString(o.goalAreaId) ? "selected" : "")>@gA.name</option>
+                                                }
+                                                @if (!o.goalAreaActive)
+                                                {
+                                                    <option value="@o.goalAreaId" selected="selected" )>@o.goalAreaName</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div><b>Long Term Status:</b></div>
+                                            <select class="oLTstatus">
+                                                @foreach (var st in Model.statuses)
+                                                {
+                                                    <option value="@st.value" @(st.value == o.objectiveStatus ? "selected" : "")>@st.name</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div><b>Long Term Vision:</b></div>
+                                            <textarea class="oLTV" style="width:100%">@o.longTermVision</textarea>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div><b>Long Term Goal:</b></div>
+                                            <textarea class="oLTG" style="width:100%">@o.longTermGoal</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="display:none">
+                                        <div class="col-sm-12">
+                                            <div><b>Do you have any changes to the long term vision?</b></div>
+                                            <textarea class="oLTchanges forAssistant" style="width:100%">@o.changes</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="shortTermGoals">
+                                    @foreach (var s in o.shortTermGoals)
+                                    {
+                                        <div class="shortTermGoalItem" style="margin-left:20px;margin-bottom:20px;border:3px solid #c0c0c0; padding:5px;background-color:aliceblue">
+                                            <input type="hidden" class="goalId" value="@s.goalId">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <b>Action Step/Short Term Goal <span class="aStep"></span></b>
+                                                    <textarea class="oAS" style="width:100%">@s.shortTermGoal</textarea>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <b>Activities/ Strategies</b>
+                                                    <textarea class="oTM" style="width:100%">@s.teachingMethod</textarea>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <b>Frequency</b>:<br />
+                                                    <select class="oASFreq">
+                                                        @foreach (var freq in Model.frequencies)
+                                                        {
+                                                            <option value="@freq.value" @(freq.value == s.frequencyId ? "selected" : "")>@freq.name</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <b>Status:</b><br />
+                                                    <select class="oASStatus">
+                                                        @foreach (var st in Model.statuses)
+                                                        {
+                                                            <option value="@st.value" @(st.value == s.goalStatus ? "selected" : "")>@st.name</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+
+                                <div>
+                                    <button type="button" class="btn btn-sm btn-primary actionStepBtn" onclick="openActionStepModal(@o.objectiveId);">Add Action Step</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <button type="button" class="btn btn-sm btn-primary" onclick="openLongTermVisionModal();">New Long Term Vision</button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" class="checkBox-attest" id="attestTo" style="vertical-align:top" />
+                                </td>
+                                <td>
+                                    <span style="font-weight:bold">@Model.signee</span> I hereby attest that the medical record entry for @Model.completedDt accurately reflects signatures/notations that I made in my capacity as a <span style="font-weight:bold">@Model.signeeCredentials</span>   I do hereby attest that this information is true, accurate, and complete to the best of my knowledge and that any falsifications, omissions, or concealment of material fact may subject me to administrative, civil, or criminal liability.
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="submitPlanOfCare(false);">Save</button>
+                <button type="button" class="btn btn-primary" onclick="submitPlanOfCare(true);">Submit Plan Of Care</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="addLongTermVisionModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: orange;">
+                <h5><i class="fa fa-edit"></i> Add Long Term Vision</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div><b>Long Term Goal Area:</b></div>
+                <select class="oGA">
+                    @foreach (var gA in Model.goalAreas)
+                    {
+                        <option value="@gA.value">@gA.name</option>
+                    }
+                </select>
+                <div><b>Long Term Vision:</b></div>
+                <textarea class="oLTV" style="width:100%"></textarea>
+                <div><b>Long Term Goal:</b></div>
+                <textarea class="oLTG" style="width:100%"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-primary" onclick="addLongTermVision();">Add Long Term Vision</button>
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="addActionStepModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: orange;">
+                <h5><i class="fa fa-edit"></i> Add Action Step</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" class="objectiveType" />
+                <input type="hidden" class="objectiveId" />
+                <b>Action Step/Short Term Goal <span class="aStep"></span></b>
+                <textarea class="oAS" style="width:100%"></textarea>
+                <b>Activities/ Strategies</b>
+                <textarea class="oTM" style="width:100%"></textarea>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <b>Frequency</b>:<br />
+                        <select class="oASFreq">
+                            @foreach (var freq in Model.frequencies)
+                            {
+                                <option value="@freq.value">@freq.name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-primary" onclick="addActionStep();">Add step</button>
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End Modals-->
+<!--templates-->
+<div class="col-sm-12 objectiveItem template" ">
+    <div style="margin-bottom:20px; border:3px solid #c0c0c0; padding:5px">
+        <div style="margin-bottom:20px">
+            <input type="hidden" class="objectiveId" />
+            <div class="row">
+                <div class="col-sm-4">
+                    <div><b>Long Term Goal Area:</b></div>
+                    <select class="oGA">
+                        @foreach (var gA in Model.goalAreas)
+                        {
+                            <option value="@gA.value">@gA.name</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-4">
+                    <div><b>Long Term Status:</b></div>
+                    <select class="oLTstatus">
+                        @foreach (var st in Model.statuses)
+                        {
+                            <option value="@st.value">@st.name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div><b>Long Term Vision:</b></div>
+                    <textarea class="oLTV" style="width:100%" />
+                </div>
+                <div class="col-sm-6">
+                    <div><b>Long Term Goal:</b></div>
+                    <textarea class="oLTG" style="width:100%" />
+                </div>
+            </div>
+
+        </div>
+        <div class="shortTermGoals">
+        </div>
+        <div>
+            <button type="button" class="btn btn-sm btn-primary actionStepBtn">Add Action Step</button>
+        </div>
+    </div>
+</div>
+
+<div class="shortTermGoalItem template" style="margin-left:20px;margin-bottom:20px;border:3px solid #c0c0c0; padding:5px;background-color:aliceblue">
+    <input type="hidden" class="goalId">
+    <div class="row">
+        <div class="col-sm-6">
+            <b>Action Step/Short Term Goal <span class="aStep"></span></b>
+            <textarea class="oAS" style="width:100%"></textarea>
+        </div>
+        <div class="col-sm-6">
+            <b>Activities/ Strategies</b>
+            <textarea class="oTM" style="width:100%"></textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <b>Frequency</b>:<br />
+            <select class="oASFreq">
+
+                @foreach (var freq in Model.frequencies)
+                {
+                    <option value="@freq.value">@freq.name</option>
+                }
+
+
+            </select>
+        </div>
+        <div class="col-sm-4">
+            <b>Status:</b><br />
+            <select class="oASStatus">
+
+                @foreach (var st in Model.statuses)
+                {
+                    <option value="@st.value">@st.name</option>
+                }
+
+
+
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div style="font-weight:bold">Progress</div>
+            <textarea class="objprogress" style="width:100%"></textarea>
+        </div>
+
+    </div>
+</div>
+<!-- End templates-->
+
+<script>
+    var _formType = "TherapyPlanOfCare";
+   
+   // $('#actionModal').modal('show');
+    $('#actionModal').modal({
+        backdrop: 'static',
+        keyboard: false
+    });
+    function autoSave() {
+        submitPlanOfCare(false);
+    }
+
+    function submitPlanOfCare(complete) {
+        var tgt = $('#actionModal');
+        if (complete && !$('#attestTo').prop('checked')) {
+            Alert('Please check the checkbox at to attest to this reports');
+            return false;
+        }
+
+        var isOK = true;
+        var questions = [];
+        tgt.find('.questionItem').each(function () {
+            var questionId = $(this).find('.questionId').val();
+            if (questionId !== '') {
+                var o = {};
+                o.questionId = questionId;
+                o.answer = $(this).find('.answer').val();
+                questions.push(o);
+
+                if (complete && o.answer === '' && $(this).find('.answerRequired').val() === '1') {
+                    Alert('You did not answer the question ' + $(this).find('.question').text());
+                    isOK = false;
+                    return false;
+                }
+            }
+        });
+        if (!isOK)
+            return false;
+        var longTermObjectives = [];
+        tgt.find('.objectiveItem').each(function () {
+            var objectiveId = $(this).find('.objectiveId').val();
+            if (objectiveId !== '') {
+                var o = {};
+                o.objectiveId = objectiveId;
+                o.goalAreaId = $(this).find('.oGA').val();
+                o.longTermVision = $(this).find('.oLTV').val();
+                o.longTermGoal = $(this).find('.oLTG').val();
+                o.objectiveStatus = $(this).find('.oLTstatus').val();
+
+                o.shortTermGoals = [];
+                $(this).find('.shortTermGoalItem').each(function () {
+                    var g = {};
+                    g.goalId = $(this).find('.goalId').val();
+                    g.shortTermGoal = $(this).find('.oAS').val();
+                    g.teachingMethod = $(this).find('.oTM').val();
+                    g.goalStatus = $(this).find('.oASStatus').val();
+                    g.frequencyId = $(this).find('.oASFreq').val();
+                    o.shortTermGoals.push(g);
+                });
+                longTermObjectives.push(o);
+            }
+        });
+        var Data = {
+            'providerId': $('#TPRID').val(),
+            'formType': _formType,
+            'docId': $('#docId').val(),
+            'serviceId': $('#serviceId').val(),
+            'clientId': $('#clientId').val(),
+            'treatmentFrequencyId': tgt.find('#treatmentFrequencyId').val(),
+            'treatmentDurationId': tgt.find('#duration').val(),
+            'treatmentStart': tgt.find('#treatmentStart').val(),
+            'treatmentEnd': tgt.find('#treatmentEnd').val(),
+            'numberOfVisits': $('#numberOfVisits').val(),
+            'questions': questions,
+            'longTermObjectives': longTermObjectives
+        };
+        if (complete)
+            tgt.modal('hide');
+        waitOn();
+        var data = new FormData();
+        data.append('_progressReport', JSON.stringify(Data));
+        data.append('complete', complete);
+        $.ajax({
+            type: 'POST',
+            url: srvcUrl + '/Home/SetTherapyPlanOfCare',
+            headers: headers,
+            contentType: false,
+            processData: false,
+            data: data,
+            dataType: 'json',
+            success: function (r) {
+                waitOff();
+                if (r.er.code !== 0)
+                    Alert(r.er.msg);
+                else {
+                    $('#pendingDocumentation').html(r.pendingDocumentation);
+                    $('#staffAlerts').html(r.staffAlerts);
+                }
+            },
+            error: ajaxError,
+            timeout: 100000
+        });
+    }
+    function openLongTermVisionModal() {
+        var m = $('#addLongTermVisionModal');
+        m.find('.oLTV').val('');
+        m.find('.oLTG').val('');
+        m.modal('show');
+    }
+    function addLongTermVision() {
+        var m = $('#addLongTermVisionModal');
+        var o = {};
+        o.goalAreaId = m.find('.oGA').val();
+        o.longTermVision = m.find('.oLTV').val();
+        o.longTermGoal = m.find('.oLTG').val();
+        longTermObjectives = [];
+        longTermObjectives.push(o);
+        var Data = {
+            'formType': _formType,
+            'docId': $('#docId').val(),
+            'serviceId': $('#serviceId').val(),
+            'clientId': $('#clientId').val(),
+            'longTermObjectives': longTermObjectives
+        };
+        m.modal('hide');
+        waitOn();
+        $.ajax({
+            type: 'POST',
+            url: srvcUrl + '/Home/AddLongTermVision',
+            headers: headers,
+            data: JSON.stringify(Data),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: addLongTermVisionSuccess,
+            error: ajaxError,
+            timeout: 10000
+        });
+    }
+    function addLongTermVisionSuccess(r) {
+        waitOff();
+        if (r.er.code !== 0) {
+            Alert(r.er.code);
+        }
+        else {
+            l = r.longTermObjectives[0];
+            var nDiv = $('.objectiveItem.template').clone();
+            nDiv.prop('id', 'objectiveId' + l.objectiveId);
+            nDiv.find('.objectiveId').val(l.objectiveId);
+            nDiv.find('.oGA').val(l.goalAreaId);
+            nDiv.find('.oLTV').val(l.longTermVision);
+            nDiv.find('.oLTG').val(l.longTermGoal);
+            nDiv.find('.oLTstatus').val(l.objectiveStatus);
+            nDiv.find('.actionStepBtn').on('click', { oid: l.objectiveId }, function (event) { openActionStepModal(event.data.oid); });
+            $('#objectiveWrapper').append(nDiv);
+            nDiv.removeClass('template');
+        }
+    }
+
+    function openActionStepModal(oId) {
+        var m = $('#addActionStepModal');
+        m.find('.objectiveId').val(oId);
+        m.find('.oAS').val('');
+        m.find('.oTM').val('');
+        m.modal('show');
+    }
+    function addActionStep() {
+        var m = $('#addActionStepModal');
+        var o = {};
+        o.objectiveId = m.find('.objectiveId').val();
+        o.shortTermGoals = [];
+
+        p = {};
+        p.shortTermGoal = m.find('.oAS').val();
+        p.teachingMethod = m.find('.oTM').val();
+        p.frequencyId = m.find('.oASFreq').val();
+
+        o.shortTermGoals.push(p);
+        longTermObjectives = [];
+        longTermObjectives.push(o);
+
+        var Data = {
+            'formType': _formType,
+            'docId': $('#docId').val(),
+            'serviceId': $('#serviceId').val(),
+            'clientId': $('#clientId').val(),
+            'longTermObjectives': longTermObjectives
+        };
+        m.modal('hide');
+        waitOn();
+        $.ajax({
+            type: 'POST',
+            url: srvcUrl + '/Home/AddActionStep',
+            headers: headers,
+            data: JSON.stringify(Data),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: addActionStepSuccess,
+            error: ajaxError,
+            timeout: 10000
+        });
+    }
+    function addActionStepSuccess(r) {
+        waitOff();
+        if (r.er.code !== 0) {
+            Alert(r.er.code);
+        }
+        else {
+            var tgt = $('#actionModal').find('#objectiveId' + r.longTermObjectives[0].objectiveId).find('.shortTermGoals');
+            var nDiv = $('.shortTermGoalItem.template').clone();
+            var g = r.longTermObjectives[0].shortTermGoals[0];
+            nDiv.find('.goalId').val(g.goalId);
+            nDiv.find('.aStep').text(g.step);
+            nDiv.find('.oAS').val(g.shortTermGoal);
+            nDiv.find('.oTM').val(g.teachingMethod);
+            nDiv.find('.oASFreq').val(g.frequencyId);
+            nDiv.find('.oASStatus').val(g.goalStatus);
+            nDiv.removeClass('template');
+            tgt.append(nDiv);
+        }
+    }
+
+</script>
+

@@ -1,0 +1,63 @@
+﻿@model DCC.Models.SpecialRate
+<div class="modal fade" id="actionModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-edit"></i> <span>Add Special Rate</span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <p>Update special rate<br />For Service: @Model.svcName</p>
+                <input type="hidden" id="clientServiceId" value="@Model.clsvidId">
+                <div class="form-group">
+                    <label for="spRateRatio">Client/Provider Ratio</label>
+                    <select id="spRateRatio" class="form-control form-control-sm">
+                        <option value="1.0" selected="selected">Provider:Client 1:1</option>
+                        <option value="0.5">Provider:Client 2:1</option>
+                    </select>
+                    <label for="spRate">Special Rate</label>
+                    <input id="spRate" class="form-control form-control-sm" type="text" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="spRateBtn" onclick="addNewSpecialRate();">Add New Special Rate</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#actionModal').modal('show');
+
+    function addNewSpecialRate() {
+        var x = parseFloat($('#spRate').val().replace('$', ''));
+        if (isNaN(x) || x < 0 || x > 1000)
+            Alert('Rate is not valid!');
+        else {
+            $('#actionModal').modal('hide');
+            waitOn();
+            var Data = {
+                'spRtId': 0,
+                'clsvId': $('#TCLSVID').val(),
+                'clsvidId': $('#clientServiceId').val(),
+                'ratio': $('#spRateRatio').val(),
+                'rate': x
+            };
+            $.ajax({
+                type: 'POST',
+                url: srvcUrl + '/Home/SetSpecialRate',
+                data: JSON.stringify(Data),
+                contentType: 'application/json; charset=utf-8',
+                headers: headers,
+                dataType: 'html',
+                success: function (data) {
+                    waitOff();
+                    $('#services').html(data);
+                },
+                error: ajaxError,
+                timeout: 10000
+            });
+            return false;
+        }
+    }
+</script>

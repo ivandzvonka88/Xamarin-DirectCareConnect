@@ -1,0 +1,161 @@
+﻿@model DCC.Models.Home.ProgressReportPdf
+<head>
+    <style type="text/css">
+        body {
+            font-size: 12px;
+        }
+
+        h1 {
+            font-size: 15px;
+            text-align: center;
+            padding: 0;
+        }
+
+        table {
+            page-break-inside: avoid;
+            margin-top: 0px;
+            margin-bottom: 5px;
+            width: 100%;
+        }
+
+        th {
+            font-size: 14px;
+            vertical-align: top;
+            text-align: center;
+            background-color: aliceblue;
+        }
+
+        td {
+            font-weight: bold;
+            padding: 2px;
+            border: 0.5px solid #c0c0c0;
+        }
+
+        div {
+            margin-top: 1px;
+            margin-bottom: 5px;
+            padding: 0px 5px 0px 5px;
+            font-size: 12px;
+            font-weight: normal;
+            text-indent: 15px;
+        }
+
+        span {
+            font-size: 12px;
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <h1>@Model.serviceName  @Model.clientName @Model.dt</h1>
+    <table>
+        <tr>
+            <th colspan="4">Member Information</th>
+        </tr>
+        <tr>
+            <td>Member Name:<div>@Model.clientName</div></td>
+            <td>Date of Birth:<div>@Model.dob</div></td>
+            <td>Assist ID:<div>@Model.clId</div></td>
+            <td>Diagnosis:<div>@Model.diagnosis</div></td>
+        </tr>
+        <tr>
+            <td>Qualified Vendor Agency:<div>@(Model.agency  +  " NPI:" +  Model.npi)</div></td>
+            <td>Reporting Period:<div>@Model.dt</div></td>
+            <td>Plan of Care Cert. Period:<div>Unknown</div></td>
+            <td>Support Coordinator:<div>@Model.clientWorker</div></td>
+        </tr>
+
+    </table>
+    <table>
+        <tr>
+            <th colspan="3">Integrated Health Care Information</th>
+        </tr>
+        <tr>
+            <td>Responsible Person<div>@Model.responsiblePerson</div></td>
+            <td>Relationship To Member<div>@Model.responsiblePersonRelationship</div></td>
+            <td>Phone<div>@Model.responsiblePersonPhone</div></td>
+        </tr>
+        <tr>
+            <td>Therapist<div>@Model.completedBy</div></td>
+            <td>Title<div>@Model.completedByTitle @Model.completedByCredentials</div></td>
+            <td>Phone<div>@Model.completedByPhone</div></td>
+        </tr>
+        <tr>
+            <td>Physician<div>@Model.physician</div></td>
+            <td>Agency<div>@Model.physicianAgency</div></td>
+            <td>Phone<div>@Model.physicianPhone</div></td>
+        </tr>
+    </table>
+
+
+    @foreach (var question in @Model.questions)
+    {
+       
+        <div style="font-size: 14px;font-weight:bold"> @Html.Raw(question.title)</div>
+        <div style="padding-bottom:15px">@Html.Raw(question.answer)</div>
+    @*
+    <table>
+        <tr>
+            <td>@Html.Raw(question.title)<div>@Html.Raw(question.answer)</div></td>
+        </tr>
+    </table>
+        *@
+}
+
+
+    <table>
+        @foreach (var o in @Model.longTermObjectives)
+        {
+            <tr>
+                <td style="font-size: 11px;">
+                    <span style="font-size:12px;font-weight:bold">GOAL AREA: @o.goalAreaName.ToUpper()</span><br />
+                    Long Term Vision:<div>@Html.Raw(o.longTermVision)</div>
+                    Long Term Goal:<div>@Html.Raw(o.longTermGoal)</div>
+                    Status: <span>@o.objectiveStatus</span>
+                </td>
+            </tr>
+
+            foreach (var s in o.shortTermGoals)
+            {
+                <tr>
+                    <td style="border:0px">
+                        <table style="margin-left: 10px; background-color:aliceblue">
+                            <tr>
+                                <td>
+                                    Action Step/Short Term Goal:<div>@Html.Raw(s.shortTermGoal)</div>
+                                    Activities/ Strategies:<div>@Html.Raw(s.teachingMethod)</div>
+                                    Status: <span>@s.goalStatus</span>  Frequency: <span>@s.frequency</span><br />
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+            }
+        }
+    </table>
+
+    @*
+        <table>
+            <tr>
+                <th>Scoring Method:</th>
+            </tr>
+            <tr>
+               <td>
+                   @foreach(var score in Model.scoring)
+                   {
+                       @(score.value + "-" + @score.name + "   ")
+                   }
+
+               </td>
+
+            </tr>
+        </table>
+    *@
+
+
+    <div class="disclaimer">
+        I  @Model.completedBy  hereby attest that the medical record entry for @Model.dt accurately reflects signatures/notations that I made in my capacity as a  @Model.completedByCredentials   I do hereby attest that this information is true, accurate, and complete to the best of my knowledge and that any falsifications, omissions, or concealment of material fact may subject me to administrative, civil, or criminal liability.
+    </div>
+
+</body>

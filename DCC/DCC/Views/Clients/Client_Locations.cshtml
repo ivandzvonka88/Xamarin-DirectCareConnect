@@ -1,0 +1,50 @@
+﻿
+@model DCC.Models.ClientPageData
+
+    <div class="hdr">
+        @if (Model.userLevel != "Provider" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+        {
+            <i class="fa fa-plus-square faBtn" onclick="openGeoLocationAdd();"></i>
+        }
+        Client Locations
+    </div>
+
+    @foreach (var item in Model.geoLocations)
+    {
+        <table class="clBlockData" id="@("clLocId" + @item.clLocId)">
+            <tr>
+                <td>
+                    <i class="fa fa-eye faBtn" onclick="viewGeoLocation(@item.lat,@item.lon)"></i>
+                    @if (Model.userLevel != "Provider" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+                    {
+                        if (item.locationTypeId == 1 || item.locationTypeId == 2)
+                        {
+                            <i class="fa fa-edit faBtn" onclick="openGeoLocationEdit(@item.clLocId)"></i>
+                        }
+                        <i class="fa fa-trash faBtn red" onclick="openGeoLocationRemove(@item.clLocId)"></i>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="hidden" id="locationTypeId" value="@item.locationTypeId" />
+                    <span>@item.type</span>
+                    @if (item.name != "")
+                    {
+                        <br /><span>@item.name</span>
+                    }
+                    <br /><span>@item.ad1</span> <span class="st">@item.ad2</span>
+                    <br /><span>@item.cty</span>, <span>@item.st</span> <span>@item.zip</span>
+                    <br />Billing Tier:  <span>@item.billingTier</span>
+                    <br /><span style="color:red">EVV Landline:</span> <span>@item.landline</span>
+                    <br />Radius: <span>@item.radius</span> feet
+                    <br />GeoType: <span>@item.locationType</span>
+                </td>
+            </tr>
+        </table>
+    }
+
+
+
+
+

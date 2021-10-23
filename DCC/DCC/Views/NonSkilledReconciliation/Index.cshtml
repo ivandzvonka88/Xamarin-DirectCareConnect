@@ -1,0 +1,93 @@
+﻿@model DCC.Models.NonSkilledRebillPage
+@Html.Partial("MenuHeader", @Model)
+@Html.AntiForgeryToken()
+
+<h1>Non Skilled Billing - Reconciliation</h1> 
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            <input id="FileName" class="form-control form-control-sm fileName" disabled style="margin-top:6px" />
+        </div>
+        <div class="form-group">
+            <label class="btn btn-sm btn-secondary">
+                Select File <input id="FileNameX" type="file" style="display:none" onchange="getFileName();" />
+            </label>
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" onclick="uploadReconcile();">Reconcile</button>
+        </div>
+
+
+    </div>
+</div>
+<script>
+    var srvcUrl = '';
+    var srvcUrl1 = '';
+    var i = 0;
+    var pathname = window.location.pathname;
+    var t = document.location.hostname;
+    var VirtualDir = pathname.split('/');
+    VirtualDir.forEach(function (item) {
+        if (t != 'localhost') {
+            if (i == 1) {
+                srvcUrl1 = item;
+                if (srvcUrl1 != '')
+                    srvcUrl1 = '/' + item
+            }
+        }
+        i = i + 1;
+        if (item != '') {
+            srvcUrl += '/' + item;
+        }
+        else {
+            srvcUrl += '';
+        }
+    });
+</script>
+
+
+@section Scripts {
+    <script>
+        var token;
+        var headers;
+        $(document).ready(function () {
+            token = $('input[name="__RequestVerificationToken"]').val();
+            headers = {};
+            headers['__RequestVerificationToken'] = token;
+        });
+        function getFileName() {
+            $('#FileName').val($('#FileNameX').val().split('\\').pop());
+        }
+        function uploadReconcile() {
+            files = $('#FileNameX').get(0).files;
+
+            var data = new FormData();
+            data.append('files', files[0]);
+            $.ajax({
+                type: 'POST',
+                url: srvcUrl + '/UploadReconcileFile',
+                contentType: false,
+                headers: headers,
+                processData: false,
+                data: data,
+                dataType: 'json',
+                success: SuccessR,
+                error: ajaxError,
+                timeout: 100000
+            });
+        }
+        function SuccessR(r) {
+            waitOff();
+            if (r.code === 1) Alert('System Error - ' + r.msg);
+            else if (r.code === 2) Alert('Error - ' + r.msg);
+            else {
+                Alert('Success');
+            }
+        }
+    </script>
+
+
+
+
+}
+

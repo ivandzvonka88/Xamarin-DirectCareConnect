@@ -1,0 +1,144 @@
+﻿@model DCC.Models.ClientPageData
+<div class="row">
+    <div class="col-lg-12">
+        <div style="height: 30px;
+        background-color: #d84765;
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        padding-left: 10px" id="clientHeader">
+            @Html.Partial("Client_Header", @Model)
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="clientView contentBox" style="display:block">
+            <div class="boxContainerTitle">Details <i class="fa fa-plus-square-o btnClientExpand"></i></div>
+            <div class="boxContainer normal active">
+                <div class="clBlockData">
+                    <div id="clientProfile">
+                        @Html.Partial("Client_Profile", @Model)
+                    </div>
+                </div>
+                <div class="clBlockData">
+                    <div id="clientGeoLocations">
+                        @Html.Partial("Client_Locations", @Model)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="clientView contentBox" style="display:block">
+            <div class="boxContainerTitle">Authorizations <i class="fa fa-plus-square-o btnClientExpand"></i></div>
+            <div class="boxContainer normal active">
+                <div id="services">
+                    @Html.Partial("Client_Services", @Model)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="clientView contentBox" style="display:block">
+            <div class="boxContainerTitle">Charts <i class="fa fa-plus-square-o btnClientExpand"></i></div>
+            <div class="boxContainer normalSize active">
+                <div class="clBlockData ">
+                    <div id="clientCharts">
+                        @Html.Partial("Client_Charts", @Model)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="clientView contentBox" style="display:block">
+            <div class="boxContainerTitle">Direct Services <i class="fa fa-plus-square-o btnClientExpand"></i></div>
+            <div class="boxContainer normalSize active">
+                <div class="clBlockData">
+                    <div id="providerServices">
+                        @Html.Partial("Client_Providers", @Model)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (Model.userLevel != "Provider" && Model.userLevel != "Supervisor" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+    {
+        <div class="col-lg-6">
+            <div class="clientView contentBox" style="display:block">
+                <div class="boxContainerTitle">Comment History <i class="fa fa-plus-square-o btnClientExpand"></i></div>
+                <div class="boxContainer normalSize active">
+                    <div class="clBlockData">
+                        <div id="commentHistory">
+                            @Html.Partial("Client_Comments", @Model)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="col-lg-6">
+        <div class="clientView contentBox" style="display:block">
+            <div class="boxContainerTitle">Documentation <i class="fa fa-plus-square-o btnClientExpand"></i></div>
+            <div class="boxContainer normalSize active">
+                <div id="documentation">
+                    @Html.Partial("Client_Documentation", @Model)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="clientView contentBox" style="display:block">
+            <div class="boxContainerTitle">Goals <i class="fa fa-plus-square-o btnClientExpand"></i></div>
+            <div class="boxContainer normalSize active">
+                <div id="careGoals">
+                    @if (Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+                    {
+                        <div class="clBlockData" id="careAreas">
+                            @Html.Partial("Client_CareAreas", @Model)
+                        </div>
+                    }
+                    <div class="clBlockData" id="objectives">
+                        @Html.Partial("Client_Objectives", @Model)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.userLevel != "Provider" && Model.userLevel != "Supervisor" && Model.userLevel != "TherapyAssistant" && Model.userLevel != "TherapySupervisor")
+    {
+        <div class="col-lg-6">
+            <div class="clientView contentBox" style="display:block">
+                <div class="boxContainerTitle">Insurance <i class="fa fa-plus-square-o btnClientExpand"></i></div>
+                <div class="boxContainer normalSize active">
+                    <div id="insurance">
+                        @Html.Partial("Client_Insurance", @Model)
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+    @*<div class="col-lg-6">
+        <div class="clientView contentBox" style="display:block">
+            <div class="boxContainerTitle">Claim <i class="fa fa-plus-square-o btnClientExpand"></i></div>
+            <div class="boxContainer normalSize active">
+                <div class="clBlockData" style="margin-top:0px!important">
+                    <div id="claim">
+                        @Html.Partial("Client_Claims", @Model)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    *@
+</div>
+<script>
+    window.location.hash = '@("CLSVID" + @Model.clientProfile.clsvId)';
+</script>
+
+

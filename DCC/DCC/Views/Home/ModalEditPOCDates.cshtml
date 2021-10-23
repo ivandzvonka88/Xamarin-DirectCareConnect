@@ -1,0 +1,48 @@
+﻿@model DCC.Models.ClientService
+<div class="modal fade" id="actionModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Edit @Model.svcLong  Plan Of Care Dates</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="clientServiceId" value="@Model.clsvidId" />
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div>
+                            *This should only be set once for initialization. The date will be set automatically in the future when a new POC is completed.
+                        </div>
+                        <table>
+                            <tr>
+                                <th>
+                                    <div class="form-group">
+                                        <label for="POCStart">Plan Of Care Start</label>
+                                        <div class="input-group date">
+                                            <input id="POCStart" value="@Model.POCStart" type="date" class="form-control form-control-sm" />
+                                        </div>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="form-group">
+                                        <label for="POCEnd">Plan of Care End</label>
+                                        <div class="input-group date">
+                                            <input id="POCEnd" value="@Model.POCEnd" type="date" class="form-control form-control-sm" />
+                                        </div>
+                                    </div>
+                                </th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="updatePOCDates();">Update Plan of Care Dates</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#actionModal').modal('show');
+</script>

@@ -1,0 +1,79 @@
+﻿
+
+
+
+
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" onclick="getQuickbaseData();">Get Quickbase Data</button>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" onclick="updateAdj();">Get Quickbase Data</button>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+
+
+    function getQuickbaseData() {
+
+        var Data = {
+
+        }
+        alert('zzzzzz');
+        $.ajax({
+            type: 'POST',
+            url: '/Test2/GetQuickbaseData',
+            data: JSON.stringify(Data),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: SuccessR,
+            error: ajaxError,
+            timeout: 100000
+        });
+    }
+   // getQuickbaseData()
+
+    function updateAdj() {
+
+        var Data = {
+
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '/Test2/UpdateAdj',
+            data: JSON.stringify(Data),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: SuccessR,
+            error: ajaxError,
+            timeout: 100000
+        });
+    }
+
+    function SuccessR(r) {
+        waitOff();
+        if (r.code === 1) Alert('System Error - ' + r.msg);
+        else if (r.code === 2) Alert('Error - ' + r.msg);
+        else {
+            Alert('Success');
+        }
+    }
+
+
+
+
+
+
+
+</script>

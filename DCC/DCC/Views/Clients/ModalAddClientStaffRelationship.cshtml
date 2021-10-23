@@ -1,0 +1,47 @@
+﻿@model  DCC.Models.ClientRelationshipModal
+<div class="modal fade" id="actionModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-edit"></i> Add Service</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="requiresATCRelationship" />
+                <div class="form-group">
+                    <label for="serviceId">Client/Service</label>
+                    <select id="serviceId" class="form-control form-control-sm" onchange="getProviderList();">
+                        <option value="1"></option>
+                        @foreach (var item in Model.services)
+                        {
+                            <option value="@item.value">@item.name</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group" id="providerX" style="display:none">
+                    <label for="providerId">Staff Member</label>
+                    <select id="providerId" class="form-control form-control-sm">
+                    </select>
+                </div>
+                <div class="form-group" id="relationshipX" style="display:none">
+                    <label for="atcRelId">Staff/Client Relationship</label>
+                    <select id="atcRelId" class="form-control form-control-sm">
+                        <option value="1"></option>
+                        @foreach (var item in Model.atcRelationships)
+                        {
+                            <option value="@item.value">@item.name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="addProviderService();">Add Service</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#actionModal').modal('show');
+
+</script>

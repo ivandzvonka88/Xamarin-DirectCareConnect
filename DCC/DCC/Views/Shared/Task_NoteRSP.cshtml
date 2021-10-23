@@ -1,0 +1,13 @@
+﻿
+@model DCC.Models.Home.RspNoteFull
+<div style="margin-left:20px;margin-bottom:5px" id="@("infoRsp" + @Model.noteId)">
+    @if (@Model.noShow)
+    {
+        <div class="red">**** No Show ***</div>
+    }
+    <div>Note:@Model.note</div>
+    @if (@Model.hasAttachment)
+    {
+        <div><a style="font-weight:bold" href="~/Home/GetAttachment?filename=@Model.attachmentName@Model.extension"><i class="fa fa-paperclip"></i> Attachment</a></div>
+    }
+</div>

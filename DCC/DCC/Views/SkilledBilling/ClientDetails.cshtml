@@ -1,0 +1,76 @@
+﻿@model DCC.Models.Providers.ProviderInit
+<style>
+    .clickable {
+        position: relative;
+        cursor: pointer;
+        padding: 5px 17px;
+        color: #fff;
+        font-size: 13px;
+        background-color: #d84765;
+        height: 36px;
+    }
+
+    .clickableStatus {
+        position: relative;
+        cursor: pointer;
+        padding: 5px 17px;
+        color: #fff;
+        font-size: 13px;
+        background-color: #de7f93;
+    }
+</style>
+@{
+    int i = 0;
+
+}
+<input type="hidden" id="selrowid" value="" />
+<input type="hidden" id="selStatus2id" value="" />
+@if (Model.clientInfoList != null)
+{
+    foreach (var cl in Model.clientInfoList.Where(c => c.filteredCount > 0).Select(c => c))
+    {
+        i = i + 1;
+        <div class="row row-payor divClient" id="tr-Payor_@i.ToString()">
+            @Html.HiddenFor(m => cl.clientId, new { Value = cl.clientId })
+            <div class="col-sm-12">
+                <div class="row" style="margin-bottom:3px;">
+                    <div id="dtitle-Payor_@i.ToString()_Client_@cl.clientId" class="col-sm-12 clickable">
+                        <span class="dtitle-link">
+                            <input type="checkbox" class="chkClientSelect" value="@cl.clientId" onchange="selectClient();"/>
+                            <span class="clientName">@cl.name<input id="clientId" type="hidden" value="@cl.clientId"/><input id="claimIds" type="hidden" value="@cl.claimIds" /></span>@("  (DOB: " + (cl.dob == DateTime.MinValue ? "Unknown" : cl.dob.Date.ToString("dd MMM yyyy")) + ")")
+                            <span>&nbsp;<a class="client-profile-link" href="/Clients#CLSVID@(cl.clientId)" target="_blank" style="color: white;"><i class="fa fa-external-link" aria-hidden="true"></i></a></span>
+                        </span>
+                        <span style="position: absolute; right: 50px;">Open Claims: @(cl.claimIds.Split(',').Distinct().Count())</span>
+                        <span id="act-Payor_@i.ToString()_Client_@cl.clientId" class="cbox f11 disp-none" style="padding-top:3px;">
+                            <input type="hidden" id="clientInfoIndex_@cl.clientId" value="@i" />
+                            <span class="dropdown" style="margin-left:5px;">
+                                <a class="alink" href="javascript:;" id="act_btn_@i.ToString()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                                <div class="dropdown-menu submn-shadow dropdown-primary dropdown-menu-right">
+                                    <a class="dropdown-item edtbtn lnkAppAll" href="#" id="cb-Payor_@i.ToString()_Client_@cl.clientId" onclick="checkClaimApproval('@cl.name',this);">Approve All</a>
+                                    <a class="dropdown-item edtbtn" href="#" onclick="clickBatchClaimDenial()">Pending Waiver</a>
+                                    <a class="dropdown-item edtbtn " href="#" onclick="showBulkStatusChange();">Change Status</a>
+                                    <!--<a class="dropdown-item edtbtn" href="#" onclick="batchPendingWaiver()">Pending Waiver</a>-->
+                                    <a class="dropdown-item edtbtn genInv disp-none" href="javascript:;" onclick="generateInvoice()">Generate Invoice</a>
+                                    <a class="dropdown-item edtbtn" href="javascript:;" onclick="editClient()">All Payments</a>
+                                </div>
+                            </span>
+                        </span>
+                    </div>
+                    @*code embed*@
+                    <div class="col-sm-12 claimStatusAcc claimStatusAcc_@cl.clientId"></div>
+                    @*<div id="ddata-Payor_@i.ToString()_Client_@cl.clientId" class="col-sm-12 ddata-Payor disp-none claimDet">
+                        </div>*@
+                </div>
+            </div>
+        </div>
+
+
+    }
+
+}
+
+
+@Html.Partial("ApproveClaimModal")
+
+<script type="text/javascript" src="~/Scripts/DCC/SkilledBillingAP.js"></script>
+

@@ -1,0 +1,208 @@
+﻿@model DCC.Models.ScheduleInit
+@*@Html.Partial("MenuHeader", @Model)*@
+@Html.AntiForgeryToken()
+
+
+<div class="modal fade" id="actionModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-plus-circle mr-2"></i> Add New Schedules </h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form class="parent FormAddSchedule" id="FormAddSchedule" onsubmit="return validateSchedule(this);" action="@Url.Action("Schedule", "Calendar")" method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group ClientSelectGroup row">
+                        <div class="col-12">
+                            <label for="input-1">For whom do you want to add this Schedule?</label>
+                            <select class="form-control" onchange="GetServices(this);" name="ClientSelection" id="ClientSelection">
+                                <option value="">-- Choose Client --</option>
+                                @{ foreach (var clientData in Model.Clients.Where(c => c.deleted == false))
+                                    {
+
+                                        <option value="@clientData.id">@clientData.name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="serviceContainer d-none">
+                        <hr>
+                        <div class='multiSelectInputBoxContainer ServiceSelectGroup mt-3 row'>
+                            <div class='multiSelectWrapper col-12'>
+                                <div class='multiSelectbox'>
+                                    <label for='ServiceSelect'>For which services you want to Schedule?</label>
+                                    @*<select class='form-control inputBox clickable multiSelectInputBox' name='ServiceSelection' id='ServiceSelection' multiple='multiple'></select>*@
+                                    <select class='form-control inputBox clickable multiSelectInputBox' onchange="GetProviders(this);" name='ServiceSelection' id='ServiceSelection'></select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class='ProviderSelectGroup mt-3 row d-none'>
+                            <div class='col-12'>
+                                <div class=''>
+                                    <label for='ProviderSelect'>Select Provider</label>
+                                    @*<select class='form-control inputBox clickable multiSelectInputBox' name='ServiceSelection' id='ServiceSelection' multiple='multiple'></select>*@
+                                    <select class='form-control inputBox clickable' name='ProviderSelect' id='ProviderSelect'></select>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group RecurringOptionSelectGroup mt-3 row">
+                            <div class="col-12">
+                                <label for="RecurringOption">How often do you want to avail this services?</label>
+                                <select class="form-control" onchange="GetDateBox(this);" name="RecurringOption" id="RecurringOption">
+                                    <option value="">-- Choose Option --</option>
+                                    <option value="1">One Time</option>
+                                    <option value="2">Daily</option>
+                                    <option value="3">Weekly</option>
+                                    <option value="4">Monthly</option>
+                                    <option value="5">Quarterly</option>
+                                    @*<option value="5">Custom</option>*@
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="dateTimeContainer d-none">
+                        <hr>
+                        <div class="form-group startDateTime mt-3 row">
+                            <div class="col-12">
+                                <label class="scheduleTimeLabel" for="">Start Date and Time</label>
+                                @*<label class="SelectDateTime d-none" for="">Select Date and Time</label>*@
+
+                                <div class="row">
+                                    <div class="col-6">
+                                        @*<input required type="date" class="form-control" id="StartDateSelect" name="StartDateSelect">*@
+                                        <input required type="text" class="form-control jsDatePicker" id="StartDateSelect" name="StartDateSelect" placeholder="10/13/2020">
+                                    </div>
+                                    <div class="col-6">
+                                        @*<input required type="time" class="form-control" id="StartTimeSelect" name="StartTimeSelect">*@
+                                        <select class="form-control" name="StartTimeSelect" id="StartTimeSelect">
+                                            <option value="">-- Select Time --</option>
+                                            @for (int i = 06; i <= 24; i++)
+                                            {
+                                                for (int j = 00; j <= 45; j += 15)
+                                                {
+                                                    int k = i;
+                                                    if (i > 12)
+                                                    {
+                                                        k = i - 12;
+                                                        if (k >= 10)
+                                                        {
+                                                            if (j > 0 || k > 10)
+                                                            {
+                                                                break;
+                                                            }
+
+                                                        }
+                                                        string TimeS = k.ToString().PadLeft(2, '0') + ":" + j.ToString().PadLeft(2, '0') + " PM";
+                                                        <option value="@TimeS">@TimeS</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        string TimeS = k.ToString().PadLeft(2, '0') + ":" + j.ToString().PadLeft(2, '0');
+                                                        if (i == 12)
+                                                        {
+                                                            TimeS += " PM";
+                                                        }
+                                                        else
+                                                        {
+                                                            TimeS += " AM";
+                                                        }
+
+                                                        <option value="@TimeS">@TimeS</option>
+                                                    }
+
+                                                }
+
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="form-group endDateTime mt-3 row d-none">
+                            <div class="col-12">
+                                <label class="" for="">Please choose when you want to stop this schedule.</label>
+                                @*<label class="SelectDateTime d-none" for="">Select Date and Time</label>*@
+
+                                <div class="row">
+                                    <div class="col-6">
+                                        <input required type="text" class="form-control" id="EndDateSelect" name="EndDateSelect">
+
+                                    </div>
+                                    <div class="col-6">
+                                        <input required type="time" class="form-control" id="EndTimeSelect" name="EndTimeSelect">
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="form-group mt-3 mb-5 row">
+                            <div class="col-12">
+                                <label class="" for="comments">Additional Information for Service Provider (optional)</label>
+                                <input type="text" class="form-control" value="" id="comments" name="comments" />
+                            </div>
+
+                        </div>
+                        <hr>
+                        <div class="form-group row ">
+                            <div class="col-12">
+                                <label class="alert alert-danger errorMsg d-none"></label>
+                                <button type="button" class="btn btn-secondary closeAddModal" data-dismiss="modal">Close</button>
+                                <div value="Save Schedule" id="ScheduleAddBtn" class="btn btn-primary pull-right">Save Schedule</div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </form>
+
+            </div>
+            @*<div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>*@
+        </div>
+    </div>
+</div>
+<script>
+    $('#actionModal').modal('show');
+
+    //$('#ScheduleAddBtn').on('click', function (event) {
+    //    event.preventDefault();
+    //    waitOn();
+    //    $.ajax({
+    //        url: "../Schedules/Schedule",
+    //        method: "post",
+    //        data: new FormData(this),
+    //        dataType: 'JSON',
+    //        contentType: false,
+    //        cache: false,
+    //        processData: false,
+    //        success: function (response) {
+    //            scheduler.clearAll();
+    //            scheduler.load("../Schedules/Data?id=0");
+    //            waitOff();
+    //        },
+    //        error: function (err) {
+    //            alert("Error while adding shedule!");
+    //            console.log(err);
+    //            waitOff();
+    //        }
+    //    });
+    //});
+
+</script>
+
+
+
+
+

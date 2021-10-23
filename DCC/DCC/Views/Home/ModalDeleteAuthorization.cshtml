@@ -1,0 +1,65 @@
+﻿@model DCC.Models.Auth
+<div id="actionModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5><i class="fa fa-edit"></i> Delete @Model.service Authorization</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="auId" value="@Model.auId" />
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table>
+                            <tr>
+                                <th>
+                                    <div class="form-group">
+                                        <label for="authStart">Auth Start</label>
+                                        <div class="input-group date">
+                                            <input id="authStart" value="@Model.stdt" type="text" class="form-control form-control-sm" disabled="disabled" />
+                                            <i class="input-group-text fa fa-calendar"></i>
+                                        </div>
+                                    </div>
+                                </th>
+
+                                <th>
+                                    <div class="form-group">
+                                        <label for="authEnd">Auth End</label>
+                                        <div class="input-group date">
+                                            <input id="authEnd" value="@Model.eddt" type="text" class="form-control form-control-sm" disabled="disabled"/>
+                                            <i class="input-group-text fa fa-calendar"></i>
+                                        </div>
+                                    </div>
+                                </th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table>
+                            <tr>
+                                <th>Auth Units From DDD</th>
+                                <th>Addtional Units Promised</th>
+                                <th>Total Units</th>
+                            </tr>
+                            <tr>
+                                <td>@Model.au</td>
+                                <td>@Model.tempAddedUnits</td>
+                                <td>@(Model.ru + Model.tempAddedUnits)</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="deleteAuth(@Model.auId);">Delete Authorization</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#actionModal').modal('show');
+</script>

@@ -1,0 +1,111 @@
+﻿@model DCC.Models.ClientPageData
+@Html.Partial("Task_Client_Header", @Model.clientProfile)
+<div class="row">
+    <div class="col-md-6 col-lg-4">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="clientAlertView contentBox">
+                    <div class="boxContainerTitle">Client Alerts</div>
+                    <div id="clientAlerts" class="boxContainer active normalSize clientAlerts">
+                        @Html.Partial("ClientAlerts", @Model.clientAlerts)
+                    </div>
+                </div>
+                <div class="staffAlertView contentBox">
+                    <div class="boxContainerTitle">Staff Alerts</div>
+                    <div id="staffAlerts" class="boxContainer active normalSize staffAlerts">
+                        @Html.Partial("StaffAlerts", @Model.staffAlerts)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-8">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Comment History <i class="fa fa-plus-square-o btnExpand"></i></div>
+                    <div class="boxContainer active halfSize">
+                        <div id="commentHistory" class="clBlockData">
+                            @Html.Partial("Client_Comments", @Model)
+                        </div>
+                    </div>
+                </div>
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Objectives/Care Areas <i class="fa fa-plus-square-o btnExpand" id="goalAreaBtn"></i></div>
+                    <div class="boxContainer active halfSize">
+                        <div id="careGoals">
+                            <div class="clBlockData" id="careAreas">
+                                @Html.Partial("Client_CareAreas", @Model)
+                            </div>
+                            <div class="clBlockData" id="objectives">
+                                @Html.Partial("Client_Objectives", @Model)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Authorizations <i class="fa fa-plus-square-o btnExpand"></i></div>
+                    <div class="boxContainer active halfSize">
+                        <div id="services">
+                            @Html.Partial("Client_Services", @Model)
+                        </div>
+                    </div>
+                </div>
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Documentation History <i class="fa fa-plus-square-o btnExpand"></i></div>
+                    <div class="boxContainer active halfSize">
+                        <div id="documentation">
+                            @Html.Partial("Client_Documentation", @Model)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Client Charts <i class="fa fa-plus-square-o btnExpand"></i></div>
+                    <div class="boxContainer active halfSize">
+                        <div class="clBlockData ">
+                            <div id="clientCharts">
+                                @Html.Partial("Client_Charts", @Model)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">ClientProfile <i class="fa fa-plus-square-o btnExpand"></i></div>
+                    <div class="boxContainer active halfSize">
+                        <div class="clBlockData">
+                            <div id="clientProfile">
+                                @Html.Partial("Client_Profile", @Model)
+                            </div>
+                        </div>
+                        <div class="clBlockData">
+                            <div id="clientGeoLocations">
+                                @Html.Partial("Client_Locations", @Model)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Client Service Data <i class="fa fa-plus-square-o btnExpand"></i></div>
+                    <div class="boxContainer active halfSize">
+                        <div class="clBlockData clientServiceData">
+                            @Html.Partial("Client_ServiceData", @Model)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="boxView contentBox">
+                    <div class="boxContainerTitle">Billing Data <i class="fa fa-plus-square-o btnExpand"></i></div>
+                    <div class="boxContainer active halfSize">
+                        <div class="clBlockData clientBillingData">
+                            <div id="clientHours">
+                                @Html.Partial("Client_Hours", @Model.clientHours)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

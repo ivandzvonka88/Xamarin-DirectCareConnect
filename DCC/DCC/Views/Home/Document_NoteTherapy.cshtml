@@ -1,0 +1,150 @@
+﻿@model DCC.Models.SessionNotes.ClientNotePdf
+<head>
+    <style type="text/css">
+        body {
+            font-size: 12px;
+        }
+
+        h1 {
+            font-size: 15px;
+            text-align: center;
+            padding: 0;
+        }
+
+        table {
+            page-break-inside: avoid;
+            margin-top: 0px;
+            margin-bottom: 5px;
+            width: 100%;
+        }
+
+        th {
+            font-size: 14px;
+            vertical-align: top;
+            text-align: center;
+            background-color: aliceblue;
+        }
+
+        td {
+            font-weight: bold;
+            padding: 2px;
+            border: 0.5px solid #c0c0c0;
+        }
+
+        div {
+            margin-top: 1px;
+            margin-bottom: 5px;
+            padding: 0px 5px 0px 5px;
+            font-size: 12px;
+            font-weight: normal;
+            text-indent: 15px;
+        }
+
+        span {
+            font-size: 12px;
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <h1>@Model.serviceName Note  @Model.clientName @Model.dt</h1>
+    <table>
+        <tr>
+            <th colspan="4"> Qualified Vendor Agency: @(Model.agency + " NPI:" + Model.npi)</th>
+        </tr>
+        <tr>
+            <td>Member Name:<br><span>@Model.clientName</span></td>
+            <td>Date of Birth:<br><span>@Model.dob</span></td>
+            <td>Assist ID:<br><span>@Model.clId</span></td>
+            <td>Support Coordinator:<br><span>@Model.clientWorker</span></td>
+        </tr>
+        <tr>
+            <td>Date of Service:<br><span>@Model.dt</span></td>
+            <td>Time of Service:<br><span>@Model.timeOfService</span></td>
+            <td>Service:<br><span>@Model.serviceName</span></td>
+            <td>Service Provider:<br><span>@Model.completedBy  @Model.completedByCredentials</span></td>
+        </tr>
+    </table>
+    @if (Model.teletherapy)
+    {
+        <div style="font-size:20px">** TELETHERAPY **</div>
+    }
+    @if (Model.noShow)
+    {
+        <div style="font-size:20px">** Client No Show **</div>
+    }
+    @if (Model.IsEVV && Model.guardianId == 0 && Model.designeeId == 0)
+    {
+        <div style="font-size:20px">** Unverified By Designee **</div>
+    }
+    @if (Model.IsEVV && Model.designeeUnableToSign)
+    {
+        <div style="font-size:20px">** Designee Unable To Sign **</div>
+    }
+    @if (Model.IsEVV && Model.designeeRefusedToSign)
+    {
+        <div style="font-size:20px">** Designee Refused To Sign **</div>
+    }
+    @if (Model.IsEVV && Model.clientRefusedService)
+    {
+        <div style="font-size:20px">** Client Refused Service **</div>
+    }
+    @if (Model.IsEVV && Model.unsafeToWork)
+    {
+        <div style="font-size:20px">** Unsafe To Work **</div>
+    }
+    @if (Model.IsEVV && Model.unsafeToWork)
+    {
+        <div style="font-size:20px">** Unsafe To Work **</div>
+    }
+
+    <div style="border: 0; padding: 3px;">
+        <b>Session Note:</b>
+        <div>@Html.Raw(Model.note)</div>
+    </div>
+    @if (@Model.longTermObjectives != null && @Model.longTermObjectives.Count != 0)
+    {
+        <table>
+            @foreach (var o in @Model.longTermObjectives)
+            {
+                <tr>
+                    <td style="font-size: 11px;">
+                        Long Term Vision:<div>@Html.Raw(o.longTermVision)</div>
+                        Long Term Goal:<div>@Html.Raw(o.longTermGoal)</div>
+                    </td>
+                </tr>
+                if (o.shortTermGoals != null && o.shortTermGoals.Count != 0)
+                {
+                    foreach (var s in o.shortTermGoals)
+                    {
+                        <tr>
+                            <td style="border:0px">
+                                <table style="margin-left: 10px; background-color:aliceblue">
+                                    <tr>
+                                        <td>
+                                            Action Step/Short Term Goal:<div>@Html.Raw(s.shortTermGoal)</div>
+                                            Activities/ Strategies:<div>@Html.Raw(s.teachingMethod)</div>
+                                            Cueing: <span>@s.score</span><br />
+                                            Percentage Of Success: <span>@s.trialPct %</span><br />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    }
+                }
+            }
+        </table>
+    }
+
+
+<div class="disclaimer">
+    I <b>@Model.approvedBy</b> hereby attest that the medical record entry for @Model.dt accurately reflects signatures/notations that I made in my capacity as a <b>@Model.approvedByCredentials</b> I do hereby attest that this information is true, accurate, and complete to the best of my knowledge and that any falsifications, omissions, or concealment of material fact may subject me to administrative, civil, or criminal liability.
+</div>
+    @if (Model.approvedBy != Model.completedBy)
+    {
+        <div class="disclaimer">
+            I <b>@Model.completedBy</b> hereby attest that the medical record entry for @Model.dt accurately reflects signatures/notations that I made in my capacity as a <b>@Model.completedByCredentials</b> I do hereby attest that this information is true, accurate, and complete to the best of my knowledge and that any falsifications, omissions, or concealment of material fact may subject me to administrative, civil, or criminal liability.
+        </div>
+    }
+</body>

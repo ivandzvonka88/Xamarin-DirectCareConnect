@@ -1,0 +1,120 @@
+﻿@model DCC.Models.Home.HomeStaffPage
+
+@Html.Partial("Task_Staff_Header", @Model)
+<!--Task_Director_Home.cshtml-->
+
+<div class="grid-stack">
+
+    <div class="clientAlertView xcontentBox grid-stack-item card" data-gs-x="0" data-gs-y="0" data-gs-width="4" data-gs-height="6">
+        <div class="grid-stack-item-content bg-white">
+            <div class="card-body">
+                <div class="boxContainerTitle">Client Alerts</div>
+                <div id="clientAlerts" class="boxContainer active ">
+                    @Html.Partial("ClientAlerts", @Model.clientAlerts)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="staffAlertView xcontentBox grid-stack-item card" data-gs-x="0" data-gs-y="6" data-gs-width="4" data-gs-height="6">
+        <div class="grid-stack-item-content bg-white">
+            <div class="card-body">
+                <div class="boxContainerTitle">Staff Alerts</div>
+                <div id="staffAlerts" class="boxContainer active ">
+                    @Html.Partial("StaffAlerts", @Model.staffAlerts)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Superadmin/Director/Assistant Director views -->
+
+    <div class="boxView xcontentBox grid-stack-item card" data-gs-x="4" data-gs-y="0" data-gs-width="4" data-gs-height="6">
+        <div class="grid-stack-item-content bg-white">
+            <div class="card-body">
+                <div class="boxContainerTitle">Comment History</div>
+                <div class="boxContainer active ">
+                    @Html.Partial("Task_CommentHistory", @Model.commentHistory)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="boxView xcontentBox grid-stack-item card" data-gs-x="4" data-gs-y="6" data-gs-width="4" data-gs-height="3">
+        <div class="grid-stack-item-content bg-white">
+            <div class="card-body">
+                <div class="boxContainerTitle">New Authorizations </div>
+                <div class="boxContainer active ">
+                    @Html.Partial("Task_NewAuths", @Model)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="boxView xcontentBox grid-stack-item card" data-gs-x="4" data-gs-y="9" data-gs-width="4" data-gs-height="3">
+        <div class="grid-stack-item-content bg-white">
+            <div class="card-body">
+                <div class="boxContainerTitle">Pending Documentation</div>
+                <div class="boxContainer active ">
+                    <div id="pendingDocumentation" class="clBlockData">
+                        @Html.Partial("PendingDocumentation", @Model)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="boxView xcontentBox grid-stack-item card" data-gs-x="8" data-gs-y="0" data-gs-width="4" data-gs-height="3">
+        <div class="grid-stack-item-content bg-white">
+            <div class="card-body">
+                <div class="boxContainerTitle">Supervisory Staff List</div>
+                <div class="boxContainer active">
+                    @Html.Partial("Task_SupervisoryStaff", @Model)
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="boxView xcontentBox grid-stack-item card" data-gs-x="8" data-gs-y="3" data-gs-width="4" data-gs-height="3">
+        <div class="grid-stack-item-content bg-white">
+            <div class="card-body">
+                <div class="boxContainerTitle">Provider List</div>
+                <div class="boxContainer active ">
+                    @Html.Partial("Task_ProviderList", @Model)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="boxView xcontentBox grid-stack-item card" data-gs-x="8" data-gs-y="6" data-gs-width="4" data-gs-height="3">
+        <div class="grid-stack-item-content bg-white">
+            <div class="card-body">
+                <div class="boxContainerTitle">Client List</div>
+                <div class="boxContainer active ">
+                    @Html.Partial("Task_ClientList", @Model)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="boxView xcontentBox grid-stack-item card" data-gs-x="8" data-gs-y="9" data-gs-width="4" data-gs-height="3">
+        <div class="grid-stack-item-content bg-white">
+            <div class="card-body">
+                <div class="boxContainerTitle">Credentials/Certifications</div>
+                <div class="boxContainer active ">
+                    <div class="clBlockData">
+                        <div id="credentials">
+                            @Html.Partial("Staff_Credentials", @Model)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+<script type="text/javascript">
+    var grid = GridStack.init();
+
+</script>

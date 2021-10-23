@@ -1,0 +1,35 @@
+﻿@model  DCC.Models.ClientPageData
+<style>
+    .docTable td {
+        border: 1px solid #c0c0c0;
+        padding: 5px;
+        vertical-align: top;
+    }
+</style>
+<div>
+    <table>
+        <tr>
+            <td>
+                <label><input type="checkbox" id="selSessionNotes" @(Model.documentationSelNotes ? "checked" : "")" /> Session Notes</label>
+
+                <label><input type="checkbox" id="selReports"  @(Model.documentationSelReports ? "checked" : "")" /> Other Documents </label><br />
+            </td>
+            <td>
+                <label for="docStartDate2">Start</label>
+                <input type="date" id="docStartDate2" style="width:160px" value="@Model.documentationStart"/>
+            </td>
+            <td>
+                <label for="docEndDate2">End</label>
+                <input type="date" id="docEndDate2" style="width:160px" value="@Model.documentationEnd"/>
+            </td>
+            <td>
+                <i class="fa fa-refresh faBtn" onclick="getDocumentation();"></i>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="documentationWrapper">
+    @Html.Partial("Client_Documents", @Model)
+</div>
+
+
